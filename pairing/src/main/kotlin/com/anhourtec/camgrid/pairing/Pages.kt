@@ -203,6 +203,21 @@ select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(2
 .actions button{flex:1 1 140px;margin-top:8px;font-size:15px;padding:12px 14px}
 button.danger{background:transparent;color:var(--danger);border:1px solid rgba(255,180,171,.4)}
 .note{margin:0 0 8px;padding:12px 14px;border-radius:12px;background:rgba(200,251,208,.1);border:1px solid rgba(200,251,208,.35);color:var(--accent)}
+.tabs{display:flex;gap:6px;margin:0 0 18px;padding:4px;border:1px solid var(--line);border-radius:999px}
+.tabs a{flex:1;text-align:center;padding:9px 10px;border-radius:999px;color:var(--dim);text-decoration:none;font-weight:600;font-size:15px}
+.tabs a[aria-current]{background:rgba(200,251,208,.12);color:var(--accent)}
+.rows{list-style:none;margin:0 0 8px;padding:0;display:grid;gap:8px}
+.rows li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;min-width:0}
+.rows b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rows small{color:var(--dim);font-size:13px}
+.rows span{min-width:0}
+a.btn{display:block;text-align:center;margin-top:12px;padding:13px 18px;border-radius:999px;border:1px solid var(--line);color:var(--text);text-decoration:none;font-weight:600}
+a.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+a.small{flex:none;padding:8px 14px;border-radius:999px;border:1px solid var(--line);color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+.choice{display:flex;align-items:center;gap:10px;margin:10px 0 0;color:var(--text);font-size:16px}
+.choice input{width:20px;height:20px;accent-color:var(--accent)}
+.help{display:block;margin-top:18px;text-align:center;color:var(--dim);font-size:14px}
+/* The camera's own login fields only matter when "own login" is chosen (pure CSS, no script). */
+fieldset:has(input[value=shared]:checked) .own{display:none}
 @media (min-width:768px){.card:has(.tiles){max-width:640px}}
 @media (max-width:400px){.card{padding:24px 18px;border-radius:20px}.top{margin-bottom:20px}.lead{margin-bottom:18px}.lang ul{left:0;right:auto}}
 @media (max-height:560px) and (orientation:landscape){body{justify-content:flex-start}}

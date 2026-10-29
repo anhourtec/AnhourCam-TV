@@ -12,6 +12,7 @@ internal object EditorPage {
         snapshot: LayoutSnapshot,
         layout: Layout,
         notice: String? = null,
+        tabs: Boolean = false,
     ): String {
         val template = layout.template
         val grids =
@@ -40,7 +41,7 @@ internal object EditorPage {
             title = s.manageTitle,
             body =
                 """
-                <p class="step">${Pages.esc(s.step2)}</p>
+                ${if (tabs) CameraPages.tabs(s, camerasActive = false) else "<p class=\"step\">${Pages.esc(s.step2)}</p>"}
                 <h1>${Pages.esc(s.manageTitle)}</h1>
                 <p class="lead">${Pages.esc(s.manageLead)}</p>
                 ${notice?.let { "<p class=\"note\" role=\"status\">${Pages.esc(it)}</p>" }.orEmpty()}

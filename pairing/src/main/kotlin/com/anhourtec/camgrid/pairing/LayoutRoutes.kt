@@ -13,6 +13,7 @@ import java.util.UUID
 internal class LayoutRoutes(
     private val backend: LayoutBackend,
     private val state: PairingState,
+    private val hasCameras: Boolean = false,
 ) {
     /**
      * GET / and POST /layout. A paired browser gets the editor (and its token and cookie renewed,
@@ -44,8 +45,11 @@ internal class LayoutRoutes(
         layoutId: String?,
     ): HttpResponse {
         val snapshot = backend.snapshot()
-        val layout = layoutId?.let { snapshot.state.byId(it) } ?: snapshot.state.current ?: return HttpResponse.redirect("/")
-        return HttpResponse.html(STATUS_OK, EditorPage.layoutEditor(s, snapshot, layout))
+        // No layout yet (only possible before any camera exists): add cameras first.
+        val layout =
+            layoutId?.let { snapshot.state.byId(it) } ?: snapshot.state.current
+                ?: return HttpResponse.html(STATUS_OK, if (hasCameras) noLayout(s) else Pages.message(s, s.manageTitle, s.manageLead))
+        return HttpResponse.html(STATUS_OK, EditorPage.layoutEditor(s, snapshot, layout, tabs = hasCameras))
     }
 
     private fun post(
@@ -88,9 +92,12 @@ internal class LayoutRoutes(
         val shownLayout = shown ?: return HttpResponse.redirect("/")
         return HttpResponse.html(
             STATUS_OK,
-            EditorPage.layoutEditor(s, LayoutSnapshot(next ?: snapshot.state, snapshot.cameras), shownLayout, notice),
+            EditorPage.layoutEditor(s, LayoutSnapshot(next ?: snapshot.state, snapshot.cameras), shownLayout, notice, hasCameras),
         )
     }
+
+    private fun noLayout(s: Strings): String =
+        Pages.page(s, s.manageTitle, CameraPages.tabs(s, camerasActive = false) + "<p class=\"lead\">${Pages.esc(s.manageLead)}</p>")
 
     /**
      * The posted tiles belong to the grid the form was drawn with; a different `template` then

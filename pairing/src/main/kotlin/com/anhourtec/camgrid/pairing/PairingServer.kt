@@ -23,6 +23,7 @@ class PairingServer(
     private val requestedPort: Int = DEFAULT_PORT,
     private val backend: PairingBackend? = null,
     private val layouts: LayoutBackend? = null,
+    private val cameras: CameraBackend? = null,
     private val state: PairingState,
     private val guard: NetworkGuard = NetworkGuard(),
     private val maxLifetimeMs: Long = MAX_LIFETIME_MS,
@@ -30,7 +31,8 @@ class PairingServer(
     private val onSignedIn: () -> Unit,
 ) : Closeable {
     private val ownIp = bindAddress.hostAddress
-    private val layoutRoutes = layouts?.let { LayoutRoutes(it, state) }
+    private val layoutRoutes = layouts?.let { LayoutRoutes(it, state, hasCameras = cameras != null) }
+    private val cameraRoutes = cameras?.let { CameraRoutes(it, state) }
     private val captchaNonce = AtomicInteger()
     private val workers =
         ThreadPoolExecutor(MAX_CONNECTIONS, MAX_CONNECTIONS, IDLE_SECONDS, TimeUnit.SECONDS, SynchronousQueue())
@@ -130,7 +132,8 @@ class PairingServer(
         Responses.staticRoute(request)?.let { return it to false }
         val token = request.cookie(Responses.TOKEN_COOKIE)
         val paired = state.isPaired(token, ip)
-        return layoutRoutes?.handle(s, request, token, ip)?.let { it to false } ?: when (request.method to request.path) {
+        val dashboard = cameraRoutes?.handle(s, request, token, ip) ?: layoutRoutes?.handle(s, request, token, ip)
+        return dashboard?.let { it to false } ?: when (request.method to request.path) {
             "GET" to "/" -> {
                 home(s, chosen, paired) to false
             }
