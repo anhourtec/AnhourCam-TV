@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">CamGrid TV</string>
+    <string name="app_name" translatable="false">AnhourCam TV</string>
     <string name="pair_code_format" translatable="false">%1$s %2$s</string>
     <string name="tile_debug" translatable="false">%1$s · %2$s %3$s · %4$s · %5$d fps · first %6$.1f s · dropped %7$d</string>
     <string name="pair_code_expired" translatable="false">——— ———</string>

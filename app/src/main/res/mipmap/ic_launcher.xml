@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- AnhourCam TV mark: rounded square holding a 2x2 camera grid (AnHourTec blue). Generated from docs/brand. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp" android:height="108dp"
     android:viewportWidth="108" android:viewportHeight="108">
-    <path android:fillColor="#FFCFFFCF" android:pathData="M30,30h22v22h-22zM56,30h22v22h-22zM30,56h22v22h-22zM56,56h22v22h-22z" />
+    <path android:pathData="M43.2,29.31 H64.8 A13.89,13.89 0 0 1 78.69,43.2 V64.8 A13.89,13.89 0 0 1 64.8,78.69 H43.2 A13.89,13.89 0 0 1 29.31,64.8 V43.2 A13.89,13.89 0 0 1 43.2,29.31 Z" android:strokeColor="#FF38CEFF" android:strokeWidth="4.6" />
+    <path android:fillColor="#FF38CEFF" android:pathData="M43.2,40.89 H49.37 A2.31,2.31 0 0 1 51.69,43.2 V49.37 A2.31,2.31 0 0 1 49.37,51.69 H43.2 A2.31,2.31 0 0 1 40.89,49.37 V43.2 A2.31,2.31 0 0 1 43.2,40.89 Z M43.2,56.31 H49.37 A2.31,2.31 0 0 1 51.69,58.63 V64.8 A2.31,2.31 0 0 1 49.37,67.11 H43.2 A2.31,2.31 0 0 1 40.89,64.8 V58.63 A2.31,2.31 0 0 1 43.2,56.31 Z M58.63,40.89 H64.8 A2.31,2.31 0 0 1 67.11,43.2 V49.37 A2.31,2.31 0 0 1 64.8,51.69 H58.63 A2.31,2.31 0 0 1 56.31,49.37 V43.2 A2.31,2.31 0 0 1 58.63,40.89 Z M58.63,56.31 H64.8 A2.31,2.31 0 0 1 67.11,58.63 V64.8 A2.31,2.31 0 0 1 64.8,67.11 H58.63 A2.31,2.31 0 0 1 56.31,64.8 V58.63 A2.31,2.31 0 0 1 58.63,56.31 Z" />
 </vector>

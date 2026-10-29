@@ -1,4 +1,4 @@
-# Contributing to CamGrid TV
+# Contributing to AnhourCam TV
 
 Thanks for helping put BitVision cameras on the big screen.
 

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 320x180 TV launcher banner: a 2x2 grid mark and the app name. No third-party marks. -->
+<!-- 320x180 TV launcher banner: AnhourCam TV wordmark. Generated from docs/brand. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="320dp" android:height="180dp"
     android:viewportWidth="320" android:viewportHeight="180">
-    <path android:fillColor="#FF0B0D10" android:pathData="M0,0h320v180h-320z" />
-    <path android:fillColor="#FFCFFFCF" android:pathData="M40,58h28v28h-28zM72,58h28v28h-28zM40,90h28v28h-28zM72,90h28v28h-28z" />
-    <path android:fillColor="#FFE8EAED" android:pathData="M124,76h6v28h-6zM136,76h24v6h-24zM136,98h24v6h-24zM136,76h6v28h-6zM170,76h24v6h-24zM170,76h6v28h-6zM170,98h24v6h-24zM188,88h6v16h-6zM180,88h14v6h-14zM204,76h6v28h-6zM210,76h14v6h-14zM218,82h6v6h-6zM210,88h14v6h-14zM218,94h6v10h-6zM234,76h6v28h-6zM250,76h6v28h-6zM256,76h16v6h-16zM256,98h16v6h-16zM272,82h6v16h-6z" />
+    <path android:fillColor="#FF07090C" android:pathData="M0,0h320v180h-320z" />
+    <group android:translateX="20.00" android:translateY="77.31" android:scaleX="0.36" android:scaleY="0.36">
+        <path android:pathData="M0,70 L25,0 L50,70 M68,70 V0 L118,70 V0 M136,0 V70 M186,0 V70 M136,35 H186 M292,0 V48 Q292,70 314,70 H320 Q342,70 342,48 V0 M360,70 V0 H394 Q410,0 410,17 Q410,34 394,34 H360 M386,34 L410,70 M478,8 Q472,0 458,0 H448 Q428,0 428,20 V50 Q428,70 448,70 H458 Q472,70 478,62 M496,70 L521,0 L546,70 M564,70 V0 L589,44 L614,0 V70" android:strokeColor="#FFEEF1F4" android:strokeWidth="6" android:strokeLineCap="round" android:strokeLineJoin="round" />
+        <path android:pathData="M654,0 H704 M679,0 V70 M722,0 L747,70 L772,0" android:strokeColor="#FF9AA0A6" android:strokeWidth="6" android:strokeLineCap="round" android:strokeLineJoin="round" />
+        <path android:pathData="M225.0,3.0 H253.0 A18.0,18.0 0 0 1 271.0,21.0 V49.0 A18.0,18.0 0 0 1 253.0,67.0 H225.0 A18.0,18.0 0 0 1 207.0,49.0 V21.0 A18.0,18.0 0 0 1 225.0,3.0 Z" android:strokeColor="#FF38CEFF" android:strokeWidth="6" />
+        <path android:fillColor="#FF38CEFF" android:pathData="M225.0,18.0 H233.0 A3.0,3.0 0 0 1 236.0,21.0 V29.0 A3.0,3.0 0 0 1 233.0,32.0 H225.0 A3.0,3.0 0 0 1 222.0,29.0 V21.0 A3.0,3.0 0 0 1 225.0,18.0 Z M225.0,38.0 H233.0 A3.0,3.0 0 0 1 236.0,41.0 V49.0 A3.0,3.0 0 0 1 233.0,52.0 H225.0 A3.0,3.0 0 0 1 222.0,49.0 V41.0 A3.0,3.0 0 0 1 225.0,38.0 Z M245.0,18.0 H253.0 A3.0,3.0 0 0 1 256.0,21.0 V29.0 A3.0,3.0 0 0 1 253.0,32.0 H245.0 A3.0,3.0 0 0 1 242.0,29.0 V21.0 A3.0,3.0 0 0 1 245.0,18.0 Z M245.0,38.0 H253.0 A3.0,3.0 0 0 1 256.0,41.0 V49.0 A3.0,3.0 0 0 1 253.0,52.0 H245.0 A3.0,3.0 0 0 1 242.0,49.0 V41.0 A3.0,3.0 0 0 1 245.0,38.0 Z" />
+    </group>
 </vector>

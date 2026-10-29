@@ -20,11 +20,18 @@ internal object Responses {
 
     fun secondsCeil(ms: Long) = (ms + MS_PER_S - 1) / MS_PER_S
 
-    /** The app's 2×2 grid mark on a dark rounded square. Served by the TV (the page loads nothing external). */
+    /** The AnhourCam TV mark (rounded square with a 2×2 camera grid). Served by the TV; the page loads nothing external. */
     const val FAVICON_SVG =
-        """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#07090c"/>""" +
-            """<g fill="#c8fbd0"><rect x="14" y="14" width="16" height="16" rx="3"/><rect x="34" y="14" width="16" height="16" rx="3"/>""" +
-            """<rect x="14" y="34" width="16" height="16" rx="3"/><rect x="34" y="34" width="16" height="16" rx="3"/></g></svg>"""
+        """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" """ +
+            """fill="#07090c"/><path d="M22.0,9.14 H42.0 A12.86,12.86 0 0 1 54.86,22.0 V42.0 A12.86,12.86 0 0 1 """ +
+            """42.0,54.86 H22.0 A12.86,12.86 0 0 1 9.14,42.0 V22.0 A12.86,12.86 0 0 1 22.0,9.14 Z" fill="none" """ +
+            """stroke="#38CEFF" stroke-width="4.5"/><path d="M22.0,19.86 H27.71 A2.14,2.14 0 0 1 29.86,22.0 V27.71 """ +
+            """A2.14,2.14 0 0 1 27.71,29.86 H22.0 A2.14,2.14 0 0 1 19.86,27.71 V22.0 A2.14,2.14 0 0 1 22.0,19.86 Z """ +
+            """M22.0,34.14 H27.71 A2.14,2.14 0 0 1 29.86,36.29 V42 A2.14,2.14 0 0 1 27.71,44.14 H22.0 A2.14,2.14 0 """ +
+            """0 1 19.86,42 V36.29 A2.14,2.14 0 0 1 22.0,34.14 Z M36.29,19.86 H42 A2.14,2.14 0 0 1 44.14,22.0 """ +
+            """V27.71 A2.14,2.14 0 0 1 42,29.86 H36.29 A2.14,2.14 0 0 1 34.14,27.71 V22.0 A2.14,2.14 0 0 1 """ +
+            """36.29,19.86 Z M36.29,34.14 H42 A2.14,2.14 0 0 1 44.14,36.29 V42 A2.14,2.14 0 0 1 42,44.14 H36.29 """ +
+            """A2.14,2.14 0 0 1 34.14,42 V36.29 A2.14,2.14 0 0 1 36.29,34.14 Z" fill="#38CEFF"/></svg>"""
 
     /** Routes that need no pairing state: the favicon, and stale steps sent back to the start. */
     fun staticRoute(request: HttpRequest): HttpResponse? =

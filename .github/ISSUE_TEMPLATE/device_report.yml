@@ -1,5 +1,5 @@
 name: Device report
-description: Tell us how CamGrid TV runs on your TV or NVR
+description: Tell us how AnhourCam TV runs on your TV or NVR
 labels: [device-report]
 body:
   - type: markdown

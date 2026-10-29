@@ -119,13 +119,13 @@ internal object Pages {
         <meta name="color-scheme" content="dark">
         <meta name="theme-color" content="#07090c">
         <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-        <title>${esc(title)} · CamGrid TV</title>
+        <title>${esc(title)} · AnhourCam TV</title>
         <style>$STYLE</style>
         </head>
         <body>
         <main class="card">
         <header class="top">
-        <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>CamGrid TV</div>
+        <div class="brand"><img class="mark" src="/favicon.svg" alt="" width="24" height="24">AnhourCam TV</div>
         ${languages(s)}
         </header>
         $body
@@ -157,7 +157,7 @@ background:#0f1318;border:1px solid var(--line);border-radius:14px;box-shadow:0 
 .lang a{display:block;padding:9px 12px;border-radius:10px;color:var(--text);text-decoration:none}
 .lang a:hover,.lang a:focus{background:#1a2028;outline:none}
 .lang a[aria-current]{color:var(--accent);font-weight:600}
-.mark{display:grid;grid-template-columns:repeat(2,9px);gap:3px}.mark i{width:9px;height:9px;border-radius:2px;background:var(--accent)}
+.mark{width:24px;height:24px;border-radius:6px}
 .step{margin:0 0 6px;color:var(--accent);font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase}
 h1{margin:0 0 10px;font-size:clamp(22px,6.4vw,28px);line-height:1.15;letter-spacing:-.02em;overflow-wrap:anywhere}
 .lead{margin:0 0 24px;color:var(--dim)}
