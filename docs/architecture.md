@@ -1,6 +1,46 @@
-# Architecture (detailed)
+# Architecture
 
-Overview diagram: [`../ARCHITECTURE.md`](../ARCHITECTURE.md). Product spec: `README.md` §4–§7.
+Product spec: [`SPEC.md`](SPEC.md) §4–§7. Plan: [`roadmap.md`](roadmap.md).
+
+## Overview
+
+```
+┌───────────────────────── Android TV app (:app) ─────────────────────────┐
+│ UI — Compose for TV, single Activity                                    │
+│   LoginChoice → Login | Pairing → Home(layouts) → Grid → Fullscreen     │
+│   + Devices browser, Layout editor, Settings                            │
+│                                                                         │
+│ Domain                                                                  │
+│   SessionManager    tokens (Keystore-encrypted), refresh, logout        │
+│   DeviceRepository  NVRs, channels, status cache (Room)                 │
+│   LayoutRepository  saved grids as JSON on a 12×12 cell grid (Room)     │
+│   StreamManager     decoder budget, sub/main switching, reconnects      │
+│                                                                         │
+│ Data                                                                    │
+│   :bitvision-client pure Kotlin/JVM — OkHttp + kotlinx.serialization    │
+│   Video pipeline    WS → 44-byte depacketizer → MediaCodec → Surface   │
+│   Pairing server    Ktor CIO in a foreground service, port 8743         │
+└─────────────────────────────────────────────────────────────────────────┘
+          │ HTTPS / WS                         ▲ HTTP (LAN only, short-lived)
+          ▼                                    │
+   BitVision cloud (private API)        Phone/laptop pairing page (:pairing-web)
+```
+
+## 0. Modules
+
+| Module | Kind | Depends on | Purpose |
+|---|---|---|---|
+| `:bitvision-client` | Kotlin/JVM lib | OkHttp, kotlinx.serialization, coroutines | Auth, signing, devices, channels, stream negotiation |
+| `:bitvision-client-cli` | Kotlin/JVM app | `:bitvision-client` | Smoke test against the real API |
+| `:app` | Android app | `:bitvision-client`, Compose TV, Room, Ktor | The TV app |
+| `pairing-web/` | static assets | — | Bundled into `:app` assets, served by the pairing server |
+
+## Key flows
+
+1. **Login (TV):** form → `SessionManager.login()` → client auth → tokens encrypted at rest; password discarded.
+2. **Login (pairing):** TV starts Ktor :8743 → 6-digit code → 5-min single-use pairing token bound to client IP → credentials POSTed → TV logs in → server stops.
+3. **Live grid:** `LayoutRepository` → visible tiles → `StreamManager` allocates decoders within budget → sub-streams; fullscreen swaps to main.
+
 
 ## 1. Layers
 
@@ -29,7 +69,10 @@ Overview diagram: [`../ARCHITECTURE.md`](../ARCHITECTURE.md). Product spec: `REA
 - **`:bitvision-client`** — pure JVM. No Android imports (enforced by the module being a plain
   `kotlin("jvm")` module). Exposes suspend APIs: `login`, `refresh`, `listDevices`,
   `listChannels`, `openStream(channel, quality)`. Request signing lives here.
-- **Video pipeline** — chosen from README §6 table once `docs/streaming.md` identifies transport.
+- **Video pipeline**: Phase 0 found raw H.265/H.264 Annex-B behind a private 44-byte header on a
+  WebSocket ([streaming.md](streaming.md)). Path: OkHttp WebSocket → `FrameDepacketizer` (pure
+  JVM, in `:bitvision-client`, reads into reused buffers) → `MediaCodec` (hardware decoder,
+  configured from VPS/SPS/PPS of the first key frame) → `SurfaceView` per tile. No Media3.
 - **Pairing server** — Ktor CIO inside a foreground service; see §3.
 
 ## 2. Storage
@@ -56,17 +99,40 @@ rate limits + body size limits · no credential/token logging.
 | kotlinx.serialization | client, app | Multiplatform JSON, no reflection |
 | kotlinx.coroutines | all | Async + Flow |
 | Compose for TV (`androidx.tv:tv-material`) | app | Official TV focus/D-pad components |
-| Hilt | app | DI across Activity/services/ViewModels |
-| Media3 ExoPlayer | app | Native playback where container allows (TBD Phase 0) |
+| ~~Hilt~~ | — | Dropped for startup speed and APK size: manual constructor DI in one `AppGraph` |
+| ~~Media3~~ | — | Not needed: private framing goes straight to `MediaCodec` |
 | Room | app | Layouts + device cache |
 | DataStore | app | Settings |
 | Ktor server (CIO) | app | Embedded LAN pairing server, no Netty |
 | Timber | app | Debug logging only |
 | ZXing core (TBD) | app | QR code for pairing URL |
 
+## 4a. Performance design
+
+- Kotlin native Android only. Hardware decoding via `MediaCodec`, one `SurfaceView` per visible
+  tile (Compose draws only chrome around it). No software or WASM decoding.
+- Zero-copy-ish video path: WebSocket `ByteString` → slice past the 44-byte header →
+  `MediaCodec` input buffer. No per-frame object allocation.
+- Decoder budget from `MediaCodecList` capabilities (`getMaxSupportedInstances`, performance points).
+- Startup: no DI framework, no reflection, lazy init of the pairing server, Baseline Profiles,
+  R8 full mode. Release APK target < 8 MB.
+- Budgets live in `performance.md` (Phase 5).
+
+## 4b. Platforms
+
+- **Google TV / Android TV** and **Amazon Fire TV** (Fire OS 6+, Android 7.1 / API 25 based).
+- `minSdk 25` so older Fire TV Sticks are covered. No Google Play Services anywhere.
+- Manifest: `LEANBACK_LAUNCHER` + `android:banner`, touchscreen not required. Fire TV reads the
+  same leanback intent.
+
 ## 5. Decisions log
 
 | Date | Decision | Reason |
 |---|---|---|
-| 2026-10-29 | Repo root is this folder (`CamGrid/`), not a nested `camgrid-tv/` | Simpler; same layout as README §4.2 |
+| 2026-10-29 | Repo root is this folder (`CamGrid/`), not a nested `camgrid-tv/` | Simpler; same layout as SPEC §4.2 |
 | 2026-10-29 | Raw captures live in git-ignored `captures/` | Keep secrets out of history |
+| 2026-10-29 | Video path: own depacketizer → MediaCodec → SurfaceView | Phase 0: private framing + Annex-B, no container for Media3 |
+| 2026-10-29 | Drop Hilt and Media3 | Startup time and APK size ("must feel instant") |
+| 2026-10-29 | minSdk 25, no GMS | Fire TV (Fire OS 6/7/8) support |
+| 2026-10-29 | `pairing-web/` in TypeScript, strict, ESLint | Zero lint/type errors rule |
+| 2026-10-29 | Spec moved to `docs/SPEC.md`; public README is user-facing | Discoverability |
