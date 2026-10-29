@@ -29,7 +29,7 @@ patterns=(
   '\b[A-Z0-9]{2,6}[0-9]{6,}[A-Z0-9]*\b'                       # device-serial-ish
 )
 # Lines matching these are allowed (placeholders, docs examples, attribution).
-allow='<[A-Z_0-9]+>|127\.0\.0\.1|0\.0\.0\.0|192\.0\.2\.|198\.51\.100\.|203\.0\.113\.|example\.(com|org)|check-redaction:allow'
+allow='<[A-Z_0-9]+>|127\.0\.0\.1|0\.0\.0\.0|192\.0\.2\.|198\.51\.100\.|203\.0\.113\.|example\.(com|org)|@[A-Za-z0-9.-]*\.example([^A-Za-z0-9.-]|$)|check-redaction:allow'
 
 # Exact strings that are known protocol constants (see scripts/redaction-allowlist.txt).
 allowfile="$(dirname "$0")/redaction-allowlist.txt"
