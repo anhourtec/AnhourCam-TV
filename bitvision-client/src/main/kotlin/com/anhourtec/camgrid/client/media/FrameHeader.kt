@@ -14,6 +14,9 @@ class FrameHeader {
     var payloadOffset: Int = 0
     var payloadLength: Int = 0
 
+    /** H.265 (BitVision, most IP cameras) or H.264 (many IP cameras). */
+    var hevc: Boolean = true
+
     val isKeyFrame: Boolean get() = type == TYPE_KEY
     val isVideo: Boolean get() = type == TYPE_KEY || type == TYPE_P || type == TYPE_P_REFRESH
 
