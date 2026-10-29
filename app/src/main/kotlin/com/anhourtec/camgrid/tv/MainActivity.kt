@@ -97,11 +97,8 @@ class MainActivity : Activity() {
 
     private fun showLive() {
         pairing.stop()
-        live = LiveScreen(this, http, portal, scope, ::onSignedOut, ::manageFromPhone).also { it.show() }
+        live = LiveScreen(this, http, portal, scope, ::onSignedOut).also { it.show() }
     }
-
-    /** Phase 4 step 5 wires the phone layout editor here. */
-    private fun manageFromPhone() = Unit
 
     private fun onSignedIn() {
         portal.cookies.sessionId?.let { store.put(SESSION_KEY, it) }

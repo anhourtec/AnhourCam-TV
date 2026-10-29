@@ -1,6 +1,7 @@
 package com.anhourtec.camgrid.tv.data
 
 import android.content.Context
+import android.util.Log
 import com.anhourtec.camgrid.layouts.LayoutCodec
 import com.anhourtec.camgrid.layouts.LayoutState
 import java.io.File
@@ -22,12 +23,17 @@ class LayoutRepository(
             LayoutState()
         }
 
+    /** A failed write is logged and the in-memory layout keeps working; it never crashes the app. */
     fun save(state: LayoutState) {
-        val tmp = File(file.parentFile, "$FILE.tmp")
-        tmp.writeText(LayoutCodec.encode(state))
-        if (!tmp.renameTo(file)) {
-            file.delete()
-            tmp.renameTo(file)
+        try {
+            val tmp = File(file.parentFile, "$FILE.tmp")
+            tmp.writeText(LayoutCodec.encode(state))
+            if (!tmp.renameTo(file)) {
+                file.delete()
+                tmp.renameTo(file)
+            }
+        } catch (e: IOException) {
+            Log.w("CamGrid", "could not save layouts", e)
         }
     }
 

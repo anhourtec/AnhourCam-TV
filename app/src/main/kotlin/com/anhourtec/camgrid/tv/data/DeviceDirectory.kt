@@ -25,6 +25,8 @@ class DeviceDirectory(
     private val details = mutableMapOf<String, DeviceDetail>()
     var accountName: String = ""
         private set
+
+    @Volatile
     var devices: List<Device> = emptyList()
         private set
 

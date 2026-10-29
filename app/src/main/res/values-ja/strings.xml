@@ -52,4 +52,5 @@
     <plurals name="tile_no_decoder">
         <item quantity="other">空きデコーダーを待っています\nこのテレビの同時再生は %1$d 台まで</item>
     </plurals>
+    <string name="manage_close">保存するとすぐにここに反映されます。戻るで閉じます。</string>
 </resources>

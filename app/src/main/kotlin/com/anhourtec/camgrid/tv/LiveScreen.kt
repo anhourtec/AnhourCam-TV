@@ -15,6 +15,8 @@ import com.anhourtec.camgrid.client.portal.SessionExpiredException
 import com.anhourtec.camgrid.layouts.Layout
 import com.anhourtec.camgrid.layouts.LayoutCodec
 import com.anhourtec.camgrid.layouts.LayoutState
+import com.anhourtec.camgrid.pairing.CameraOption
+import com.anhourtec.camgrid.pairing.LayoutSnapshot
 import com.anhourtec.camgrid.tv.data.DeviceDirectory
 import com.anhourtec.camgrid.tv.data.LayoutRepository
 import com.anhourtec.camgrid.tv.video.CellGridLayout
@@ -39,7 +41,6 @@ class LiveScreen(
     portal: PortalClient,
     private val scope: CoroutineScope,
     private val onSignedOut: () -> Unit,
-    private val onManageFromPhone: () -> Unit,
 ) {
     private val layouts = LayoutRepository(activity)
     val directory = DeviceDirectory(portal)
@@ -48,7 +49,9 @@ class LiveScreen(
     private val tiles = mutableListOf<Tile>()
     private var pool: GatewayPool? = null
     private var runner: TileRunner? = null
-    private var state = LayoutState()
+
+    @Volatile private var state = LayoutState()
+    private var manage: ManagePanel? = null
     private var fullscreen: Int? = null
     private var moving: Int? = null
     private var longPressed = false
@@ -64,6 +67,11 @@ class LiveScreen(
         grid = CellGridLayout(activity)
         activity.findViewById<FrameLayout>(R.id.grid_host).addView(grid)
         hint = activity.findViewById(R.id.hint)
+        manage =
+            ManagePanel(activity, scope, snapshot = {
+                val cameras = directory.cameras.map { CameraOption(it.ref, it.deviceName, it.channelName) }
+                LayoutSnapshot(state.current ?: Layout("", "", "4"), cameras)
+            }, onSave = { if (state.current != null) update(it) })
         val loadingText = activity.findViewById<TextView>(R.id.loading_text)
 
         suspend fun prepare() {
@@ -132,6 +140,11 @@ class LiveScreen(
 
             KeyEvent.KEYCODE_BACK -> {
                 when {
+                    manage?.isOpen == true -> {
+                        manage?.stop()
+                        true
+                    }
+
                     moving != null -> {
                         moving = null
                         hint.visibility = View.GONE
@@ -202,6 +215,7 @@ class LiveScreen(
      */
     fun stop() {
         activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        manage?.stop()
         ticker?.cancel()
         tiles.forEach { it.retryJob?.cancel() }
         val pending = tiles.mapNotNull { StreamStops.detach(it) }
@@ -223,7 +237,9 @@ class LiveScreen(
                 showHint(activity.getString(R.string.move_hint), sticky = true)
             }
 
-            override fun manageFromPhone() = onManageFromPhone()
+            override fun manageFromPhone() {
+                manage?.start()
+            }
 
             override fun signOut() = onSignedOut()
         }

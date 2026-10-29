@@ -54,4 +54,5 @@
         <item quantity="many">Aguardando um decodificador livre\nEsta TV reproduz %1$d câmeras ao mesmo tempo</item>
         <item quantity="other">Aguardando um decodificador livre\nEsta TV reproduz %1$d câmeras ao mesmo tempo</item>
     </plurals>
+    <string name="manage_close">As mudanças aparecem aqui assim que você salvar. Voltar fecha este aviso.</string>
 </resources>
