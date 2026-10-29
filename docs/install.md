@@ -1,56 +1,93 @@
-# Installation (sideload, no Play Store)
+# Install CamGrid TV on your TV
 
-Document this in `docs/install.md` with screenshots later.
+CamGrid TV isn't on Google Play or the Amazon Appstore; you install it yourself ("sideload").
+It takes about ten minutes the first time.
 
-## Enable Developer Mode on Google TV / Android TV
+> **Status:** there is no downloadable release yet. Until the first release is published on the
+> [Releases page](https://github.com/anhourtec/CamGrid-TV/releases), install it from a computer
+> (option A). Option B (no computer) works as soon as a release exists.
 
-1. **Settings → System → About**
-2. Scroll to **Android TV OS build** and press OK on it **7 times** until "You are now a developer" appears.
-3. Go back to **Settings → System → Developer options**.
+## What you need
 
-## Option A: Wireless ADB from a computer (recommended)
+- A Google TV, Android TV (7.1 or newer) or Amazon Fire TV on the same Wi-Fi as your phone.
+- Your BitVision account (the one you use in the BitVision phone app).
+- For option A: a computer (Mac, Windows or Linux) on the same Wi-Fi.
 
-**Google TV / Android TV 11+ (wireless debugging):**
-1. Developer options → turn on **Wireless debugging** → **Pair device with pairing code**. Note the IP:port and code shown.
-2. On your computer (with Android platform-tools installed):
+## Step 1: Turn on developer options on the TV
+
+| Google TV / Android TV | Fire TV |
+| --- | --- |
+| Settings → **System** → **About** → press OK on **Android TV OS build** 7 times, until "You are now a developer" appears. | Settings → **My Fire TV** → **About** → press OK on your device name 7 times, until "You are now a developer" appears. |
+
+## Option A: Install from a computer
+
+1. **Install Android's adb tool** on the computer:
+   [Android SDK Platform-Tools](https://developer.android.com/tools/releases/platform-tools)
+   (macOS with Homebrew: `brew install android-platform-tools`).
+2. **Turn on debugging on the TV.**
+   - *Google TV / Android TV 11+:* Settings → System → **Developer options** → **Wireless debugging**
+     → **Pair device with pairing code**. Keep this screen open; it shows an address, a port and a
+     6-digit code.
+   - *Fire TV and older Android TV:* Settings → My Fire TV (or System) → **Developer options** →
+     turn on **ADB debugging**. Find the TV's IP address under Settings → Network.
+3. **Connect the computer to the TV** (use the numbers shown on your TV):
    ```bash
-   adb pair <TV_IP>:<PAIR_PORT>      # enter the pairing code
-   adb connect <TV_IP>:<CONNECT_PORT>  # port shown on the Wireless debugging screen
-   adb install -r camgrid-tv.apk
+   # Google TV / Android TV 11+ (wireless debugging)
+   adb pair <TV_IP>:<PAIRING_PORT> <PAIRING_CODE>
+   adb connect <TV_IP>:<CONNECT_PORT>      # often happens automatically after pairing
+
+   # Fire TV / older Android TV
+   adb connect <TV_IP>:5555                # then press "Allow" on the TV
    ```
-
-**Older devices (network debugging):**
-1. Developer options → turn on **USB debugging** / **Network debugging**.
-2. ```bash
-   adb connect <TV_IP>:5555
-   # Accept the "Allow debugging?" prompt on the TV
-   adb install -r camgrid-tv.apk
+   `adb devices` should now list your TV.
+4. **Get the app.** Download `camgrid-tv.apk` from the
+   [Releases page](https://github.com/anhourtec/CamGrid-TV/releases) once available, or build it
+   yourself (needs JDK 17+ and the Android SDK):
+   ```bash
+   git clone https://github.com/anhourtec/CamGrid-TV && cd CamGrid-TV
+   ./gradlew :app:assembleDebug            # → app/build/outputs/apk/debug/app-debug.apk
    ```
+5. **Install it:**
+   ```bash
+   adb install -r camgrid-tv.apk           # or app/build/outputs/apk/debug/app-debug.apk
+   ```
+6. **Turn debugging off again** when you're done (Wireless debugging / ADB debugging). The app
+   doesn't need it.
 
-## Option B: Without a computer
+## Option B: Install without a computer (once a release exists)
 
-1. Install a file downloader app on the TV from the Play Store.
-2. Settings → Apps → Security & restrictions → **Unknown sources** → allow that app.
-3. Download the APK from the project's GitHub Releases page and install it.
+1. On the TV, install **Downloader** by AFTVnews from the Google Play Store or the Amazon Appstore.
+2. Allow it to install apps:
+   - *Google TV:* Settings → Apps → **Security & restrictions** → **Unknown sources** → turn on
+     **Downloader**.
+   - *Fire TV:* Settings → My Fire TV → **Developer options** → **Install unknown apps** → turn on
+     **Downloader**.
+3. In Downloader, enter the APK link from the
+   [Releases page](https://github.com/anhourtec/CamGrid-TV/releases), download it and press
+   **Install**.
 
-## Updating
+## Step 2: First start
 
-`adb install -r` with the new APK, or download it again. Layouts and the session are kept.
+1. Open **CamGrid TV** from your apps row.
+2. The TV shows an address like `http://192.168.x.x:8743` and a 6-digit code. On your phone
+   (same Wi-Fi), open that address, enter the code, then your BitVision email, password and the
+   digits in the picture. (You can also sign in right on the TV.)
+3. Your first cameras open in a 2×2 grid.
 
-## After installing
+## Using it
 
-Turn off Wireless/USB debugging when you're done. The app does not need it to run.
+| Remote | What it does |
+| --- | --- |
+| Arrows | Move between tiles; at the edge of the grid ◀ ▶ switch layouts |
+| OK | Open the camera fullscreen in HD (Back returns); on a stalled tile, try again |
+| Hold OK (or Menu) | Tile menu: choose camera, move, clear, grid size, layouts, edit from phone, sign out |
+| Back | Close a card or dialog, leave fullscreen, then exit |
 
----
+To set everything up from your phone: hold OK → **Edit layout from phone or computer**, open the
+address on the card, enter its code, choose grids and cameras, and **Save to TV**.
 
+## Updating and removing
 
-> Screenshots to be added in Phase 5.
-
-## First start
-
-1. Open **CamGrid TV**. The sign-in screen shows an address like `http://192.168.x.x:8743` and a
-   6-digit code.
-2. On a phone or computer on the same Wi-Fi, open the address, enter the code, then your
-   BitVision email, password and the digits in the picture.
-3. Your cameras open in a 2×2 grid. Hold OK on a tile for options, or use *Edit layout from phone
-   or computer* to set up your grid from the phone.
+- **Update:** install the new APK the same way (`adb install -r …`, or download it again in
+  Downloader). Your sign-in and layouts are kept.
+- **Remove:** Settings → Apps → CamGrid TV → **Uninstall**.
