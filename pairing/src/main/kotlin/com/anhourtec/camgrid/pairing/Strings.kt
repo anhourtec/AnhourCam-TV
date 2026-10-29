@@ -45,6 +45,15 @@ class Strings(
     val nameLabel: String,
     val saveButton: String,
     val savedNote: String,
+    val layoutsLabel: String,
+    val newLayout: String,
+    val makeDefault: String,
+    val deleteLayout: String,
+    val defaultBadge: String,
+    val newLayoutName: String,
+    val createdNote: String,
+    val defaultNote: String,
+    val deletedNote: String,
 ) {
     /** [tileLabel] with the tile number filled in. */
     fun tile(n: Int) = tileLabel.replace("{n}", n.toString())
@@ -94,6 +103,15 @@ class Strings(
                 nameLabel = "Layout name",
                 saveButton = "Save to TV",
                 savedNote = "Saved. Your TV is showing it now.",
+                layoutsLabel = "Layouts",
+                newLayout = "New layout",
+                makeDefault = "Make default",
+                deleteLayout = "Delete this layout",
+                defaultBadge = "default",
+                newLayoutName = "Layout {n}",
+                createdNote = "New layout created and shown on the TV.",
+                defaultNote = "This layout now opens first on the TV.",
+                deletedNote = "Layout deleted.",
             )
 
         val CN =
@@ -137,6 +155,15 @@ class Strings(
                 nameLabel = "布局名称",
                 saveButton = "保存到电视",
                 savedNote = "已保存，电视正在显示新布局。",
+                layoutsLabel = "布局",
+                newLayout = "新建布局",
+                makeDefault = "设为默认",
+                deleteLayout = "删除此布局",
+                defaultBadge = "默认",
+                newLayoutName = "布局 {n}",
+                createdNote = "已新建布局并在电视上显示。",
+                defaultNote = "电视启动时将首先打开此布局。",
+                deletedNote = "布局已删除。",
             )
 
         val JP =
@@ -180,6 +207,15 @@ class Strings(
                 nameLabel = "レイアウト名",
                 saveButton = "テレビに保存",
                 savedNote = "保存しました。テレビに表示されています。",
+                layoutsLabel = "レイアウト",
+                newLayout = "新しいレイアウト",
+                makeDefault = "デフォルトにする",
+                deleteLayout = "このレイアウトを削除",
+                defaultBadge = "デフォルト",
+                newLayoutName = "レイアウト {n}",
+                createdNote = "新しいレイアウトを作成し、テレビに表示しました。",
+                defaultNote = "テレビで最初にこのレイアウトが開きます。",
+                deletedNote = "レイアウトを削除しました。",
             )
 
         val POR =
@@ -223,6 +259,15 @@ class Strings(
                 nameLabel = "Nome do layout",
                 saveButton = "Salvar na TV",
                 savedNote = "Salvo. A TV já está mostrando.",
+                layoutsLabel = "Layouts",
+                newLayout = "Novo layout",
+                makeDefault = "Tornar padrão",
+                deleteLayout = "Excluir este layout",
+                defaultBadge = "padrão",
+                newLayoutName = "Layout {n}",
+                createdNote = "Novo layout criado e exibido na TV.",
+                defaultNote = "Este layout agora abre primeiro na TV.",
+                deletedNote = "Layout excluído.",
             )
 
         val PY =
@@ -266,6 +311,15 @@ class Strings(
                 nameLabel = "Название раскладки",
                 saveButton = "Сохранить на телевизор",
                 savedNote = "Сохранено. Телевизор уже показывает.",
+                layoutsLabel = "Раскладки",
+                newLayout = "Новая раскладка",
+                makeDefault = "Сделать основной",
+                deleteLayout = "Удалить эту раскладку",
+                defaultBadge = "основная",
+                newLayoutName = "Раскладка {n}",
+                createdNote = "Новая раскладка создана и показана на телевизоре.",
+                defaultNote = "Теперь телевизор открывает эту раскладку первой.",
+                deletedNote = "Раскладка удалена.",
             )
 
         /** In the portal's menu order; English is the default. */

@@ -2,6 +2,7 @@ package com.anhourtec.camgrid.pairing
 
 import com.anhourtec.camgrid.layouts.CameraRef
 import com.anhourtec.camgrid.layouts.Layout
+import com.anhourtec.camgrid.layouts.LayoutState
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -20,15 +21,15 @@ class LayoutEditorTest {
             CameraOption(CameraRef("NVR_A", 1), "HOME", "CH2"),
             CameraOption(CameraRef("NVR_B", 0), "<b>Shop</b>", "CH1 <script>"),
         )
-    private var current = Layout("l1", "My cameras", "4", listOf(cams[0].ref, cams[1].ref))
-    private val saved = mutableListOf<Layout>()
+    private var tv = LayoutState().saved(Layout("l1", "My cameras", "4", listOf(cams[0].ref, cams[1].ref))).withDefault("l1")
+    private val saved = mutableListOf<LayoutState>()
     private val layouts =
         object : LayoutBackend {
-            override fun snapshot() = LayoutSnapshot(current, cams)
+            override fun snapshot() = LayoutSnapshot(tv, cams)
 
-            override fun save(layout: Layout) {
-                saved += layout
-                current = layout
+            override fun apply(state: LayoutState) {
+                saved += state
+                tv = state
             }
         }
     private val server = PairingServer(loopback, 0, layouts = layouts, state = state, onSignedIn = {}).also { it.start() }
@@ -66,11 +67,35 @@ class LayoutEditorTest {
                 "shown=9&template=9&action=save&name=Garden&t0=${key(cams[1])}&t1=${key(cams[2])}&t2=EVIL%3A9",
             )
         assertTrue(save.body.contains("Saved. Your TV is showing it now."))
-        val layout = saved.single()
+        val layout = saved.single().current!!
         assertEquals("9", layout.templateId)
         assertEquals("Garden", layout.name)
         assertEquals(listOf(cams[1].ref, cams[2].ref), layout.cameras.take(2))
         assertFalse(layout.cameras.contains(CameraRef("EVIL", 9)))
+    }
+
+    @Test
+    fun `several layouts from the phone - new, switch, default, delete`() {
+        val cookie = pair()
+        assertFalse(request("GET", "/", cookie).body.contains("class=\"pills\""), "no pills with one layout")
+
+        val created = request("POST", "/layout", cookie, "id=l1&shown=4&template=4&action=new&name=My+cameras")
+        assertTrue(created.body.contains("New layout created"))
+        assertEquals(2, tv.layouts.size)
+        val newId = tv.current!!.id
+        assertEquals("Layout 2", tv.current!!.name)
+        assertTrue(created.body.contains("href=\"/?layout=l1\""))
+
+        val first = request("GET", "/?layout=l1", cookie)
+        assertTrue(first.body.contains("name=\"id\" value=\"l1\""))
+
+        request("POST", "/layout", cookie, "id=$newId&shown=4&template=4&action=default&name=Shop")
+        assertEquals(newId, tv.defaultId)
+        assertEquals("Shop", tv.byId(newId)!!.name)
+
+        request("POST", "/layout", cookie, "id=$newId&shown=4&template=4&action=delete")
+        assertEquals(listOf("l1"), tv.layouts.map { it.id })
+        assertEquals("l1", tv.defaultId)
     }
 
     @Test

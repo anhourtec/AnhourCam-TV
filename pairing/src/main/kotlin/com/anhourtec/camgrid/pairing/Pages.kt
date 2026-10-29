@@ -1,9 +1,5 @@
 package com.anhourtec.camgrid.pairing
 
-import com.anhourtec.camgrid.layouts.Cell
-import com.anhourtec.camgrid.layouts.Layout
-import com.anhourtec.camgrid.layouts.Templates
-
 /** The pairing pages: plain HTML forms, no scripts. Every dynamic value goes through [esc]. */
 internal object Pages {
     fun code(
@@ -62,68 +58,6 @@ internal object Pages {
                 """,
         )
 
-    /** The phone layout editor: name, grid choice (mini previews), numbered preview, a camera per tile. */
-    fun layoutEditor(
-        s: Strings,
-        snapshot: LayoutSnapshot,
-        layout: Layout,
-        notice: String? = null,
-    ): String {
-        val template = layout.template
-        val grids =
-            Templates.ALL.joinToString("") { t ->
-                val checked = if (t.id == template.id) " checked" else ""
-                "<label class=\"gridopt\"><input type=\"radio\" name=\"template\" value=\"${esc(t.id)}\"$checked>" +
-                    "<span class=\"mini\">${cells(t.cells, numbered = false)}</span><b>${t.tileCount}</b></label>"
-            }
-        val groups = snapshot.cameras.groupBy { it.group }
-        val tiles =
-            (0 until template.tileCount).joinToString("") { i ->
-                val current = layout.cameraAt(i)
-                val options =
-                    groups.entries.joinToString("") { (group, cams) ->
-                        "<optgroup label=\"${esc(group)}\">" +
-                            cams.joinToString("") { c ->
-                                val selected = if (c.ref == current) " selected" else ""
-                                "<option value=\"${esc(c.key)}\"$selected>${esc("${c.group} · ${c.label}")}</option>"
-                            } + "</optgroup>"
-                    }
-                "<li><label for=\"t$i\">${esc(s.tile(i + 1))}</label><select id=\"t$i\" name=\"t$i\">" +
-                    "<option value=\"\">${esc(s.emptyOption)}</option>$options</select></li>"
-            }
-        return page(
-            s,
-            title = s.manageTitle,
-            body =
-                """
-                <p class="step">${esc(s.step2)}</p>
-                <h1>${esc(s.manageTitle)}</h1>
-                <p class="lead">${esc(s.manageLead)}</p>
-                ${notice?.let { "<p class=\"note\" role=\"status\">${esc(it)}</p>" }.orEmpty()}
-                <form method="post" action="/layout">
-                  <input type="hidden" name="shown" value="${esc(template.id)}">
-                  <label for="name">${esc(s.nameLabel)}</label>
-                  <input id="name" name="name" maxlength="${Layout.MAX_NAME}" value="${esc(layout.name)}">
-                  <fieldset><legend>${esc(s.gridLabel)}</legend><div class="grids">$grids</div></fieldset>
-                  <button type="submit" name="action" value="grid" class="secondary">${esc(s.applyGrid)}</button>
-                  <div class="preview" aria-hidden="true">${cells(template.cells, numbered = true)}</div>
-                  <fieldset><legend>${esc(s.tilesLabel)}</legend><ol class="tiles">$tiles</ol></fieldset>
-                  <button type="submit" name="action" value="${LayoutRoutes.ACTION_SAVE}">${esc(s.saveButton)}</button>
-                </form>
-                """,
-        )
-    }
-
-    /** CSS-grid cells (inline styles only; the page has no script). */
-    private fun cells(
-        cells: List<Cell>,
-        numbered: Boolean,
-    ): String =
-        cells.withIndex().joinToString("") { (i, c) ->
-            val style = "grid-column:${c.col + 1}/span ${c.cols};grid-row:${c.row + 1}/span ${c.rows}"
-            "<i style=\"$style\">${if (numbered) (i + 1).toString() else ""}</i>"
-        }
-
     fun done(s: Strings): String =
         page(
             s,
@@ -172,7 +106,7 @@ internal object Pages {
             }
         }
 
-    private fun page(
+    fun page(
         s: Strings,
         title: String,
         body: String,
@@ -260,6 +194,13 @@ button.secondary{background:transparent;color:var(--text);border:1px solid var(-
 .tiles label{margin:0;font-size:14px}
 select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#0b0e12;color:var(--text);font:inherit;font-size:16px}
 select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(200,251,208,.15)}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
+.pill{padding:8px 14px;border-radius:999px;border:1px solid var(--line);color:var(--text);text-decoration:none;font-size:15px}
+.pill small{color:var(--dim);font-size:12px}
+.pill[aria-current]{border-color:var(--accent);background:rgba(200,251,208,.12);color:var(--accent);font-weight:600}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.actions button{flex:1 1 140px;margin-top:8px;font-size:15px;padding:12px 14px}
+button.danger{background:transparent;color:var(--danger);border:1px solid rgba(255,180,171,.4)}
 .note{margin:0 0 8px;padding:12px 14px;border-radius:12px;background:rgba(200,251,208,.1);border:1px solid rgba(200,251,208,.35);color:var(--accent)}
 @media (min-width:768px){.card:has(.tiles){max-width:640px}}
 @media (max-width:400px){.card{padding:24px 18px;border-radius:20px}.top{margin-bottom:20px}.lead{margin-bottom:18px}.lang ul{left:0;right:auto}}

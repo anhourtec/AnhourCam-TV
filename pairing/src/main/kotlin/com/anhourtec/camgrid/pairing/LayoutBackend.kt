@@ -1,7 +1,7 @@
 package com.anhourtec.camgrid.pairing
 
 import com.anhourtec.camgrid.layouts.CameraRef
-import com.anhourtec.camgrid.layouts.Layout
+import com.anhourtec.camgrid.layouts.LayoutState
 
 /** One camera offered in the phone editor, e.g. group "HOME", label "CH3". */
 data class CameraOption(
@@ -13,16 +13,16 @@ data class CameraOption(
     val key: String get() = "${ref.deviceId}:${ref.channelNo}"
 }
 
-/** What the TV shows right now and which cameras the account has. */
+/** The TV's saved layouts and the account's cameras. */
 data class LayoutSnapshot(
-    val layout: Layout,
+    val state: LayoutState,
     val cameras: List<CameraOption>,
 )
 
-/** Lets the phone page read and change the TV's layout. Calls run on server threads. */
+/** Lets the phone page read and change the TV's layouts. Calls run on server threads. */
 interface LayoutBackend {
     fun snapshot(): LayoutSnapshot
 
-    /** Saves [layout] and shows it on the TV. */
-    fun save(layout: Layout)
+    /** Saves [state] on the TV and shows its current layout. */
+    fun apply(state: LayoutState)
 }
