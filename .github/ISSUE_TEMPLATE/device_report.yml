@@ -1,0 +1,20 @@
+name: Device report
+description: Tell us how CamGrid TV runs on your TV or NVR
+labels: [device-report]
+body:
+  - type: markdown
+    attributes:
+      value: "Model names only. **No serials, IDs, IPs or camera images.**"
+  - type: input
+    id: tv
+    attributes: { label: TV / streaming device model }
+    validations: { required: true }
+  - type: input
+    id: nvr
+    attributes: { label: NVR/DVR model (as shown in BitVision) }
+  - type: input
+    id: tiles
+    attributes: { label: How many live tiles played smoothly? }
+  - type: textarea
+    id: notes
+    attributes: { label: Notes }

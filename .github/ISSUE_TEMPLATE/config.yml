@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/anhourtec/CamGrid-TV/security/advisories/new
+    about: Report privately, not as an issue.
