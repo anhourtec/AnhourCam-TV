@@ -1,0 +1,374 @@
+[
+ {
+  "socket": "userGateWay",
+  "t_ms": 975,
+  "dir": "out",
+  "msg": {
+   "functionName": "SendToRouter",
+   "requestNo": "<NUM_1>",
+   "liveTime": 30,
+   "param": {
+    "cmdType": 257,
+    "cmdID": 4101,
+    "cmdData": {
+     "client_name": "<EMAIL>",
+     "client_role": 6,
+     "client_modle": "test",
+     "client_firm_ver": "123",
+     "client_hardware_ver": "456",
+     "client_sdk_ver": "789"
+    }
+   }
+  }
+ },
+ {
+  "socket": "userGateWay",
+  "t_ms": 1279,
+  "dir": "in",
+  "msg": {
+   "functionName": "ProcGateResponse",
+   "code": 0,
+   "msg": "succss",
+   "data": {
+    "cmdType": 258,
+    "cmdID": 4102,
+    "cmdData": {
+     "client_id": "<NUM_2>",
+     "online_status": 1,
+     "trans_port": 35010
+    }
+   }
+  }
+ },
+ {
+  "socket": "userGateWay",
+  "t_ms": 1279,
+  "dir": "out",
+  "msg": {
+   "functionName": "SendToRouter",
+   "requestNo": "<NUM_3>",
+   "liveTime": 30,
+   "param": {
+    "cmdType": 257,
+    "cmdID": 4103,
+    "cmdData": {
+     "client_name": "<DEVICE_ID_1>",
+     "gateway_type": 1,
+     "client_role": 6
+    }
+   }
+  }
+ },
+ {
+  "socket": "userGateWay",
+  "t_ms": 1587,
+  "dir": "in",
+  "msg": {
+   "functionName": "ProcGateResponse",
+   "code": 0,
+   "msg": "succss",
+   "data": {
+    "cmdType": 258,
+    "cmdID": 4104,
+    "cmdData": {
+     "client_name": "<DEVICE_ID_2>",
+     "client_id": "<NUM_4>",
+     "client_loginip": "<IP_1>",
+     "client_loginport": 35002,
+     "cookie": "<NUM_5>",
+     "gate_type": 1,
+     "client_sdk_ver": "<IP_2>"
+    }
+   }
+  }
+ },
+ {
+  "socket": "userGateWay",
+  "t_ms": 1587,
+  "dir": "out",
+  "msg": {
+   "functionName": "SendToRouter",
+   "requestNo": "<NUM_6>",
+   "liveTime": 30,
+   "param": {
+    "cmdType": 513,
+    "cmdID": 8208,
+    "cmdData": {
+     "msg_id": 1,
+     "cmd_id": 8208,
+     "from_client_id": "<NUM_2>",
+     "to_client_id": "<NUM_4>",
+     "to_client_name": "<DEVICE_ID_1>",
+     "to_client_role": 1,
+     "to_client_loginip": "<IP_1>",
+     "to_client_loginport": 35002,
+     "to_gate_type": 1,
+     "msg_data": {
+      "userLoginId": "<NUM_2>",
+      "username": "<EMAIL>",
+      "devSn": "<DEVICE_ID_1>",
+      "devUserName": "<NVR_SECRET>",
+      "devPasswd": "<NVR_SECRET>",
+      "userGatewayIp": "<IP_3>",
+      "userGatewayPort": 35010,
+      "userGatewayType": 2,
+      "userRole": 6,
+      "cookie": "<NUM_5>"
+     }
+    }
+   }
+  }
+ },
+ {
+  "socket": "userGateWay",
+  "t_ms": 2242,
+  "dir": "in",
+  "msg": {
+   "functionName": "ProcGateResponse",
+   "code": 0,
+   "msg": "succss",
+   "data": {
+    "cmdType": 514,
+    "cmdID": 8447,
+    "cmdData": {
+     "toClientID": "<NUM_4>"
+    }
+   }
+  }
+ },
+ {
+  "socket": "userGateWay",
+  "t_ms": 2334,
+  "dir": "in",
+  "msg": {
+   "functionName": "TransMessage",
+   "code": 0,
+   "msg": "succss",
+   "data": {
+    "cmdType": 513,
+    "cmdID": 8209,
+    "cmdData": {
+     "msg_id": 1,
+     "cmd_id": 8209,
+     "from_client_id": "<NUM_4>",
+     "to_client_id": "<NUM_2>",
+     "to_client_name": "<EMAIL>",
+     "to_client_role": 6,
+     "to_client_loginip": "<IP_3>",
+     "to_client_loginport": 35010,
+     "to_gate_type": 2,
+     "msg_data": {
+      "devGatewayIP": "<IP_1>",
+      "resultCode": 0,
+      "devGatewayPort": 35002,
+      "clientName": "<DEVICE_ID_1>"
+     }
+    }
+   }
+  }
+ },
+ {
+  "socket": "userGateWay",
+  "t_ms": 2349,
+  "dir": "in",
+  "msg": {
+   "functionName": "TransMessage",
+   "code": 0,
+   "msg": "succss",
+   "data": {
+    "cmdType": 513,
+    "cmdID": 8298,
+    "cmdData": {
+     "msg_id": -1,
+     "cmd_id": 8298,
+     "from_client_id": "<NUM_4>",
+     "to_client_id": "<NUM_2>",
+     "to_client_name": "<EMAIL>",
+     "to_client_role": 6,
+     "to_client_loginip": "<IP_3>",
+     "to_client_loginport": 35010,
+     "to_gate_type": 2,
+     "msg_data": {
+      "bIsPrepared": 0,
+      "nAddr": 0,
+      "nPort": 0
+     }
+    }
+   }
+  }
+ },
+ {
+  "socket": "userGateWay",
+  "t_ms": 3489,
+  "dir": "out",
+  "msg": {
+   "functionName": "SendToRouter",
+   "requestNo": "<NUM_7>",
+   "liveTime": 30,
+   "param": {
+    "cmdType": 513,
+    "cmdID": 8224,
+    "cmdData": {
+     "msg_id": 2,
+     "cmd_id": 8224,
+     "from_client_id": "<NUM_2>",
+     "to_client_id": "<NUM_4>",
+     "to_client_name": "<DEVICE_ID_1>",
+     "to_client_role": 1,
+     "to_client_loginip": "<IP_1>",
+     "to_client_loginport": 35002,
+     "to_gate_type": 1,
+     "msg_data": {
+      "channelNum": 1,
+      "connType": 6,
+      "relayAddr": "<IP_3>",
+      "relayPort": 35009,
+      "req_info": [
+       {
+        "channelNo": 0,
+        "streamId": -1,
+        "nRelaySessionID": "<NUM_8>",
+        "nRelaySockFd": "<NUM_9>",
+        "reserve": 0
+       }
+      ]
+     }
+    }
+   }
+  }
+ },
+ {
+  "socket": "userGateWay",
+  "t_ms": 3971,
+  "dir": "in",
+  "msg": {
+   "functionName": "ProcGateResponse",
+   "code": 0,
+   "msg": "succss",
+   "data": {
+    "cmdType": 514,
+    "cmdID": 8447,
+    "cmdData": {
+     "toClientID": "<NUM_4>"
+    }
+   }
+  }
+ },
+ {
+  "socket": "userGateWay",
+  "t_ms": 4071,
+  "dir": "in",
+  "msg": {
+   "functionName": "TransMessage",
+   "code": 0,
+   "msg": "succss",
+   "data": {
+    "cmdType": 513,
+    "cmdID": 8225,
+    "cmdData": {
+     "msg_id": 2,
+     "cmd_id": 8225,
+     "from_client_id": "<NUM_4>",
+     "to_client_id": "<NUM_2>",
+     "to_client_name": "<EMAIL>",
+     "to_client_role": 6,
+     "to_client_loginip": "<IP_3>",
+     "to_client_loginport": 35010,
+     "to_gate_type": 2,
+     "msg_data": {
+      "channelNum": 1,
+      "rsp_info": [
+       {
+        "channelInfo": 12884967424,
+        "channelNo": 0,
+        "resultCode": 1,
+        "streamInfoBitMask": 3,
+        "encodeType": 0,
+        "frameRate": 0
+       }
+      ]
+     }
+    }
+   }
+  }
+ },
+ {
+  "socket": "userGateWay",
+  "t_ms": 4617,
+  "dir": "in",
+  "msg": {
+   "functionName": "TransMessage",
+   "code": 0,
+   "msg": "succss",
+   "data": {
+    "cmdType": 513,
+    "cmdID": 8218,
+    "cmdData": {
+     "msg_id": 2,
+     "cmd_id": 8218,
+     "from_client_id": "<NUM_4>",
+     "to_client_id": "<NUM_2>",
+     "to_client_name": "<EMAIL>",
+     "to_client_role": 6,
+     "to_client_loginip": "<IP_3>",
+     "to_client_loginport": 35010,
+     "to_gate_type": 2,
+     "msg_data": {
+      "resultCode": 0,
+      "channelNo": 0,
+      "relayAddr": "<IP_INT_1>",
+      "relayPort": 35009,
+      "relaySessionId": "<NUM_10>",
+      "socketFd": "<NUM_9>"
+     }
+    }
+   }
+  }
+ },
+ {
+  "socket": "stream",
+  "t_ms": 849,
+  "dir": "out",
+  "msg": {
+   "functionName": "RelayAskPro",
+   "requestNo": "<NUM_11>",
+   "liveTime": 30,
+   "param": {
+    "deviceId": "<DEVICE_ID_1>",
+    "devUUID": "<DEVICE_ID_3>"
+   }
+  }
+ },
+ {
+  "socket": "stream",
+  "t_ms": 2267,
+  "dir": "out",
+  "msg": {
+   "functionName": "SendToRouter",
+   "requestNo": "<NUM_12>",
+   "param": {
+    "cmdType": 513,
+    "cmdID": 8216,
+    "cmdData": {
+     "msg_id": 3,
+     "cmd_id": 8216,
+     "from_client_id": "<NUM_2>",
+     "to_client_id": "<NUM_4>",
+     "to_client_name": "<DEVICE_ID_1>",
+     "to_client_role": 1,
+     "to_client_loginip": "<IP_1>",
+     "to_client_loginport": 35002,
+     "to_gate_type": 1,
+     "msg_data": {
+      "userLoginId": "<NUM_2>",
+      "cmdType": 1,
+      "channelNo": 0,
+      "streamId": 1,
+      "sessionType": 2,
+      "recordType": null
+     }
+    }
+   }
+  }
+ }
+]
