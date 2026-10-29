@@ -8,7 +8,7 @@
 <h1 align="center">AnhourCam TV</h1>
 
 <p align="center">
-  <b>Watch your BitVision cameras on Google TV, Android TV and Fire TV.</b><br>
+  <b>Watch your BitVision and IP cameras on Google TV, Android TV and Fire TV.</b><br>
   Live NVR camera grids (4, 9, 16 and more) on the big screen. Native, fast and open source.
 </p>
 
@@ -35,7 +35,7 @@
 
 | You want to | Go to |
 |---|---|
-| **Know if it works yet** | [Status](#status): early development, not ready to install yet. |
+| **Know if it works yet** | [Status](#status): preview; [install it](#install) from a computer today. |
 | **Watch BitVision cameras on a TV** | [What you get](#what-you-get) and [Supported devices](#supported-devices). |
 | **Install it (when released)** | [Install](#install): sideload over Wi-Fi, no Play Store needed. |
 | **Use BitVision on a phone instead** | The official apps: [Android (Google Play)](https://play.google.com/store/apps/details?id=com.gzch.lsplat.lsbtvapp&hl=en) · [iPhone/iPad (App Store)](https://apps.apple.com/in/app/bitvision/id1419463554) · [Web portal](https://bitvision.app/) |
@@ -63,6 +63,8 @@ every NVR on the account, in the grid layouts you know from an NVR monitor.
 | **Any camera, any tile** | Mix cameras from several NVRs in one grid. On the TV: hold OK on a tile to choose a camera, move it or change the grid size. |
 | **Several layouts** | "Home", "Shop", "Night"… switch with ◀ ▶ at the edge of the grid; pick the one that opens first. |
 | **Edit from your phone** | Open the address shown on the TV, enter the code, pick the grid and a camera for every tile, save: the TV updates at once. |
+| **Any IP camera** | RTSP / ONVIF cameras and NVRs on your home network: scan the network from your phone, or add a camera by address, brand or RTSP URL. One shared login for all cameras, or one per camera. Mix them with BitVision cameras in any grid. |
+| **No BitVision account needed** | Choose "Use IP cameras only" on the sign-in screen; add a BitVision account later if you like. |
 | **Fullscreen in HD** | Press OK on a tile for the high-quality stream; Back returns to the grid. |
 | **Easy sign-in** | Open the address shown on the TV on any phone or laptop on the same Wi-Fi, enter the 6-digit code, sign in there. No typing with the remote. |
 | **Your language** | English, 中文（简体）, 日本語, Português, Русский on the TV and the phone page. |
@@ -70,9 +72,7 @@ every NVR on the account, in the grid layouts you know from an NVR monitor.
 | **Tour mode** | Cycle through pages or layouts automatically. |
 | **Remote-first** | Every action works with a basic D-pad remote. Dark, minimal, video first. |
 | **Fast** | Native Kotlin with hardware H.265/H.264 decoding straight to the screen. No WebView, no browser inside. Tiles beyond what your TV can play live show refreshing still images. |
-| **Private** | Talks only to BitVision's cloud, like the official apps. Your password is used once to sign in and is never stored. |
-
-Screenshots will be added once the first build is ready.
+| **Private** | Talks only to BitVision's cloud (like the official apps) and to your own cameras on your network. Your BitVision password is used once and never stored; IP camera logins stay on the TV, encrypted. |
 
 ## Screenshots
 
@@ -87,6 +87,10 @@ Screenshots will be added once the first build is ready.
 | ![Phone: enter the code](.github/screenshots/web-code.png) | ![Phone: layout editor](.github/screenshots/web-editor-phone.png) | ![Computer: layout editor](.github/screenshots/web-editor-desktop.png) |
 | :---: | :---: | :---: |
 | _Phone: enter the TV's code_ | _Phone: grid, cameras, layouts_ | _Computer: the same editor_ |
+
+| ![Phone: IP cameras](.github/screenshots/web-cameras.png) | ![Phone: network scan](.github/screenshots/web-scan.png) | ![Phone: add a camera](.github/screenshots/web-add-camera.png) |
+| :---: | :---: | :---: |
+| _IP cameras and the shared login_ | _Cameras found on the network_ | _Add one: ONVIF, brand or RTSP URL_ |
 
 TV screenshots come from a real Google TV; **camera images are blurred for privacy** and the TV's
 address is hidden. Phone and computer screenshots use made-up camera names.
@@ -105,7 +109,7 @@ a downloadable release comes with Phase 5. Progress: [docs/progress.md](docs/pro
 | 3 | TV app + sign-in (on the TV or from your phone) | ✅ done |
 | 4 | Grids, layout editor (TV + phone), several layouts, still images | ✅ mostly done (tour mode next) |
 | 5 | Performance polish + first release APK | planned |
-| 6 | **Any IP camera** (RTSP / ONVIF): scan your network, add cameras from your phone, no BitVision account needed | in progress ([plan](docs/ipcam.md)) |
+| 6 | **Any IP camera** (RTSP / ONVIF): scan your network, add cameras from your phone, no BitVision account needed | ✅ built ([details](docs/ipcam.md)) |
 
 Watch or star the repo to hear about the first release.
 
@@ -273,6 +277,12 @@ and Fire TV (Firestick), with multi-camera grids.
 **Can I install the BitVision phone app on my TV instead?**
 You can try to sideload the phone APK, but phone apps are made for touch screens and usually work
 poorly with a TV remote. AnhourCam TV is built for the remote from the start.
+
+**Does it work with other IP cameras, without BitVision?**
+Yes. Any camera or NVR that streams RTSP (H.264 or H.265) works: Hikvision, Dahua, Reolink,
+Uniview, Tapo, Axis and most no-name cameras. Hold OK on a tile → **IP cameras**, open the address
+on your phone, then scan your network or add the camera by address, brand or RTSP URL. On the
+sign-in screen, **Use IP cameras only** skips BitVision entirely. Video stays on your network.
 
 **Does it work with my NVR or DVR brand?**
 If your recorder shows up in your BitVision account (the BitVision app or
