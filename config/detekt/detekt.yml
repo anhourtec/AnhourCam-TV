@@ -1,4 +1,9 @@
 # Overrides on top of detekt's default config. Keep this short and justify each entry.
+complexity:
+  TooManyFunctions:
+    # Android framework callbacks (onKeyDown, onStop, …) are overrides, not design choices.
+    ignoreOverridden: true
+
 style:
   MagicNumber:
     # Binary protocol offsets and command IDs are named in companion objects; tests use literals.
