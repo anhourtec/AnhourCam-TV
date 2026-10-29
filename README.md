@@ -1,368 +1,156 @@
-# CamGrid TV
+<h1 align="center">CamGrid TV</h1>
 
-> Working name. A minimal, open-source **Google TV / Android TV** app for watching cameras from NVRs registered to a **BitVision cloud account**, with NVR-style multi-camera grids.
+<p align="center">
+  <b>Watch your BitVision cameras on Google TV, Android TV and Fire TV.</b><br>
+  Live NVR camera grids (4, 9, 16 and more) on the big screen. Native, fast and open source.
+</p>
 
-This README is both the project overview **and the first full instruction set for development**. Read it top to bottom before writing any code.
+<p align="center">
+  <a href="https://github.com/anhourtec/CamGrid-TV/stargazers"><img src="https://img.shields.io/github/stars/anhourtec/CamGrid-TV?style=flat&color=cfffcf&labelColor=15181e" alt="Stars"></a>
+  <a href="https://github.com/anhourtec/CamGrid-TV/releases"><img src="https://img.shields.io/github/v/release/anhourtec/CamGrid-TV?include_prereleases&style=flat&color=cfffcf&labelColor=15181e&label=release" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-cfffcf?style=flat&labelColor=15181e" alt="License: Apache-2.0"></a>
+  <img src="https://img.shields.io/badge/platform-Google%20TV%20%C2%B7%20Android%20TV%20%C2%B7%20Fire%20TV-cfffcf?style=flat&labelColor=15181e" alt="Platforms: Google TV, Android TV, Fire TV">
+  <img src="https://img.shields.io/badge/status-early%20development-ffd27f?style=flat&labelColor=15181e" alt="Status: early development">
+</p>
 
----
+<p align="center">
+  Built and maintained by <a href="https://github.com/anhourtec"><b>anhourtec</b></a> ·
+  <a href="https://github.com/anhourtec/CamGrid-TV">github.com/anhourtec/CamGrid-TV</a>
+</p>
 
-## 1. What we're building
+> **Unofficial.** Not affiliated with, endorsed by or supported by BitVision. BitVision and all
+> related software, services and trademarks belong to their owners. See [NOTICE.md](NOTICE.md).
 
-BitVision has phone apps but **no TV app**. CamGrid TV fills that gap:
+## Start here
 
-- Log in to a BitVision cloud account, either **on the TV** or **from any phone/laptop on the same Wi-Fi** through a local pairing page.
-- See every NVR on the account and every channel (camera) on each NVR.
-- Build and save **NVR-style grid layouts** (1, 4, 6, 8, 9, 13, 16 tiles, plus custom) by picking any camera from any NVR into any tile.
-- Open a tile fullscreen and switch to the high-quality stream.
-- Fully **native**: Kotlin + Jetpack Compose for TV + native video playback. **No WebView, no embedded browser.**
-- **Sideload only.** Not published on Google Play. Users install with Developer Mode + ADB (see §9).
-
-### 1.1 Status and disclaimer
-
-- Unofficial. **Not affiliated with, endorsed by, or supported by BitVision** or any device manufacturer. "BitVision" is used only to describe compatibility.
-- The cloud API is **private and undocumented**. It was learned by observing the official web portal (https://bitvision.app/) while logged in with the maintainer's own account. It may change or break at any time.
-- Intended for people accessing **their own devices with their own account**. Users are responsible for complying with BitVision's terms.
-- Do not commit credentials, tokens, device serials, camera images, or unredacted network captures. Ever.
-
----
-
-## 2. Project phases (follow in order)
-
-| Phase | Goal | Output |
-|---|---|---|
-| 0 | API discovery via Playwright MCP | `docs/api.md`, `docs/streaming.md`, redacted samples |
-| 1 | Kotlin API client (JVM module, testable without TV) | `:bitvision-client` module + CLI smoke test |
-| 2 | Video pipeline proof of concept | One camera playing natively on an Android TV device/emulator |
-| 3 | TV app shell + login (on-TV and LAN pairing) | Working auth flows |
-| 4 | Device/channel browser + grid engine | Saved layouts, multi-tile live view |
-| 5 | Polish, performance, docs | Release APK, install guide |
-
-**Do not start a phase until the previous phase's acceptance criteria are met.** If Phase 0 shows the video transport is not natively playable (see §3.5), stop and report before going further.
-
----
-
-## 3. Phase 0: API discovery with Playwright MCP
-
-### 3.1 Setup
-
-- Discovery uses **Playwright MCP** with a **headed** browser.
-- The tooling opens `https://bitvision.app/`. **The human types the credentials and logs in.** Automation never types, stores, or logs the password.
-- After login, the automation drives the UI to exercise every feature while capturing network traffic.
-
-### 3.2 What to capture
-
-Exercise these flows one at a time, capturing **all** XHR/Fetch, WebSocket (including individual frames/messages), and media requests:
-
-1. Login (request shape only; redact credentials)
-2. Session/token refresh, logout, session expiry behaviour
-3. Device (NVR) list, device status (online/offline), device details
-4. Channel list per NVR: names, numbers, online state, stream types available
-5. Start live view on one channel (sub-stream)
-6. Switch to main stream / HD
-7. Start live view on 4 channels at once (multi-view)
-8. Stop live view
-9. Snapshot / screenshot (if available)
-10. Audio on/off
-11. Playback / recordings search and timeline (if available; nice-to-have, document only)
-12. PTZ controls (if available; document only)
-13. Any keepalive/heartbeat traffic during a 5+ minute live session
-
-### 3.3 Analysis to perform
-
-For each endpoint, record:
-
-- Method, URL pattern, required headers, cookies
-- Auth mechanism (cookie, bearer, signed params, nonce/timestamp signing, etc.). If requests are signed, **find the signing logic in the site's JS** (e.g. `common.js`, `space.js`, `dynamic.js`, `pubjs.js`) and document the algorithm.
-- Request/response schemas, with field meanings inferred and marked `(inferred)` where uncertain
-- Error responses and codes observed
-- Token lifetime and refresh behaviour
-
-For video specifically (most important):
-
-- How a stream is requested (HTTP call → returns URL? WS handshake? signalling messages?)
-- Transport: WebSocket binary, WebRTC, HLS, HTTP-FLV, or other
-- Container: FLV, fMP4, raw Annex-B H.264/H.265, private framing?
-- Codec, resolution, and frame rate per stream type (check SPS/PPS in the first frames)
-- Whether payloads are **encrypted or obfuscated**, and whether decoding happens in JS/WASM
-- Per-frame header layout if there's custom framing (document byte offsets)
-- Keepalive requirements and how a stream is torn down
-
-### 3.4 Deliverables
-
-```
-docs/
-  api.md            # Every REST/XHR endpoint: auth, request, response, errors
-  streaming.md      # Full video pipeline: request → transport → framing → codec
-  auth.md           # Login, token lifecycle, signing algorithm (if any)
-  open-questions.md # Anything unresolved or guessed
-  samples/          # REDACTED JSON samples, a few redacted binary frame hex dumps
-```
-
-Redaction rules: replace tokens, session IDs, emails, device serials/IDs, IPs, and geolocation with stable placeholders (`<TOKEN>`, `<DEVICE_ID_1>`, etc.). Scan before committing.
-
-### 3.5 Stop conditions
-
-Stop and report to the human if any of these hold:
-
-- Video is decoded by an obfuscated WASM/JS decoder from an encrypted/private format with no clear key path.
-- The portal requires a browser plugin/ActiveX/NPAPI to play video.
-- Login requires CAPTCHA or bot-detection on every session. Don't try to bypass it; report it.
-
-### 3.6 Acceptance criteria
-
-- `docs/api.md` is complete enough that someone could write a client without opening DevTools.
-- `docs/streaming.md` identifies the transport and codec with evidence (captured frame headers).
-
----
-
-## 4. Architecture
-
-```
-┌─────────────────────────── Android TV app ───────────────────────────┐
-│                                                                      │
-│  UI (Compose for TV)                                                  │
-│   ├── Login screen (on-TV, D-pad keyboard)                           │
-│   ├── Pairing screen (shows LAN URL + QR + 6-digit code)             │
-│   ├── Devices & channels browser                                     │
-│   ├── Grid view (live)          ├── Layout editor                    │
-│   └── Fullscreen view           └── Settings                         │
-│                                                                      │
-│  Domain                                                              │
-│   ├── SessionManager (token storage, refresh, logout)                │
-│   ├── DeviceRepository (NVRs, channels, status cache)                │
-│   ├── LayoutRepository (saved grids, Room DB)                        │
-│   └── StreamManager (decoder budget, sub/main switching, lifecycle)  │
-│                                                                      │
-│  Data                                                                │
-│   ├── :bitvision-client (pure Kotlin/JVM; OkHttp + kotlinx.serial.)  │
-│   ├── Video pipeline (Media3/ExoPlayer or MediaCodec, per §6)        │
-│   └── LAN pairing server (Ktor embedded, CIO engine)                 │
-└──────────────────────────────────────────────────────────────────────┘
-```
-
-### 4.1 Tech stack
-
-- **Language:** Kotlin, coroutines + Flow
-- **UI:** Jetpack Compose for TV (`androidx.tv:tv-material`), single Activity
-- **DI:** Hilt
-- **Networking:** OkHttp (REST + WebSocket), kotlinx.serialization
-- **Video:** Media3/ExoPlayer where the format allows; otherwise a custom `MediaCodec` pipeline rendering to `SurfaceView`
-- **LAN server:** Ktor server (CIO engine), embedded in a foreground service
-- **Storage:** Room (layouts, cached device list), DataStore (settings), Android Keystore + encrypted storage for session tokens
-- **Min SDK:** 28 (Android TV 9). **Target:** latest stable
-- **Build:** Gradle Kotlin DSL, version catalog
-
-### 4.2 Repository layout
-
-```
-camgrid-tv/
-  app/                     # Android TV app
-  bitvision-client/        # Pure Kotlin JVM library: auth, devices, stream negotiation
-  bitvision-client-cli/    # Small JVM CLI for smoke-testing the client against the real API
-  pairing-web/             # Static HTML/CSS/JS for the LAN pairing page (bundled into app assets)
-  docs/                    # api.md, streaming.md, auth.md, install.md, architecture.md
-  scripts/                 # redaction checker, adb helper scripts
-  README.md
-  LICENSE                  # Apache-2.0
-  NOTICE.md                # BitVision ownership, non-affiliation, disclaimer
-```
-
----
-
-## 5. Authentication
-
-Both login paths must work and produce the **same session** stored on the TV.
-
-### 5.1 Login on the TV
-
-- Standard form: email/username + password, navigable with D-pad and the on-screen keyboard.
-- Password is used once to obtain the cloud session and is **never persisted**. Only tokens are stored (encrypted).
-
-### 5.2 Login from another device on the LAN (pairing)
-
-Typing passwords with a TV remote is painful, so the TV runs a small local web server for pairing.
-
-**Port:** `8743` by default (configurable in Settings). Avoid common ports.
-
-**Flow:**
-
-1. User opens **"Log in from phone"** on the TV.
-2. TV starts the Ktor server and displays:
-   - `http://<tv-lan-ip>:8743/`
-   - a QR code for that URL
-   - a **6-digit pairing code** (random, single-use)
-3. User opens the URL on a phone or laptop on the same network.
-4. The page asks for the **pairing code**. On success the server issues a **pairing token**:
-   - random, 256-bit, single-use
-   - valid **5 minutes**
-   - bound to the client IP that entered the code
-5. The page shows the BitVision login form. Credentials are POSTed with the pairing token.
-6. The TV performs the cloud login itself, stores the session, shows "Logged in" on both screens, invalidates the token, and **shuts the server down**.
-
-**Security requirements:**
-
-- The server runs **only while the pairing screen is open** (or for 10 minutes max), then stops.
-- Bind only to the active LAN interface (Wi-Fi/Ethernet), never to all interfaces when avoidable. Reject non-private source IPs (outside RFC1918 / link-local / IPv6 ULA).
-- Pairing code: 5 wrong attempts → regenerate the code and add a 30-second lockout.
-- Constant-time comparison for codes and tokens.
-- Rate-limit all endpoints. Limit request body sizes.
-- Plain HTTP is accepted on the LAN given the short-lived, single-use design. Document this trade-off in `docs/security.md`. Optional later: a self-signed HTTPS mode.
-- Never log credentials or tokens, on the TV or in the server.
-
-**Optional extras on the pairing page (later milestone):** manage saved layouts and rename tiles from a phone. Only behind a fresh pairing token.
-
-### 5.3 Session handling
-
-- Auto-refresh tokens per `docs/auth.md`.
-- On unrecoverable auth failure: go back to the login screen and keep saved layouts.
-- Settings → **Log out** clears tokens and the device cache (layouts kept unless the user chooses "Reset everything").
-
----
-
-## 6. Video pipeline
-
-Implementation depends on Phase 0 findings. Pick the matching path:
-
-| Transport found | Implementation |
+| You want to | Go to |
 |---|---|
-| HLS | Media3 `HlsMediaSource` |
-| HTTP-FLV / WS-FLV | Custom Media3 `DataSource` (WebSocket → byte stream) + FLV extractor |
-| WS + fMP4 | Custom Media3 `DataSource` + fragmented MP4 extractor |
-| WS + raw H.264/H.265 (custom framing) | Own depacketizer → `MediaCodec` → `SurfaceView` |
-| WebRTC | Native WebRTC Android library |
+| **Know if it works yet** | [Status](#status): early development, not ready to install yet. |
+| **Watch BitVision cameras on a TV** | [What you get](#what-you-get) and [Supported devices](#supported-devices). |
+| **Install it (when released)** | [Install](#install): sideload over Wi-Fi, no Play Store needed. |
+| **Use BitVision on a phone instead** | The official apps: [Android (Google Play)](https://play.google.com/store/apps/details?id=com.gzch.lsplat.lsbtvapp&hl=en) · [iPhone/iPad (App Store)](https://apps.apple.com/in/app/bitvision/id1419463554) · [Web portal](https://bitvision.app/) |
+| **Help build it** | [Contributing](CONTRIBUTING.md) and the [roadmap](docs/roadmap.md). |
 
-### 6.1 StreamManager rules
+[Why this exists](#why-this-exists) · [What you get](#what-you-get) · [Status](#status) ·
+[Supported devices](#supported-devices) · [Install](#install) · [How it works](#how-it-works) ·
+[Questions people ask](#questions-people-ask) · [Contributing](#contributing) · [Credits](#credits)
 
-- **Grid tiles always use the sub-stream.** Fullscreen uses the main stream and switches back when leaving fullscreen.
-- **Decoder budget:** query `MediaCodecList` at startup, estimate how many concurrent decoders the device supports, and expose a setting. If a layout exceeds the budget, show the extra tiles as snapshots with a "tap to play" state, or reduce the resolution. Never crash or show black tiles silently.
-- Only tiles on screen hold streams. Pages/tours release streams for tiles not visible.
-- Reconnect with exponential backoff (max 30 s). Show per-tile status: connecting, live, offline, error.
-- Low latency: minimal buffering, drop late frames rather than building delay.
-- Audio: off by default. When enabled, only the focused or fullscreen tile plays audio.
+## Why this exists
 
-### 6.2 Phase 2 acceptance
+BitVision has apps for [Android phones](https://play.google.com/store/apps/details?id=com.gzch.lsplat.lsbtvapp&hl=en),
+[iPhone](https://apps.apple.com/in/app/bitvision/id1419463554) and the [web](https://bitvision.app/),
+but **no app for TVs**. If you have BitVision NVRs or DVRs for home or shop CCTV, there has been
+no good way to put your cameras on the living-room or shop-counter TV.
 
-- One channel plays natively on a real Google TV device or the Android TV emulator for 30+ minutes without leaking memory or drifting.
-- Four sub-streams play simultaneously on a Chromecast with Google TV-class device (or a documented reason why not).
+CamGrid TV fills that gap: sign in with **your own** BitVision account and see every camera from
+every NVR on the account, in the grid layouts you know from an NVR monitor.
 
----
+## What you get
 
-## 7. Grids and layouts
+| | |
+|---|---|
+| **NVR-style grids** | 1, 2, 4, 6, 8, 9, 10, 13, 16, 25 and 36 tiles, plus custom layouts on a 12×12 grid. |
+| **Any camera, any tile** | Mix cameras from several NVRs in one layout. Save layouts and pick a default. |
+| **Fullscreen in HD** | Press OK on a tile for the high-quality stream; Back returns to the grid. |
+| **Easy sign-in** | Sign in on the TV, or from your phone on the same Wi-Fi via a short pairing code, so you don't type passwords with a remote. |
+| **Tour mode** | Cycle through pages or layouts automatically. |
+| **Remote-first** | Every action works with a basic D-pad remote. Dark, minimal, video first. |
+| **Fast** | Native Kotlin with hardware H.265/H.264 decoding straight to the screen. No WebView, no browser inside. |
+| **Private** | Talks only to BitVision's cloud, like the official apps. Your password is used once to sign in and is never stored. |
 
-The core feature: NVR-style multi-view.
+Screenshots will be added once the first build is ready.
 
-### 7.1 Built-in layouts
+## Status
 
-`1`, `2 (side by side)`, `4 (2×2)`, `6 (1 large + 5)`, `8 (1 large + 7)`, `9 (3×3)`, `10 (2 large + 8)`, `13 (1 center large + 12)`, `16 (4×4)`, `25 (5×5)`, `36 (6×6)`
+**Early development.** Nothing to install yet. Progress is tracked in [docs/progress.md](docs/progress.md)
+and [docs/roadmap.md](docs/roadmap.md).
 
-Higher counts are allowed but warned about against the decoder budget (snapshots / tap to play beyond it).
+| Phase | What | State |
+|---|---|---|
+| 0 | Learn how the BitVision web portal streams video | in progress |
+| 1 | Kotlin client library | planned |
+| 2 | Native video playback proof of concept | planned |
+| 3 | TV app + sign-in (TV and phone pairing) | planned |
+| 4 | Grids, layout editor, fullscreen, tour mode | planned |
+| 5 | Performance polish + first release APK | planned |
 
-### 7.2 Custom layouts
+Watch or star the repo to hear about the first release.
 
-- Define a layout on a 12×12 cell grid, with tiles spanning rectangles. Store it as JSON.
-- Each tile maps to `{ nvrId, channelId }` or is empty.
-- Any camera from **any NVR** can go in any tile.
+## Supported devices
 
-### 7.3 Layout editor (TV, D-pad friendly)
+| Platform | Support |
+|---|---|
+| **Google TV** (Chromecast with Google TV, Google TV Streamer, Sony, TCL, Hisense Google TVs…) | Target |
+| **Android TV** 7.1+ (NVIDIA Shield, Xiaomi Mi Box, Philips, Sharp…) | Target |
+| **Amazon Fire TV** (Fire TV Stick, Stick 4K, Cube, Fire TV smart TVs) | Target (sideload) |
+| Samsung Tizen, LG webOS, Roku, Apple TV | Not supported (not Android) |
 
-- Choose a template or custom shape.
-- Select a tile → pick an NVR → pick a channel (list with names and online status).
-- Swap and move tiles, clear tiles, rename the layout.
-- Save, set as default (opens on app launch), delete, duplicate.
+How many cameras play live at once depends on your device's video decoder. Tiles beyond that
+show a still image until you select them.
 
-### 7.4 Viewing
+## Install
 
-- D-pad moves focus between tiles. OK opens fullscreen, Back returns.
-- Long-press OK on a tile opens a quick menu: swap camera, stream quality, audio.
-- **Pages:** if the account has more cameras than tiles, Left/Right on the edges flips pages.
-- **Tour mode:** auto-cycle pages or saved layouts every N seconds (configurable).
-- Minimal overlays: camera name + status dot, auto-hide after 3 s, toggled with the Menu/Info key.
-- Prevent screensaver while live view is on.
+Sideload only; not on Google Play or the Amazon Appstore. Full guide: [docs/install.md](docs/install.md).
 
----
+```bash
+adb connect <TV_IP>:5555        # or adb pair / connect for Wireless debugging on Google TV
+adb install -r camgrid-tv.apk
+```
 
-## 8. UI / UX principles
+## How it works
 
-- **Clean and minimal.** Dark theme only. Video is the content; chrome stays out of the way.
-- Everything reachable with a basic remote (D-pad, OK, Back, Home). No touch assumptions.
-- Clear focus indicators. Large text, readable from a couch at 3 m.
-- Launch straight into the default layout if logged in; otherwise to the login choice screen ("Log in on TV" / "Log in from phone").
-- Screens: Login choice → Login / Pairing → Home (layouts) → Grid → Fullscreen; plus Devices, Layout editor, Settings.
-- Settings: pairing port, decoder budget override, tour interval, overlay on/off, stream defaults, log out, about (version, licenses, disclaimer).
-- Must provide a TV launcher banner (`android:banner`) and `LEANBACK_LAUNCHER` intent, and declare touchscreen as not required.
+1. You sign in with your BitVision account, on the TV or from your phone through a one-time
+   pairing page served by the TV on your local network.
+2. CamGrid TV lists your NVRs and their channels, as the web portal does.
+3. Each tile opens the camera's live stream from BitVision's cloud relay and hands the H.265/H.264
+   video to the TV's hardware decoder.
 
----
+Technical details: [architecture](docs/architecture.md) · [streaming](docs/streaming.md) ·
+[security](docs/security.md) · [full spec](docs/SPEC.md).
 
-## 9. Installation (sideload, no Play Store)
+## Questions people ask
 
-Document this in `docs/install.md` with screenshots later.
+**Is there a BitVision app for Android TV, Google TV or Fire TV?**
+Not an official one, as far as we know. CamGrid TV is an unofficial, open-source app that does
+this job.
 
-### 9.1 Enable Developer Mode on Google TV / Android TV
+**Can I watch BitVision cameras on my TV?**
+That's what this project is for: live view of BitVision NVR/DVR cameras on Google TV, Android TV
+and Fire TV (Firestick), with multi-camera grids.
 
-1. **Settings → System → About**
-2. Scroll to **Android TV OS build** and press OK on it **7 times** until "You are now a developer" appears.
-3. Go back to **Settings → System → Developer options**.
+**Can I install the BitVision phone app on my TV instead?**
+You can try to sideload the phone APK, but phone apps are made for touch screens and usually work
+poorly with a TV remote. CamGrid TV is built for the remote from the start.
 
-### 9.2 Option A: Wireless ADB from a computer (recommended)
+**Does it work with my NVR or DVR brand?**
+If your recorder shows up in your BitVision account (the BitVision app or
+[bitvision.app](https://bitvision.app/)), CamGrid TV aims to support it.
 
-**Google TV / Android TV 11+ (wireless debugging):**
-1. Developer options → turn on **Wireless debugging** → **Pair device with pairing code**. Note the IP:port and code shown.
-2. On your computer (with Android platform-tools installed):
-   ```bash
-   adb pair <TV_IP>:<PAIR_PORT>      # enter the pairing code
-   adb connect <TV_IP>:<CONNECT_PORT>  # port shown on the Wireless debugging screen
-   adb install -r camgrid-tv.apk
-   ```
+**Does it need my NVR's IP address or port forwarding?**
+No. Like the official apps, it uses your BitVision cloud account.
 
-**Older devices (network debugging):**
-1. Developer options → turn on **USB debugging** / **Network debugging**.
-2. ```bash
-   adb connect <TV_IP>:5555
-   # Accept the "Allow debugging?" prompt on the TV
-   adb install -r camgrid-tv.apk
-   ```
+**Is it safe? Where does my password go?**
+Only to BitVision's sign-in, once. It is never saved; only the session is kept, encrypted on the
+TV. Phone pairing uses a short-lived, single-use code on your local network. See
+[docs/security.md](docs/security.md).
 
-### 9.3 Option B: Without a computer
+**Is this official or affiliated with BitVision?**
+No. See [NOTICE.md](NOTICE.md). Use it only with your own account and devices.
 
-1. Install a file downloader app on the TV from the Play Store.
-2. Settings → Apps → Security & restrictions → **Unknown sources** → allow that app.
-3. Download the APK from the project's GitHub Releases page and install it.
+## Contributing
 
-### 9.4 Updating
+Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). Security issues:
+[SECURITY.md](SECURITY.md). Please never post account details, device serials, IP addresses or
+camera images in issues.
 
-`adb install -r` with the new APK, or download it again. Layouts and the session are kept.
+## Credits
 
-### 9.5 After installing
+Created and maintained by **[anhourtec](https://github.com/anhourtec)**. If CamGrid TV helps
+you, star the repo and share it with anyone stuck watching their CCTV on a phone.
 
-Turn off Wireless/USB debugging when you're done. The app does not need it to run.
+## License
 
----
+[Apache License 2.0](LICENSE) for this project's own code. BitVision, its apps, services and
+trademarks belong to their respective owners. See [NOTICE.md](NOTICE.md).
 
-## 10. Engineering rules
-
-- Work phase by phase; open a short summary at the end of each phase in `docs/progress.md`.
-- `:bitvision-client` must have **no Android dependencies**, so it can be unit-tested and run from the CLI.
-- Unit tests for: request signing, response parsing (against redacted samples), token refresh, pairing-code/token logic, layout serialization, decoder budget logic.
-- No secrets in code, logs, tests, or git history. Add a `scripts/check-redaction` pre-commit check for token-like strings, emails, and serials.
-- Logging: `Timber` in debug; release builds log no network bodies.
-- Keep dependencies minimal and justified.
-- Code style: ktlint/detekt; small, focused files.
-- When something in the private API is guessed rather than observed, mark it in code with `// INFERRED:` and list it in `docs/open-questions.md`.
-- Never implement CAPTCHA bypass, rate-limit evasion, or anything that accesses accounts or devices the user doesn't own.
-
----
-
-## 11. Milestone checklist
-
-- [ ] Phase 0: `docs/api.md`, `docs/streaming.md`, `docs/auth.md` complete and redacted
-- [ ] Phase 1: `bitvision-client` logs in, lists NVRs/channels, negotiates a stream (CLI demo)
-- [ ] Phase 2: one native stream playing on TV; four sub-streams concurrently
-- [ ] Phase 3: on-TV login + LAN pairing login on port 8743 with short-lived tokens
-- [ ] Phase 4: devices browser, built-in grids, custom layout editor, fullscreen, pages, tour mode
-- [ ] Phase 5: performance pass, decoder budget UX, `docs/install.md`, signed release APK on GitHub Releases
-
----
-
-## 12. License
-
-Apache License 2.0 — see [`LICENSE`](LICENSE). Copyright 2026 anhourtec and the CamGrid TV contributors, for this project's own code only. BitVision and all BitVision software, services and trademarks belong to their respective owner(s); see [`NOTICE.md`](NOTICE.md) for the full ownership, non-affiliation and disclaimer statement. No BitVision trademarks or logos in the app name, icon, or artwork.
+<!-- Keywords: BitVision TV app, BitVision Android TV, BitVision Google TV, BitVision Fire TV, BitVision Firestick, BitVision NVR on TV, BitVision DVR TV, watch CCTV on Google TV, NVR multi-camera grid Android TV, bitvision.app TV -->
