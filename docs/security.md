@@ -57,5 +57,31 @@ could capture the password. Mitigation later: optional self-signed HTTPS mode.
   card is closed (Back), or when the app leaves the screen.
 - The page shows camera names and NVR names only; never NVR credentials or session cookies.
 
+## IP cameras (Phase 6)
+
+- **Logins**: the shared IP-camera password and per-camera passwords are stored only on the TV,
+  encrypted with the Keystore key (`SecretStore`), never in `ipcams.json`, layouts, logs or pages.
+  Password fields on the dashboard are never filled back ("Saved. Leave empty to keep it.").
+  `CameraForm.toString()` omits the password. Credentials typed inside an RTSP URL are moved into
+  the camera's own login; stored and sent URLs never contain them.
+- **Wire**: RTSP and ONVIF answer Digest challenges; credentials are only sent after a 401. Basic
+  (password readable on the LAN) is used only when the camera itself required it when it was added
+  (`basicLogin`), and the dashboard warns about it. ONVIF HTTP never uses Basic. ONVIF requests
+  always go to the host the user typed, even if the camera reports another address.
+- **Saved passwords never leave as Basic**: Basic is allowed at save time only for a password
+  typed into that same form; a kept password is reused only if the camera's address is unchanged
+  (else "type the password again"); snapshot URLs with a login inside are rejected. Accepted
+  residual risk: a *paired* user (who could read the TV's code) can add a camera at an address they
+  control with the shared login and receive a Digest/WS-Security response (a hash, not the
+  password); pairing already grants control over the TV's cameras.
+- **Scan**: only the TV's own private (RFC 1918) /24, TCP connects to 554/8554 plus one ONVIF
+  WS-Discovery multicast probe. Nothing leaves the local network.
+- **Dashboard** (`/cameras*`): same pairing code + token + Host/private-IP guard as the layout
+  editor, only while the TV's card is open; every field validated (`CameraRoutes`: host pattern,
+  `rtsp://` / `http(s)://` only, lengths, no control characters, known brand ids and camera ids);
+  every value HTML-escaped; no JavaScript (the own-login fields hide with CSS `:has()`).
+- **Camera replies** are untrusted: SDP/ONVIF/WS-Discovery parsed with bounded regexes (no XML
+  parser, so no XXE), RTSP header and body sizes capped, snapshot images capped at 4 MB.
+
 ## Out of scope / never
 CAPTCHA bypass, rate-limit evasion, accessing accounts or devices the user doesn't own.

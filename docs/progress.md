@@ -8,7 +8,7 @@
 | 3 TV shell + login | **done**: on-TV login with CAPTCHA, LAN phone pairing, 5 languages | **yes** |
 | 4 Grids | **mostly done**: TV + phone editors, named layouts, still images; left: device cache, tour mode, settings | — |
 | 5 Polish | not started (README screenshots + install guide done) | — |
-| 6 Any IP camera | **in progress**: 6a `:ipcam` done and tested on a real camera (ONVIF Digest, H.265 25 fps); next 6b app tiles → 6e | — |
+| 6 Any IP camera | **built** (6a–6e): `:ipcam`, RTSP tiles, phone dashboard, IP-only mode, brand presets; real-camera tile test on the TV pending | — |
 
 ## Phase 0 — API discovery
 - 2026-10-29: Repo scaffolding, docs, redaction checker created. Capture plan written (`capture-plan.md`).
@@ -80,3 +80,9 @@ maintainer's LAN: 9–10 RTSP cameras on port 554, no ONVIF multicast replies, O
 on at least one. Plan, design and rules: [ipcam.md](ipcam.md). Step 6a (`:ipcam`: scanner, ONVIF
 client, RTSP over TCP with Basic/Digest, SDP, H.264/H.265 RTP depacketizer) is written but not yet
 built or tested.
+
+### Phase 6 built (2026-10-29)
+6b app tiles (RTSP into the tile decoder, H.264 support, snapshot stills), 6c dashboard `/cameras`
+(scan, ONVIF / brand / RTSP URL, test-then-save, shared or per-camera login, 5 languages), 6d
+"Use IP cameras only", 6e brand presets + README. BitVision verified unchanged on the TV after each
+install. Pending: the maintainer adds a real camera from the phone and checks its tile.

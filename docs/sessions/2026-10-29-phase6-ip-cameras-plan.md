@@ -43,3 +43,15 @@
 - Another camera rejects that password → per-camera logins needed.
 - Decided with the maintainer: first verify a saved clip with ffmpeg (step 1), then finish 6b–6e
   without stopping, then do the release together.
+
+## Phase 6 built (6b–6e)
+- Clip check: 250/250 frames decode, 0 errors, 1280×720 HEVC (clip never viewed, deleted).
+- ONVIF Digest fix committed after reviews (no findings; audit run-12).
+- 6b: `IpCameraStore`, `DeviceDirectory` IP group (portal optional), `IpTileStreams`, H.264 in
+  `TileDecoder`, snapshot stills via `CameraProbe.snapshot` (Digest), wrong-port fallback to 554.
+- 6c: `/cameras` dashboard in `:pairing` (`CameraBackend`, `CameraRoutes`, `CameraPages`,
+  `CameraStrings`), TV backend `IpCameraManager` (test before save), TV menu "IP cameras".
+- 6d: "Use IP cameras only" on sign-in; menu "Sign in to BitVision"; phone card opens when empty.
+- 6e: `BrandPreset`, `DigestHttp`, README features/FAQ/screenshots (made-up preview data).
+- Found while screenshotting: own-login fields showed for shared login → hidden via CSS `:has()`.
+- Not tested on the TV: IP-only mode (would sign the maintainer out of BitVision).

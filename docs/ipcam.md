@@ -5,7 +5,7 @@ network that speaks RTSP (most do) can be added and mixed into the same grids as
 cameras. **The BitVision path must not change or regress**: IP cameras are a second camera
 source next to it, not a rewrite.
 
-_Status: step 6a done (2026-10-29); next: real-camera test with the CLI, then 6b. See [roadmap](roadmap.md)._
+_Status: 6a–6e built (2026-10-29). Remaining: the maintainer adds a real camera from the phone dashboard and checks the tile on the TV. See [roadmap](roadmap.md)._
 
 ## What users get
 
@@ -92,13 +92,18 @@ _Status: step 6a done (2026-10-29); next: real-camera test with the CLI, then 6b
 1. **6a `:ipcam` module** — scanner, ONVIF, RTSP, depacketizer, unit tests; CLI commands
    `scan`, `onvif <host> <user>`, `rtsp <url> <user> [seconds]` (password typed at the prompt)
    to verify against the maintainer's cameras from a computer. _(done: 20 tests; `scan` found all 9 cameras on the maintainer's LAN)_
-2. **6b App source** — `IpCameraStore` (+ SecretStore credentials), camera directory merges both
-   sources, `TileRunner` branches on `ip:` refs, AVC in `TileDecoder`/`DecoderBudget`,
-   still images from the snapshot URL (else one key frame).
-3. **6c Dashboard** — Cameras pages in `:pairing` (5 languages), backend in `:app`.
-4. **6d No-account mode** — "Use IP cameras only" on sign-in; BitVision optional.
-5. **6e Polish** — brand presets (our own short list of common RTSP paths, written by us),
-   README/install/screenshots, devices doc, Help → GitHub issues.
+2. **6b App source** _(done)_ — `IpCameraStore` (`ipcams.json` + SecretStore passwords),
+   `DeviceDirectory` adds an "IP cameras" group, `TileRunner` → `IpTileStreams` (RTSP into the
+   tile decoder, wrong-port fallback to 554), H.264 via the TV's AVC decoder, still images from the
+   camera's snapshot URL (HTTP Digest, ≤ 640 px wide).
+3. **6c Dashboard** _(done)_ — `/cameras` pages in `:pairing` (`CameraRoutes`, `CameraPages`,
+   `CameraStrings` ×5 languages), backend `IpCameraManager` in `:app` (scan, ONVIF, brand, URL,
+   test-then-save, shared/own login). TV menu → "IP cameras" opens the phone card.
+4. **6d No-account mode** _(done)_ — "Use IP cameras only" on the sign-in screen; menu offers
+   "Sign in to BitVision" later. With no cameras yet the phone card opens by itself.
+5. **6e Polish** _(done)_ — brand presets (`BrandPreset`: generic /0 /1, Hikvision, Dahua,
+   Reolink, Uniview, Tapo, Axis), README features + dashboard screenshots (local preview, made-up
+   cameras), Help → GitHub issues on the dashboard.
 
 ## Testing with real cameras (CLI)
 

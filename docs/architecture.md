@@ -35,7 +35,7 @@ Product spec: [`SPEC.md`](SPEC.md) §4–§7. Plan: [`roadmap.md`](roadmap.md).
 | `:app` | Android app | `:bitvision-client`, `:pairing`, `:layouts`, coroutines | The TV app (Android Views) |
 | `:layouts` | Kotlin/JVM lib | kotlinx.serialization | Layout model: grid templates, camera per tile, JSON codec |
 | `:pairing` | Kotlin/JVM lib | — (JDK only) | LAN pairing server: strict HTTP parser, pairing rules, no-JS pages in 5 languages |
-| `:ipcam` | Kotlin/JVM lib | `:bitvision-client` (FrameSink/FrameHeader only), OkHttp | Generic IP cameras: LAN scan, ONVIF lookup, RTSP over TCP, H.264/H.265 RTP depacketizer (Phase 6, [ipcam.md](ipcam.md)) |
+| `:ipcam` | Kotlin/JVM lib | `:bitvision-client` (FrameSink/FrameHeader only), OkHttp, kotlinx.serialization | Generic IP cameras: LAN scan, ONVIF lookup, RTSP over TCP, H.264/H.265 RTP depacketizer, HTTP Digest, brand presets, camera model (Phase 6, [ipcam.md](ipcam.md)) |
 
 ### `:bitvision-client` packages (`com.anhourtec.camgrid.client`)
 
@@ -178,3 +178,8 @@ rate limits + body size limits · no credential/token logging.
 | 2026-10-29 | RTSP over TCP interleaved only (no UDP) | Works through any home network without opening ports; one socket per tile |
 | 2026-10-29 | LAN scan = ONVIF WS-Discovery + TCP sweep of 554/8554 on the private /24 | The maintainer's cameras ignore WS-Discovery but answer RTSP |
 | 2026-10-29 | GitHub repo renamed to `anhourtec/AnhourCam-TV` | Matches the product name |
+| 2026-10-29 | IP camera dashboard pages live in `:pairing` behind a `CameraBackend` interface; the TV implements it (`IpCameraManager`) | `:pairing` stays dependency-free; same pairing protections as the layout editor |
+| 2026-10-29 | A camera is saved only after its video opened with the given login (dashboard "Test and save") | No broken tiles from typos; tells the user wrong login vs unreachable vs no video |
+| 2026-10-29 | IP camera list in `ipcams.json`, passwords in the Keystore `SecretStore` | Same atomic-file approach as layouts; secrets never in plain files |
+| 2026-10-29 | H.264 IP cameras share the HEVC decoder budget (one slot each) | INFERRED: TVs share decoder hardware between codecs; keeps one simple budget (open question #24) |
+| 2026-10-29 | "Use IP cameras only": `DeviceDirectory` portal is optional; mode remembered in app prefs | The app is useful without BitVision; BitVision code paths unchanged |

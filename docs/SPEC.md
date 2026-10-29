@@ -419,7 +419,7 @@ Turn off Wireless/USB debugging when you're done. The app does not need it to ru
 - [ ] Phase 3: on-TV login + LAN pairing login on port 8743 with short-lived tokens
 - [ ] Phase 4: built-in grids ✅, on-TV editor ✅, phone editor ✅, fullscreen ✅, named layouts ✅, still images ✅, tour mode
 - [ ] Phase 5: performance pass, decoder budget UX, `docs/install.md`, signed release APK on GitHub Releases
-- [ ] Phase 6: scan + add IP cameras from the dashboard (scan / address / brand / RTSP URL, shared or per-camera login), RTSP tiles next to BitVision, no-account mode
+- [ ] Phase 6 (built, real-camera tile test pending): scan + add IP cameras from the dashboard (scan / address / brand / RTSP URL, shared or per-camera login), RTSP tiles next to BitVision, no-account mode
 
 ---
 
