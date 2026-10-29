@@ -31,6 +31,12 @@ Usage: camgrid-cli <command>
                                          Play one channel and print stream statistics
   logout                                 Sign out and delete the saved session
 
+IP cameras (no BitVision account needed; passwords are typed at a hidden prompt):
+  scan                                   Find cameras on this computer's network (RTSP / ONVIF)
+  onvif <host> [user]                    Ask a camera for its streams (RTSP + snapshot addresses)
+  rtsp <rtsp-url> [user] [seconds] [--save file]
+                                         Play an RTSP stream and print statistics
+
 The session cookie is kept in ~/.config/camgrid-cli/session (mode 600). Passwords are never saved.
 """
 
@@ -52,6 +58,9 @@ fun main(args: Array<String>) {
                     "devices" -> withSession(portal) { devices(portal) }
                     "stream" -> withSession(portal) { stream(http, portal, args.drop(1)) }
                     "logout" -> withSession(portal) { logout(portal) }
+                    "scan" -> IpCameraCommands.scan()
+                    "onvif" -> IpCameraCommands.onvif(http, args.drop(1))
+                    "rtsp" -> IpCameraCommands.rtsp(args.drop(1))
                     else -> fail(USAGE.trim())
                 }
             }
@@ -185,15 +194,15 @@ private fun saveCaptcha(bytes: ByteArray): File {
     return File(configDir, "captcha.$ext").apply { writeBytes(bytes) }
 }
 
-private fun payload(
+internal fun payload(
     buf: ByteBuffer,
     header: FrameHeader,
 ): ByteArray = ByteArray(header.payloadLength).also { buf.duplicate().position(header.payloadOffset).get(it) }
 
 /** Removes control characters from portal-supplied text so it can't inject terminal escape sequences. */
-private fun clean(text: String?): String = text.orEmpty().filterNot { it.isISOControl() }
+internal fun clean(text: String?): String = text.orEmpty().filterNot { it.isISOControl() }
 
-private fun fail(message: String): Int {
+internal fun fail(message: String): Int {
     System.err.println(message)
     return 1
 }
@@ -216,7 +225,7 @@ private class StepTimer {
     }
 }
 
-private class StreamStats {
+internal class StreamStats {
     val frames = AtomicLong()
     private val keyFrames = AtomicLong()
     private val bytes = AtomicLong()

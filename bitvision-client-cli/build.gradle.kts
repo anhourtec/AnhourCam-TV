@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation(project(":bitvision-client"))
+    implementation(project(":ipcam"))
 }
 
 application {
