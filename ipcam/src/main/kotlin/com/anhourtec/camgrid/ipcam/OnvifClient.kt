@@ -8,6 +8,7 @@ import java.io.IOException
 import java.security.MessageDigest
 import java.security.SecureRandom
 import java.time.Instant
+import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.Base64
@@ -60,8 +61,7 @@ class OnvifClient(
         if (utc.isEmpty()) return
         val date = listOf("Year", "Month", "Day").map { tag(utc, it)?.toIntOrNull() ?: return }
         val time = listOf("Hour", "Minute", "Second").map { tag(utc, it)?.toIntOrNull() ?: return }
-        val camera = Instant.parse("%04d-%02d-%02dT%02d:%02d:%02dZ".format(date[0], date[1], date[2], time[0], time[1], time[2]))
-        clockOffsetMs = camera.toEpochMilli() - System.currentTimeMillis()
+        cameraEpochSeconds(date, time)?.let { clockOffsetMs = it * MS_PER_S - System.currentTimeMillis() }
     }
 
     private fun mediaUrl(): String {
@@ -145,6 +145,26 @@ class OnvifClient(
             host: String,
             port: Int = HTTP_PORT,
         ): String = "http://$host${if (port == HTTP_PORT) "" else ":$port"}/onvif/device_service"
+
+        private const val MS_PER_S = 1000L
+        private const val SECONDS_PER_HOUR = 3600L
+        private const val SECONDS_PER_MINUTE = 60L
+
+        /**
+         * The camera's clock as epoch seconds, by arithmetic rather than strict parsing: some cameras
+         * report fields out of range (e.g. minute -15 from a broken time-zone offset). Null if the
+         * date itself is invalid.
+         */
+        fun cameraEpochSeconds(
+            date: List<Int>,
+            time: List<Int>,
+        ): Long? =
+            runCatching {
+                LocalDate.of(date[0], date[1], date[2]).toEpochDay() * SECONDS_PER_DAY +
+                    time[0] * SECONDS_PER_HOUR + time[1] * SECONDS_PER_MINUTE + time[2]
+            }.getOrNull()
+
+        private const val SECONDS_PER_DAY = 86_400L
 
         /** WS-Security: Base64(SHA-1(nonce + created + password)). */
         fun passwordDigest(

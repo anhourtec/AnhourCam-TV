@@ -71,6 +71,19 @@ class OnvifClientTest {
     }
 
     @Test
+    fun `out-of-range camera clock fields never throw`() {
+        // A real camera sent 18:-15:36: read as 17:45:36.
+        val t = OnvifClient.cameraEpochSeconds(listOf(2026, 10, 29), listOf(18, -15, 36))!!
+        assertEquals(
+            java.time.Instant
+                .parse("2026-10-29T17:45:36Z")
+                .epochSecond,
+            t,
+        )
+        assertEquals(null, OnvifClient.cameraEpochSeconds(listOf(2026, 13, 40), listOf(0, 0, 0)))
+    }
+
+    @Test
     fun `a wrong password is still reported as such`() {
         MockWebServer().use { server ->
             server.dispatcher = Camera("right")
