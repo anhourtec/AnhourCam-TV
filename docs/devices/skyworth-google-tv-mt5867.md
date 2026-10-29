@@ -37,3 +37,6 @@ decoding only for small streams. The decoder budget must count hardware instance
 Live tiles at once: **4** (2 hardware + 2 software decoders). In a 3×3 or larger grid the other
 tiles show "Waiting for a free video decoder · This TV plays 4 cameras at once" and start as soon
 as one frees. A stronger TV/streamer (more hardware decoders) plays more tiles live.
+
+Still images (3×3 test): tiles beyond the 4 live ones show still pictures refreshed round-robin;
+software live tiles stall more while stills decode (open question #19).

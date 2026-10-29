@@ -169,3 +169,5 @@ rate limits + body size limits · no credential/token logging.
 | 2026-10-29 | TV editor in Android Views with a custom `TvDialog`; Compose for TV still deferred | Lean on the 930 MB test TV; consistent custom look |
 | 2026-10-29 | Phone layout editor served by `:pairing` (layout mode), plain HTML form | Same pairing protections as sign-in; works in any browser |
 | 2026-10-29 | Pairing token renews on each editor request (`touch`), still capped by the 10-minute server life | Editing can take longer than 5 minutes |
+| 2026-10-29 | Still images = one key frame per camera, decoded off-budget with a software decoder | No snapshot API on the portal; the NVR starts every stream with a key frame |
+| 2026-10-29 | App module gets JVM unit tests (JUnit 6) for pure code such as YUV conversion | Test without a device |

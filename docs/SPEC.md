@@ -264,7 +264,11 @@ Implementation depends on Phase 0 findings. Pick the matching path:
 ### 6.1 StreamManager rules
 
 - **Grid tiles always use the sub-stream.** Fullscreen uses the main stream and switches back when leaving fullscreen.
-- **Decoder budget:** query `MediaCodecList` at startup, estimate how many concurrent decoders the device supports, and expose a setting. If a layout exceeds the budget, show the extra tiles as snapshots with a "tap to play" state, or reduce the resolution. Never crash or show black tiles silently.
+- **Decoder budget:** query `MediaCodecList` at startup and count hardware instances plus a small
+  software allowance (`DecoderBudget.capacity`). Tiles beyond it show a **still image** with a
+  "Still image" badge, refreshed round-robin (open stream → first key frame → stop → decode with
+  a software decoder outside the live budget), and take over a live decoder as soon as one frees.
+  Never crash or show black tiles silently.
 - Only tiles on screen hold streams. Pages/tours release streams for tiles not visible.
 - Reconnect with exponential backoff (5 → 10 → 20 → 30 s). Per-tile states: **connecting**
   (animated grid loader), **live**, **no video** ("No video from this camera, trying again in N s");

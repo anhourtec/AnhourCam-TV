@@ -58,7 +58,7 @@ every NVR on the account, in the grid layouts you know from an NVR monitor.
 | **Remembers everything** | Your layouts, which camera sits in which tile, grid sizes and the last screen you watched are kept on the TV. |
 | **Tour mode** | Cycle through pages or layouts automatically. |
 | **Remote-first** | Every action works with a basic D-pad remote. Dark, minimal, video first. |
-| **Fast** | Native Kotlin with hardware H.265/H.264 decoding straight to the screen. No WebView, no browser inside. |
+| **Fast** | Native Kotlin with hardware H.265/H.264 decoding straight to the screen. No WebView, no browser inside. Tiles beyond what your TV can play live show refreshing still images. |
 | **Private** | Talks only to BitVision's cloud, like the official apps. Your password is used once to sign in and is never stored. |
 
 Screenshots will be added once the first build is ready.
@@ -175,9 +175,10 @@ No. Your cameras keep playing even if the website session expires, and the app k
 alive in the background. You only sign in again if the TV was off for a long time, and even then
 live view keeps working.
 
-**Why does my TV say "Waiting for a free video decoder"?**
+**Why do some tiles show "Still image"?**
 Each live camera needs a video decoder, and TVs have only a few: a budget Google TV may play 4 at
-once (2 in hardware, 2 in software). Tiles beyond that wait and start as soon as one frees up.
+once (2 in hardware, 2 in software). Tiles beyond that show a still picture that refreshes every
+few seconds, and go live as soon as a decoder frees up.
 Streamers like the Chromecast with Google TV 4K, Google TV Streamer, NVIDIA Shield or Fire TV 4K
 Max have more decoders and play more tiles live.
 

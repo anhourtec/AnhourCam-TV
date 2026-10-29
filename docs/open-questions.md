@@ -22,3 +22,5 @@ Anything not directly observed. Code that relies on one of these carries `// INF
 | 16 | How many tiles can play live on a given TV? | partly answered | Skyworth MT5867: 2 hardware + 2 software decoders = 4 (DecoderBudget.capacity). Tiles beyond wait and take over freed decoders; snapshots for the rest are planned |
 | 17 | Streams left behind when the app is killed (adb install, crash) | open | Without stopVideo the NVR keeps them for a while; normal exits are clean. Consider a startup "stop all for my client" if the protocol has one |
 | 18 | Phone save vs TV edit at the same moment | known | Last save wins (whole layout written back); acceptable for a single household |
+| 19 | Software live decoding vs. still images on weak TVs | open | On the MT5867, software live tiles stalled more while still images were decoding. Option: live only on hardware decoders on such TVs, stills for the rest |
+| 20 | HOME CH1/CH2 "no video" after many reinstalls today | watching | Likely NVR still holding streams from app kills; normal exits stop streams. Recheck after the NVR has been idle |

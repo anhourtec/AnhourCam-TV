@@ -10,3 +10,6 @@
 - Phone editor: TV corner card with address + code; page with grid previews, numbered preview,
   "NVR · channel" per tile, rename, save → TV updates at once. Maintainer used it from a phone.
 - Explained the decoder limit (this TV: 4 live tiles).
+- Still images for tiles beyond the live decoders (key frame → software decode → cached bitmap),
+  shown with a "Still image" badge and behind the loader while connecting. Verified on 3×3, then
+  the maintainer's 2×2 restored.

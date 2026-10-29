@@ -56,3 +56,7 @@
 - 2026-10-29 (later): phone/laptop layout editor (pairing server in layout mode, token renews
   while editing), TV corner card with address + code, camera options show "NVR · channel".
   Maintainer edited the TV layout from a phone. 54 tests, 0 lint issues.
+- 2026-10-29 (later): still images for tiles beyond the TV's live decoders: the stream is opened
+  just long enough for its first key frame, stopped, and decoded off the live budget (software
+  decoder → YUV → 320×180 bitmap). Cached per camera and shown behind the loader while connecting.
+  Verified on the TV in a 3×3 grid. 57 tests (3 new JVM tests for the YUV conversion), 0 lint.
