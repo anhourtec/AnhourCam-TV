@@ -51,6 +51,7 @@ every NVR on the account, in the grid layouts you know from an NVR monitor.
 |---|---|
 | **NVR-style grids** | 1, 2, 4, 6, 8, 9, 10, 13, 16, 25 and 36 tiles. Bigger grids fill themselves with your next cameras. |
 | **Any camera, any tile** | Mix cameras from several NVRs in one grid. On the TV: hold OK on a tile to choose a camera, move it or change the grid size. |
+| **Several layouts** | "Home", "Shop", "Night"… switch with ◀ ▶ at the edge of the grid; pick the one that opens first. |
 | **Edit from your phone** | Open the address shown on the TV, enter the code, pick the grid and a camera for every tile, save: the TV updates at once. |
 | **Fullscreen in HD** | Press OK on a tile for the high-quality stream; Back returns to the grid. |
 | **Easy sign-in** | Open the address shown on the TV on any phone or laptop on the same Wi-Fi, enter the 6-digit code, sign in there. No typing with the remote. |
@@ -126,7 +127,8 @@ Android SDK platform-tools (`adb`).
    email, password and the digits in the picture. The TV signs in and opens your cameras.
    (Or sign in directly on the TV with the remote.)
 7. **Use it:** arrows move between tiles, OK opens a camera fullscreen (Back returns), hold OK on
-   a tile for its menu (choose camera, move, clear, grid size, edit from phone, sign out).
+   a tile for its menu (choose camera, move, clear, grid size, layouts, edit from phone, sign out).
+   ◀ ▶ at the edge of the grid switches between your saved layouts.
 8. **Edit from your phone:** tile menu → *Edit layout from phone or computer*; open the address on
    the card, enter its code, choose grid and cameras, *Save to TV*. Back closes the card.
 9. When you're done, turn *Wireless debugging* off again (the app doesn't need it).

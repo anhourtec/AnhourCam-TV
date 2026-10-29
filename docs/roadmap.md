@@ -14,7 +14,7 @@ _Last updated: 2026-10-29 (Phase 4)_
 - [x] On-TV editor: hold OK → choose camera (grouped by NVR), move, clear, grid size (visual previews), sign out
 - [x] Tiles beyond the TV's decoders wait and take over a decoder as soon as one frees
 - [x] Edit layouts from a phone or computer via the pairing page (grid previews, camera per tile with NVR names, rename, save → TV updates at once)
-- [ ] Several named layouts (switch / new / rename / delete / default)
+- [x] Several named layouts: switch / new / default / delete on the TV (◀ ▶ at the grid edge flips layouts) and on the phone (plus rename)
 - [x] Still images for tiles beyond the decoder budget (one key frame per camera, round-robin; last picture shown while connecting)
 
 **Phase 2: Video proof of concept** (mostly done)

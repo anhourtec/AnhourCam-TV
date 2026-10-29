@@ -50,8 +50,9 @@ could capture the password. Mitigation later: optional self-signed HTTPS mode.
   token in an `HttpOnly; SameSite=Strict` cookie, Host-header check, no JavaScript, strict CSP.
 - An unpaired POST to `/layout` is redirected to the code page; sign-in routes (`/captcha`,
   `/login`) are off in layout mode.
-- Only built-in grid IDs and cameras the account actually has are accepted; everything shown is
-  HTML-escaped (camera and NVR names come from the portal).
+- Only built-in grid IDs, existing layout IDs and cameras the account actually has are accepted;
+  everything shown is HTML-escaped (camera, NVR and layout names). New / Make default / Delete use
+  the same paired form; the last layout can't be deleted and a default always remains.
 - The token renews on each editor request but the server still stops after 10 minutes, when the
   card is closed (Back), or when the app leaves the screen.
 - The page shows camera names and NVR names only; never NVR credentials or session cookies.

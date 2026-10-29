@@ -310,7 +310,9 @@ Higher counts are allowed but warned about against the decoder budget (snapshots
   last-known thumbnail). Any camera from **any NVR on the account** can go in any tile.
 - **Rearrange with the remote:** hold OK on a tile → "Move" → arrows carry it, OK drops it (it
   swaps with the tile it lands on); "Swap camera", "Clear tile" and "Rename layout" in the same menu.
-- Save, set as default (opens on app launch), delete, duplicate.
+- Save, set as default (opens on app launch), delete. On the TV: tile menu → *Layouts*; ◀ ▶ at
+  the grid's edge flips between layouts. On the phone: layout pills, *New layout*, *Make default*,
+  *Delete*, and the name field for renaming.
 
 ### 7.3a The app remembers everything
 
@@ -414,7 +416,7 @@ Turn off Wireless/USB debugging when you're done. The app does not need it to ru
 - [ ] Phase 1: `bitvision-client` logs in, lists NVRs/channels, negotiates a stream (CLI demo)
 - [ ] Phase 2: one native stream playing on TV; four sub-streams concurrently
 - [ ] Phase 3: on-TV login + LAN pairing login on port 8743 with short-lived tokens
-- [ ] Phase 4: built-in grids ✅, on-TV editor ✅, phone editor ✅, fullscreen ✅, several named layouts, pages, tour mode, snapshots
+- [ ] Phase 4: built-in grids ✅, on-TV editor ✅, phone editor ✅, fullscreen ✅, named layouts ✅, still images ✅, tour mode
 - [ ] Phase 5: performance pass, decoder budget UX, `docs/install.md`, signed release APK on GitHub Releases
 
 ---

@@ -60,3 +60,7 @@
   just long enough for its first key frame, stopped, and decoded off the live budget (software
   decoder → YUV → 320×180 bitmap). Cached per camera and shown behind the loader while connecting.
   Verified on the TV in a 3×3 grid. 57 tests (3 new JVM tests for the YUV conversion), 0 lint.
+- 2026-10-29 (later): named layouts. Model ops (create, select, cycle, default, delete; the default
+  always survives a delete), TV "Layouts" dialog, ◀ ▶ at the grid edge flips layouts, phone editor
+  with layout pills and New / Make default / Delete. Fixed cut-off tile messages (text now sized in
+  onMeasure). 59 tests, 0 lint.

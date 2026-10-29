@@ -13,3 +13,5 @@
 - Still images for tiles beyond the live decoders (key frame → software decode → cached bitmap),
   shown with a "Still image" badge and behind the loader while connecting. Verified on 3×3, then
   the maintainer's 2×2 restored.
+- Named layouts on TV (dialog, ◀ ▶ at the edge) and phone (pills, new/default/delete); a test
+  caught that deleting the default left none (fixed). Cut-off tile messages fixed (onMeasure).
