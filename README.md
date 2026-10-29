@@ -33,7 +33,7 @@
 
 [Why this exists](#why-this-exists) · [What you get](#what-you-get) · [Status](#status) ·
 [Supported devices](#supported-devices) · [Install](#install) · [How it works](#how-it-works) ·
-[Questions people ask](#questions-people-ask) · [Contributing](#contributing) · [Credits](#credits)
+[Build and run](#build-and-run-on-your-tv-developers) · [Questions people ask](#questions-people-ask) · [Contributing](#contributing) · [Credits](#credits)
 
 ## Why this exists
 
@@ -52,7 +52,9 @@ every NVR on the account, in the grid layouts you know from an NVR monitor.
 | **NVR-style grids** | 1, 2, 4, 6, 8, 9, 10, 13, 16, 25 and 36 tiles, plus custom layouts on a 12×12 grid. |
 | **Any camera, any tile** | Mix cameras from several NVRs in one layout. Save layouts and pick a default. |
 | **Fullscreen in HD** | Press OK on a tile for the high-quality stream; Back returns to the grid. |
-| **Easy sign-in** | Sign in on the TV, or from your phone on the same Wi-Fi via a short pairing code, so you don't type passwords with a remote. |
+| **Easy sign-in** | Open the address shown on the TV on any phone or laptop on the same Wi-Fi, enter the 6-digit code, sign in there. No typing with the remote. |
+| **Your language** | English, 中文（简体）, 日本語, Português, Русский on the TV and the phone page. |
+| **Remembers everything** | Your layouts, which camera sits in which tile, grid sizes and the last screen you watched are kept on the TV. |
 | **Tour mode** | Cycle through pages or layouts automatically. |
 | **Remote-first** | Every action works with a basic D-pad remote. Dark, minimal, video first. |
 | **Fast** | Native Kotlin with hardware H.265/H.264 decoding straight to the screen. No WebView, no browser inside. |
@@ -96,6 +98,36 @@ Sideload only; not on Google Play or the Amazon Appstore. Full guide: [docs/inst
 adb connect <TV_IP>:5555        # or adb pair / connect for Wireless debugging on Google TV
 adb install -r camgrid-tv.apk
 ```
+
+## Build and run on your TV (developers)
+
+Every step we use, in order. You need a computer on the same Wi-Fi as the TV, JDK 17+ and the
+Android SDK platform-tools (`adb`).
+
+1. **Turn on developer mode on the TV.** Settings → System → About → press OK on
+   *Android TV OS build* 7 times.
+2. **Turn on wireless debugging.** Settings → System → Developer options → *Wireless debugging* →
+   *Pair device with pairing code*. Keep that screen open.
+3. **Pair and connect** (use the IP, ports and code shown on the TV):
+   ```bash
+   adb pair <TV_IP>:<PAIRING_PORT> <PAIRING_CODE>
+   adb connect <TV_IP>:<CONNECT_PORT>   # usually automatic after pairing; check with: adb devices
+   ```
+4. **Build and install:**
+   ```bash
+   git clone https://github.com/anhourtec/CamGrid-TV && cd CamGrid-TV
+   ./gradlew :app:assembleDebug
+   adb install -r app/build/outputs/apk/debug/app-debug.apk
+   ```
+5. **Open CamGrid TV** from the TV's apps row.
+6. **Sign in from your phone:** the TV shows an address like `http://192.168.x.x:8743` and a
+   6-digit code. Open the address on your phone (same Wi-Fi), enter the code, then your BitVision
+   email, password and the digits in the picture. The TV signs in and opens your cameras.
+   (Or sign in directly on the TV with the remote.)
+7. **Use it:** OK switches grid ↔ fullscreen, ◀ ▶ shows more cameras, Back exits.
+8. When you're done, turn *Wireless debugging* off again (the app doesn't need it).
+
+Quality checks before every change: `./gradlew ktlintCheck detekt test :app:lintDebug`.
 
 ## How it works
 
