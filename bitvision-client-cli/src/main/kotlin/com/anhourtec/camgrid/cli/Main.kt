@@ -114,24 +114,25 @@ private suspend fun stream(
     val quality = if (positional.getOrNull(2)?.lowercase() == "hd") StreamQuality.HD else StreamQuality.SD
     val seconds = positional.getOrNull(3)?.toIntOrNull() ?: DEFAULT_SECONDS
 
-    val account = portal.overview().accountName
-    val device = portal.deviceDetail(deviceId)
+    val steps = StepTimer()
+    val account = steps.time("portal: account") { portal.overview().accountName }
+    val device = steps.time("portal: device page") { portal.deviceDetail(deviceId) }
     val stats = StreamStats()
     val out = saveTo?.let { FileOutputStream(it) }
     saveTo?.let { println("Saving raw H.265 to ${it.absolutePath} (camera footage: keep it private).") }
 
     coroutineScope {
         val gateway = GatewaySession(http, device.service, account, this)
+        steps.time("gateway: connect + register") { gateway.connect() }
+        val link = steps.time("gateway: open device") { gateway.openDevice(device) }
         val started = System.nanoTime()
-        gateway.connect()
-        val link = gateway.openDevice(device)
         val media =
             MediaSession(http, device.service, device.deviceId, this, { buf, header ->
                 stats.add(header, started)
                 out?.write(payload(buf, header))
             })
-        val ack = media.open()
-        gateway.playVideo(link, channelNo, quality.streamId, ack)
+        val ack = steps.time("media: open + relay ack") { media.open() }
+        steps.time("gateway: play (relay bound)") { gateway.playVideo(link, channelNo, quality.streamId, ack) }
         media.startStream(link, channelNo, quality.streamId)
         println("Streaming ${clean(device.name)} CH${channelNo + 1} ($quality) for $seconds s…")
         delay(seconds * MS_PER_SECOND.toLong())
@@ -139,6 +140,7 @@ private suspend fun stream(
         media.close()
         gateway.close()
     }
+    println(steps.report())
     out?.close()
     println(stats.report(seconds))
     return if (stats.frames.get() > 0) 0 else fail("No frames received.")
@@ -189,6 +191,24 @@ private fun fail(message: String): Int {
     return 1
 }
 
+private class StepTimer {
+    private val steps = mutableListOf<Pair<String, Long>>()
+
+    suspend fun <T> time(
+        name: String,
+        block: suspend () -> T,
+    ): T {
+        val start = System.nanoTime()
+        return block().also { steps += name to (System.nanoTime() - start) / NANOS_PER_MS_LONG }
+    }
+
+    fun report(): String = steps.joinToString("\n", prefix = "Timings:\n") { (name, ms) -> "  %-30s %6d ms".format(name, ms) }
+
+    private companion object {
+        const val NANOS_PER_MS_LONG = 1_000_000L
+    }
+}
+
 private class StreamStats {
     val frames = AtomicLong()
     private val keyFrames = AtomicLong()
@@ -214,7 +234,7 @@ private class StreamStats {
         Frames:      ${frames.get()} (${keyFrames.get()} key frames), ${"%.1f".format(frames.get().toDouble() / seconds)} fps
         Resolution:  $size
         Bitrate:     ${"%.0f".format(bytes.get() * BITS_PER_BYTE / seconds / MS_PER_SECOND)} kbit/s
-        First frame: ${"%.0f".format(firstFrameMs)} ms after connecting
+        First frame: ${"%.0f".format(firstFrameMs)} ms after opening the media socket
         """.trimIndent()
 
     private companion object {
