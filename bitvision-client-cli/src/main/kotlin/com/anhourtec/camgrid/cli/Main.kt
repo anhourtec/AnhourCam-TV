@@ -1,5 +1,6 @@
 package com.anhourtec.camgrid.cli
 
+import com.anhourtec.camgrid.client.ClientException
 import com.anhourtec.camgrid.client.gateway.GatewaySession
 import com.anhourtec.camgrid.client.media.FrameHeader
 import com.anhourtec.camgrid.client.media.MediaSession
@@ -13,6 +14,7 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.nio.ByteBuffer
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
@@ -55,6 +57,10 @@ fun main(args: Array<String>) {
             }
         } catch (e: SessionExpiredException) {
             fail("Session expired. Run: camgrid-cli login (${e.message})")
+        } catch (e: IOException) {
+            fail("Network error: ${clean(e.message)}")
+        } catch (e: ClientException) {
+            fail("Error: ${clean(e.message)}")
         }
     http.dispatcher.executorService.shutdown()
     http.connectionPool.evictAll()
@@ -122,7 +128,8 @@ private suspend fun stream(
     saveTo?.let { println("Saving raw H.265 to ${it.absolutePath} (camera footage: keep it private).") }
 
     coroutineScope {
-        val gateway = GatewaySession(http, device.service, account, this)
+        val trace = if (System.getenv("CAMGRID_TRACE") == "1") { line: String -> System.err.println(clean(line)) } else null
+        val gateway = GatewaySession(http, device.service, account, this, trace = trace)
         steps.time("gateway: connect + register") { gateway.connect() }
         val link = steps.time("gateway: open device") { gateway.openDevice(device) }
         val started = System.nanoTime()
