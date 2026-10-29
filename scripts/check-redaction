@@ -31,6 +31,14 @@ patterns=(
 # Lines matching these are allowed (placeholders, docs examples, attribution).
 allow='<[A-Z_0-9]+>|127\.0\.0\.1|0\.0\.0\.0|192\.0\.2\.|198\.51\.100\.|203\.0\.113\.|example\.(com|org)|check-redaction:allow'
 
+# Exact strings that are known protocol constants (see scripts/redaction-allowlist.txt).
+allowfile="$(dirname "$0")/redaction-allowlist.txt"
+exact=()
+if [[ -f "$allowfile" ]]; then
+  while IFS= read -r a; do [[ -n "$a" && "$a" != \#* ]] && exact+=("$a"); done < "$allowfile"
+fi
+is_exact() { local x; for x in "${exact[@]+"${exact[@]}"}"; do [[ "$1" == "$x" ]] && return 0; done; return 1; }
+
 status=0
 while IFS= read -r f; do
   [[ "$f" == scripts/check-redaction ]] && continue
@@ -47,6 +55,7 @@ while IFS= read -r f; do
     while IFS= read -r h; do
       line=$(sed -n "${h%%:*}p" < "$src")
       echo "$line" | grep -qE "$allow" && continue
+      is_exact "${h#*:}" && continue
       echo "REDACTION: $f:${h%%:*}: ${h#*:}"
       status=1
     done <<< "$hits"
