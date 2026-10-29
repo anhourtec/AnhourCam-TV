@@ -29,7 +29,7 @@ class PairingServerTest {
             }
         }
     private val server =
-        PairingServer(loopback, 0, backend, state, onSignedIn = { signedIn.countDown() }).also { it.start() }
+        PairingServer(loopback, 0, backend = backend, state = state, onSignedIn = { signedIn.countDown() }).also { it.start() }
     private val host get() = "${loopback.hostAddress}:${server.port}"
 
     @AfterEach

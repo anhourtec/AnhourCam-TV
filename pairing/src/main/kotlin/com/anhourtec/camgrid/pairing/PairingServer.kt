@@ -21,7 +21,8 @@ import java.util.concurrent.atomic.AtomicInteger
 class PairingServer(
     private val bindAddress: InetAddress,
     private val requestedPort: Int = DEFAULT_PORT,
-    private val backend: PairingBackend,
+    private val backend: PairingBackend? = null,
+    private val layouts: LayoutBackend? = null,
     private val state: PairingState,
     private val guard: NetworkGuard = NetworkGuard(),
     private val maxLifetimeMs: Long = MAX_LIFETIME_MS,
@@ -29,6 +30,7 @@ class PairingServer(
     private val onSignedIn: () -> Unit,
 ) : Closeable {
     private val ownIp = bindAddress.hostAddress
+    private val layoutRoutes = layouts?.let { LayoutRoutes(it, state) }
     private val captchaNonce = AtomicInteger()
     private val workers =
         ThreadPoolExecutor(MAX_CONNECTIONS, MAX_CONNECTIONS, IDLE_SECONDS, TimeUnit.SECONDS, SynchronousQueue())
@@ -128,7 +130,7 @@ class PairingServer(
         Responses.staticRoute(request)?.let { return it to false }
         val token = request.cookie(Responses.TOKEN_COOKIE)
         val paired = state.isPaired(token, ip)
-        return when (request.method to request.path) {
+        return layoutRoutes?.handle(s, request, token, ip)?.let { it to false } ?: when (request.method to request.path) {
             "GET" to "/" -> {
                 home(s, chosen, paired) to false
             }
@@ -161,7 +163,7 @@ class PairingServer(
         // follows the page once this browser has paired.
         if (paired && chosen != null) onLanguage(chosen.code)
         val headers = chosen?.let { listOf(Responses.langCookie(it)) }.orEmpty()
-        val page = if (paired) Pages.login(s, captchaNonce.incrementAndGet()) else Pages.code(s)
+        val page = if (paired) Pages.login(s, captchaNonce.incrementAndGet()) else Pages.code(s, manage = layouts != null)
         return HttpResponse.html(STATUS_OK, page, headers)
     }
 
@@ -180,12 +182,13 @@ class PairingServer(
             }
 
             is PairingState.CodeResult.LockedOut -> {
-                HttpResponse.html(STATUS_OK, Pages.code(s, s.lockedOut(Responses.secondsCeil(result.retryInMs))))
+                HttpResponse.html(STATUS_OK, Pages.code(s, s.lockedOut(Responses.secondsCeil(result.retryInMs)), layouts != null))
             }
         }
 
     private fun captcha(paired: Boolean): HttpResponse {
-        if (!paired) throw HttpException(STATUS_FORBIDDEN)
+        val backend = backend
+        if (!paired || backend == null) throw HttpException(STATUS_FORBIDDEN)
         val image =
             try {
                 backend.captcha()
@@ -203,6 +206,7 @@ class PairingServer(
     ): Pair<HttpResponse, Boolean> {
         val form = request.form()
         val email = form["email"].orEmpty().trim()
+        val backend = backend ?: return HttpResponse.redirect("/") to false
         val outcome =
             try {
                 backend.login(email, form["password"].orEmpty(), form["captcha"].orEmpty().trim())

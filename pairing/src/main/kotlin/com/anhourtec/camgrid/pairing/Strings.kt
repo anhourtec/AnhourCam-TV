@@ -34,7 +34,21 @@ class Strings(
     val wrongHostTitle: String,
     val wrongHostText: String,
     val language: String,
+    val codeLeadManage: String,
+    val manageTitle: String,
+    val manageLead: String,
+    val gridLabel: String,
+    val applyGrid: String,
+    val tilesLabel: String,
+    val tileLabel: String,
+    val emptyOption: String,
+    val nameLabel: String,
+    val saveButton: String,
+    val savedNote: String,
 ) {
+    /** [tileLabel] with the tile number filled in. */
+    fun tile(n: Int) = tileLabel.replace("{n}", n.toString())
+
     /** [lockedOut] with the number of seconds filled in. */
     fun lockedOut(seconds: Long) = lockedOut.replace("{s}", seconds.toString())
 
@@ -69,6 +83,17 @@ class Strings(
                 wrongHostTitle = "Open the address shown on the TV",
                 wrongHostText = "For your security, this page only works at the exact address on the TV screen.",
                 language = "Language",
+                codeLeadManage = "Six digits, shown on the TV under “Edit from phone or computer”.",
+                manageTitle = "Edit your TV layout",
+                manageLead = "Pick a grid, then a camera for each tile. Save to show it on the TV.",
+                gridLabel = "Grid",
+                applyGrid = "Apply grid",
+                tilesLabel = "Cameras",
+                tileLabel = "Tile {n}",
+                emptyOption = "Empty",
+                nameLabel = "Layout name",
+                saveButton = "Save to TV",
+                savedNote = "Saved. Your TV is showing it now.",
             )
 
         val CN =
@@ -101,6 +126,17 @@ class Strings(
                 wrongHostTitle = "请打开电视上显示的地址",
                 wrongHostText = "为了你的安全，此页面只能通过电视屏幕上显示的地址访问。",
                 language = "语言",
+                codeLeadManage = "6 位数字，显示在电视的“用手机或电脑编辑”下方。",
+                manageTitle = "编辑电视布局",
+                manageLead = "先选宫格，再为每个画面选择摄像头。保存后电视立即显示。",
+                gridLabel = "宫格",
+                applyGrid = "应用宫格",
+                tilesLabel = "摄像头",
+                tileLabel = "画面 {n}",
+                emptyOption = "空白",
+                nameLabel = "布局名称",
+                saveButton = "保存到电视",
+                savedNote = "已保存，电视正在显示新布局。",
             )
 
         val JP =
@@ -133,6 +169,17 @@ class Strings(
                 wrongHostTitle = "テレビに表示されたアドレスを開いてください",
                 wrongHostText = "安全のため、このページはテレビ画面に表示されたアドレスでのみ使用できます。",
                 language = "言語",
+                codeLeadManage = "テレビの「スマホやパソコンで編集」の下に表示される 6 桁の数字です。",
+                manageTitle = "テレビのレイアウトを編集",
+                manageLead = "分割を選び、各タイルのカメラを選んでください。保存するとテレビに反映されます。",
+                gridLabel = "分割",
+                applyGrid = "分割を適用",
+                tilesLabel = "カメラ",
+                tileLabel = "タイル {n}",
+                emptyOption = "空",
+                nameLabel = "レイアウト名",
+                saveButton = "テレビに保存",
+                savedNote = "保存しました。テレビに表示されています。",
             )
 
         val POR =
@@ -165,6 +212,17 @@ class Strings(
                 wrongHostTitle = "Abra o endereço mostrado na TV",
                 wrongHostText = "Por segurança, esta página só funciona no endereço exato exibido na tela da TV.",
                 language = "Idioma",
+                codeLeadManage = "Seis dígitos, exibidos na TV em “Editar pelo celular ou computador”.",
+                manageTitle = "Editar o layout da TV",
+                manageLead = "Escolha a grade e depois uma câmera para cada quadro. Salve para ver na TV.",
+                gridLabel = "Grade",
+                applyGrid = "Aplicar grade",
+                tilesLabel = "Câmeras",
+                tileLabel = "Quadro {n}",
+                emptyOption = "Vazio",
+                nameLabel = "Nome do layout",
+                saveButton = "Salvar na TV",
+                savedNote = "Salvo. A TV já está mostrando.",
             )
 
         val PY =
@@ -197,6 +255,17 @@ class Strings(
                 wrongHostTitle = "Откройте адрес, показанный на телевизоре",
                 wrongHostText = "В целях безопасности страница работает только по точному адресу с экрана телевизора.",
                 language = "Язык",
+                codeLeadManage = "Шесть цифр на телевизоре под надписью «Изменить с телефона или компьютера».",
+                manageTitle = "Раскладка на телевизоре",
+                manageLead = "Выберите сетку, затем камеру для каждой плитки. Сохраните — телевизор сразу покажет.",
+                gridLabel = "Сетка",
+                applyGrid = "Применить сетку",
+                tilesLabel = "Камеры",
+                tileLabel = "Плитка {n}",
+                emptyOption = "Пусто",
+                nameLabel = "Название раскладки",
+                saveButton = "Сохранить на телевизор",
+                savedNote = "Сохранено. Телевизор уже показывает.",
             )
 
         /** In the portal's menu order; English is the default. */

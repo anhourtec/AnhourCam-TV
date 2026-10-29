@@ -28,7 +28,7 @@ class PairingState(
 
     private class Pairing(
         val ip: String,
-        val expiresAt: Long,
+        var expiresAt: Long,
         var failedLogins: Int = 0,
     )
 
@@ -95,6 +95,15 @@ class PairingState(
             return false
         }
         return true
+    }
+
+    /** Keeps an active editing session alive: another [TOKEN_LIFETIME_MS] from now. */
+    @Synchronized
+    fun touch(
+        token: String?,
+        ip: String,
+    ) {
+        find(token, ip)?.let { it.expiresAt = clock() + TOKEN_LIFETIME_MS }
     }
 
     /** Call after a successful login: every token is used up. */
