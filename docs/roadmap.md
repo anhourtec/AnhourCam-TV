@@ -3,17 +3,19 @@
 Living plan for CamGrid TV. Updated at the end of every working session.
 Product spec: [SPEC.md](SPEC.md) · Phase status detail: [progress.md](progress.md).
 
-_Last updated: 2026-10-29_
+_Last updated: 2026-10-29 (Phase 1)_
 
 ## Now
 
-**Phase 1: `:bitvision-client`** (pure Kotlin/JVM): starting
-- [ ] Gradle wrapper, version catalog, ktlint + detekt, `allWarningsAsErrors`
-- [ ] Session: login with a human-typed CAPTCHA, `PHPSESSID` handling, logout
-- [ ] Device list (`/home/space`) and device page parser (`tipsDeviceInfo`)
-- [ ] Signalling WebSocket: envelope, heartbeat, open-device and play/stop commands
-- [ ] Media WebSocket + 44-byte frame depacketizer (zero-copy)
-- [ ] Unit tests against redacted samples; CLI smoke test (saves CAPTCHA image, user types it)
+**Phase 1: `:bitvision-client`** (pure Kotlin/JVM): in progress
+- [x] Gradle wrapper, version catalog, ktlint + detekt, `allWarningsAsErrors`
+- [x] Session: login with a human-typed CAPTCHA, `PHPSESSID` handling, logout
+- [x] Device list (`/home/space`) and device page parser (`tipsDeviceInfo`)
+- [x] Signalling WebSocket: envelope, heartbeat, open-device and play/stop commands
+- [x] Media WebSocket + relay ack + 44-byte frame depacketizer (zero-copy)
+- [x] Unit tests (20) incl. fake-gateway end-to-end; CLI (`login`, `devices`, `stream`, `logout`)
+- [ ] **Live CLI run on the maintainer's account** (login → devices → stream): the Phase 1 gate
+- [ ] Session keep-alive policy once the idle timeout is known
 
 **Phase 0 carry-overs**
 - [ ] Session idle timeout (how often users must sign in)

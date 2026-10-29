@@ -3,7 +3,7 @@
 | Phase | Status | Gate met |
 |---|---|---|
 | 0 API discovery | **done** (gate met); carry-overs: session idle timeout, concurrent-stream limit, audio frames | **yes** |
-| 1 bitvision-client | next | — |
+| 1 bitvision-client | **in progress**: library + CLI built, 20 tests, lint clean; live CLI run pending | no |
 | 2 Video PoC | not started | — |
 | 3 TV shell + login | not started | — |
 | 4 Grids | not started | — |
@@ -20,3 +20,11 @@
   client-side snapshot, 200 s heartbeat, device-page data format, full command table. **Phase 0
   gate met**: api.md is enough to write a client; streaming.md identifies transport and codec with
   captured frame headers.
+
+## Phase 1: bitvision-client
+- 2026-10-29: Gradle 9.8.2 wrapper, version catalog, ktlint + detekt, Kotlin 2.4.21 with warnings
+  as errors. `:bitvision-client` implements portal login (human-typed CAPTCHA), device list and
+  device page parsing, signalling + media WebSockets, relay ack and zero-copy frame parsing.
+  `:bitvision-client-cli` has `login`, `devices`, `stream`, `logout`. 20 unit tests pass, including
+  a fake-gateway end-to-end live-view test. Remaining for the gate: one live CLI run on the
+  maintainer's account.
