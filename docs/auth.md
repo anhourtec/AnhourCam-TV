@@ -1,6 +1,6 @@
 # Authentication
 
-> Status: login request shape captured from the portal JS (no credentials recorded), 2026-10-29.
+> Status: **Phase 0 complete** (2026-10-29). Login request shape from the portal JS; no credentials recorded.
 
 ## Web portal login: **image CAPTCHA on every login** ⚠️
 
@@ -22,7 +22,11 @@ Response: `code` = success or `LV_LOGIN_FAILED_CODE`; `data.ali_code`, `data.ali
 in `sessionStorage` *(meaning unknown)*.
 
 ## Session
-- Session is a **cookie** on `bitvision.app` (no bearer token observed). Name/lifetime TBD.
+- Session is the **`PHPSESSID`** cookie on `bitvision.app`: HttpOnly, SameSite=Lax, **browser-session
+  cookie (no expiry)**. There is no "remember me" option. How long it survives server-side when
+  idle is still being measured (open question #3). The app keeps it alive with periodic light
+  requests while running.
+- Other cookie: `language` (1 year, not auth).
 - Logout: `GET /home/account/exits`.
 - Pages are server-rendered with session data embedded (`tipsDeviceInfo`).
 
@@ -33,9 +37,11 @@ The live-view handshake (cmd 8208) sends the NVR's **local** username/password
 logged, encrypted if cached.
 
 ## Gateway authentication
-Gateway registration (cmd 4101) carries only the account username; how the gateway ties the
-socket to the logged-in session is not yet understood *(open question #7)*. Not to be tested
-beyond observing our own session.
+The gateway WebSockets are on a different host (`ws-jz.bitdog.com`), so the `PHPSESSID` cookie is
+not sent to them. Registration (cmd 4101) carries only the account username; the effective
+credential is the NVR's own `local_user`/`local_pwd` in cmd 8208, which only a logged-in session
+can read from the device page. We reproduce exactly what the portal does and never test the
+gateway beyond that *(open question #7)*.
 
 ## Request signing
 None seen on portal XHRs so far (`$.post` with plain form fields).
