@@ -16,8 +16,11 @@
   <a href="https://github.com/anhourtec/AnhourCam-TV/stargazers"><img src="https://img.shields.io/github/stars/anhourtec/AnhourCam-TV?style=flat&color=cfffcf&labelColor=15181e" alt="Stars"></a>
   <a href="https://github.com/anhourtec/AnhourCam-TV/releases"><img src="https://img.shields.io/github/v/release/anhourtec/AnhourCam-TV?include_prereleases&style=flat&color=cfffcf&labelColor=15181e&label=release" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-cfffcf?style=flat&labelColor=15181e" alt="License: Apache-2.0"></a>
+  <a href="https://github.com/anhourtec/AnhourCam-TV/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/anhourtec/AnhourCam-TV.svg" alt="Contributors">
+  </a>
   <img src="https://img.shields.io/badge/platform-Google%20TV%20%C2%B7%20Android%20TV%20%C2%B7%20Fire%20TV-cfffcf?style=flat&labelColor=15181e" alt="Platforms: Google TV, Android TV, Fire TV">
-  <img src="https://img.shields.io/badge/status-early%20development-ffd27f?style=flat&labelColor=15181e" alt="Status: early development">
+  <img src="https://img.shields.io/badge/status-preview-ffd27f?style=flat&labelColor=15181e" alt="Status: preview">
 </p>
 
 <p align="center">
