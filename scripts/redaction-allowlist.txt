@@ -1,5 +1,6 @@
 # Exact strings check-redaction should ignore (one per line). Only protocol constants, never real IDs.
-# channelInfo bitfield from cmd 8225 (same on every channel; not an identifier)
+# channelInfo bitfields from cmd 8225 (0x3000x0000 + channel; protocol constants, not identifiers)
 12884967424
 # /stream/1 relay ack header: magic 0x12345678 + fixed fields
 785634121101000008000000140240c86f000000
+12884901888
