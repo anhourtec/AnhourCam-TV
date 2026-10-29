@@ -175,7 +175,16 @@ Both login paths must work and produce the **same session** stored on the TV.
 
 ### 5.1 Login on the TV
 
-- Standard form: email/username + password + the portal's 4-character image CAPTCHA (shown to the user, typed by the user; never solved automatically), navigable with D-pad and the on-screen keyboard.
+- Standard form: email/username + password + the portal's 4-character image CAPTCHA, navigable with D-pad and the on-screen keyboard.
+- **CAPTCHA is built into the app; users need nothing else** (no browser, no Playwright, no
+  computer). The app fetches the image from `/home/account/yzm` with its own session cookie and
+  shows it on the login screen at a size readable from the couch.
+  - "New image" button (refetches with a fresh timestamp).
+  - Code entry: a large on-screen number pad when the code is digits (observed: 4 digits, *inferred
+    from one sample*; fall back to the full keyboard if a letter is ever needed).
+  - Wrong code or password: show the portal's message, load a new image automatically, keep the
+    email filled in, clear only the password and code.
+  - Never solved automatically (no OCR, no bypass).
 - Password is used once to obtain the cloud session and is **never persisted**. Only tokens are stored (encrypted).
 
 ### 5.2 Login from another device on the LAN (pairing)
@@ -196,7 +205,11 @@ Typing passwords with a TV remote is painful, so the TV runs a small local web s
    - random, 256-bit, single-use
    - valid **5 minutes**
    - bound to the client IP that entered the code
-5. The page shows the BitVision login form, including the CAPTCHA image fetched by the TV. Credentials and the typed CAPTCHA are POSTed with the pairing token.
+5. The page shows the BitVision login form with the CAPTCHA image. The CAPTCHA is bound to the
+   **TV's** portal session, so the TV fetches it and serves it to the phone through the pairing
+   server (`GET /captcha`, pairing token required, `Cache-Control: no-store`), with a "new image"
+   button. Credentials and the typed code are POSTed with the pairing token; the TV performs the
+   login with the same session that fetched the image.
 6. The TV performs the cloud login itself, stores the session, shows "Logged in" on both screens, invalidates the token, and **shuts the server down**.
 
 **Security requirements:**
@@ -211,9 +224,20 @@ Typing passwords with a TV remote is painful, so the TV runs a small local web s
 
 **Optional extras on the pairing page (later milestone):** manage saved layouts and rename tiles from a phone. Only behind a fresh pairing token.
 
-### 5.3 Session handling
+### 5.3 Session handling: the app must never "time out" like the website
 
-- Auto-refresh tokens per `docs/auth.md`.
+- **Live view never depends on the web session.** The gateway does not receive the portal cookie
+  (verified 2026-10-29: our client streamed with no cookie on the gateway sockets). The app caches
+  the device list and each device's page data (gateway URLs + NVR credentials) encrypted on the
+  TV, and starts live view from that cache. An expired web session never stops video.
+- **Keep the web session alive** with `SessionKeeper` (a light request every 10 minutes while the
+  app runs; a WorkManager job every 15 minutes in the background), so the device list can refresh.
+- **Gateway sockets** send the 200 s heartbeat and reconnect with backoff if dropped.
+- **No sleep during live view:** keep the screen on and block the screensaver.
+- If the web session expires anyway (e.g. the TV was unplugged for days): keep playing from the
+  cache and show a small, non-blocking "Sign in again to refresh your devices" notice. Never throw
+  the user out of live view. The password is never stored, because signing in again needs a CAPTCHA anyway.
+- Auto-refresh per `docs/auth.md`.
 - On unrecoverable auth failure: go back to the login screen and keep saved layouts.
 - Settings → **Log out** clears tokens and the device cache (layouts kept unless the user chooses "Reset everything").
 

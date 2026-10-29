@@ -15,9 +15,10 @@ it before every login), then `POST https://bitvision.app/home/account/ajax-login
 
 `login.js` refuses to submit with an empty `yzm`, so **every web login needs a human-solved image
 CAPTCHA.** This is a SPEC §3.5 stop condition. We will **not** bypass, solve automatically or OCR
-it. **Decision (2026-10-29):** the human solves it. The TV login screen and the phone pairing page fetch
-`/home/account/yzm` with the pending session cookie, show the image, and the user types the 4
-characters. The app then keeps that session alive as long as possible so sign-in is rare.
+it. **Decision (2026-10-29):** the human solves it, inside our app. No browser or other tool is
+needed: the client fetches `/home/account/yzm` with its session cookie and shows the image (the
+CLI saves and opens it; the TV shows it on the login screen; the pairing page gets it through the
+TV). Verified end to end with the CLI on 2026-10-29. Observed code: 4 digits (*one sample*).
 
 Response JSON `{code, message, data}`. **`code` 0 (`CODE_SUCCESS`) or 2056 (`LV_LOGIN_FAILED_CODE`)
 both mean signed in**; anything else is an error whose text is in `message` (wrong password or
@@ -26,9 +27,12 @@ CAPTCHA). `data` also carries `ali_code`, `ali_country`, `ali_area_id`, `app_key
 
 ## Session
 - Session is the **`PHPSESSID`** cookie on `bitvision.app`: HttpOnly, SameSite=Lax, **browser-session
-  cookie (no expiry)**. There is no "remember me" option. How long it survives server-side when
-  idle is still being measured (open question #3). The app keeps it alive with periodic light
-  requests while running.
+  cookie (no expiry)**. There is no "remember me" option. Server-side idle timeout: still alive after
+  36 min (browser session, possibly kept alive by page activity); a clean idle test with the CLI
+  session started 13:24 UTC 2026-10-29 (open question #3).
+- **Live view does not need it**: the gateway sockets never receive the cookie. The app keeps it
+  alive with `SessionKeeper` (every 10 min) only so the device list can refresh. See SPEC §5.3.
+- Restoring a saved `PHPSESSID` in a new process works (verified with the CLI).
 - Other cookie: `language` (1 year, not auth).
 - Logout: `GET /home/account/exits`.
 - Pages are server-rendered with session data embedded (`tipsDeviceInfo`).
