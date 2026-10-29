@@ -36,6 +36,7 @@ class CameraDashboardTest {
                 listOf(FoundCamera("192.0.2.5", 554, onvif = true, added = true), FoundCamera("192.0.2.9", 554, false, false))
 
             override fun save(form: CameraForm): SaveOutcome {
+                if (form.name == "boom") throw IllegalStateException("bug in a backend")
                 saved += form
                 return nextOutcome
             }
@@ -67,6 +68,13 @@ class CameraDashboardTest {
 
     @AfterEach
     fun stop() = server.close()
+
+    @Test
+    fun `a failing backend gives an error page and the server keeps running`() {
+        val cookie = pair()
+        assertEquals(500, request("POST", "/cameras/save", cookie, form("mode" to "onvif", "name" to "boom", "host" to "192.0.2.5")).status)
+        assertEquals(200, request("GET", "/cameras", cookie).status)
+    }
 
     @Test
     fun `camera pages need pairing`() {

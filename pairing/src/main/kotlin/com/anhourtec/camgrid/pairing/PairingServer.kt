@@ -110,6 +110,12 @@ class PairingServer(
                     HttpResponse(e.status, contentType = "text/plain; charset=utf-8")
                 } catch (_: IOException) {
                     return
+                } catch (
+                    @Suppress("TooGenericExceptionCaught") e: RuntimeException,
+                ) {
+                    // A bug in a page or backend must never take the whole TV app down.
+                    System.err.println("pairing: request failed (${e.javaClass.simpleName})")
+                    HttpResponse(STATUS_SERVER_ERROR, contentType = "text/plain; charset=utf-8")
                 }
             runCatching { response.writeTo(out) }
             if (signedIn) {
@@ -241,6 +247,7 @@ class PairingServer(
         private const val ACCEPT_POLL_MS = 1000
         private const val READ_TIMEOUT_MS = 10_000
         private const val STATUS_BAD_GATEWAY = 502
+        private const val STATUS_SERVER_ERROR = 500
         private val KNOWN_PATHS = setOf("/", "/pair", "/captcha", "/login", "/favicon.svg", "/favicon.ico")
     }
 }
