@@ -90,17 +90,19 @@ address is hidden. Phone and computer screenshots use made-up camera names.
 
 ## Status
 
-**Early development.** Nothing to install yet. Progress is tracked in [docs/progress.md](docs/progress.md)
-and [docs/roadmap.md](docs/roadmap.md).
+**Preview.** It works on a real Google TV today and you can [install it](#install) from a computer;
+a downloadable release comes with Phase 5. Progress: [docs/progress.md](docs/progress.md) ·
+[docs/roadmap.md](docs/roadmap.md).
 
 | Phase | What | State |
 |---|---|---|
 | 0 | Learn how the BitVision web portal streams video | ✅ done |
 | 1 | Kotlin client library | ✅ done |
-| 2 | Native video playback proof of concept | ✅ done |
-| 3 | TV app + sign-in (TV and phone pairing) | ✅ mostly done |
-| 4 | Grids, layout editor (TV + phone), fullscreen, tour mode | in progress |
+| 2 | Native video playback (hardware decoding, several tiles at once) | ✅ done |
+| 3 | TV app + sign-in (on the TV or from your phone) | ✅ done |
+| 4 | Grids, layout editor (TV + phone), several layouts, still images | ✅ mostly done (tour mode next) |
 | 5 | Performance polish + first release APK | planned |
+| 6 | **Any IP camera** (RTSP / ONVIF): scan your network, add cameras from your phone, no BitVision account needed | in progress ([plan](docs/ipcam.md)) |
 
 Watch or star the repo to hear about the first release.
 
@@ -300,6 +302,12 @@ TV. Phone pairing uses a short-lived, single-use code on your local network. See
 
 **Is this official or affiliated with BitVision?**
 No. See [NOTICE.md](NOTICE.md). Use it only with your own account and devices.
+
+## Support
+
+Questions, bugs, a camera that won't connect, or an idea: please
+[open an issue on GitHub](https://github.com/anhourtec/AnhourCam-TV/issues). Include your TV model
+and what you tried, but never passwords, account details, IP addresses or camera images.
 
 ## Contributing
 
