@@ -8,6 +8,8 @@ import java.util.Base64
 class RtspAuth(
     private val user: String,
     private val password: String,
+    /** Basic sends the password readable: only for cameras known to need it. */
+    private val allowBasic: Boolean = true,
     /** Client nonce for qop=auth; random unless a test fixes it. */
     private val cnonce: String = randomCnonce(),
 ) {
@@ -26,7 +28,7 @@ class RtspAuth(
                 true
             }
 
-            scheme.equals("Basic", ignoreCase = true) && challenge == null -> {
+            scheme.equals("Basic", ignoreCase = true) && challenge == null && allowBasic -> {
                 basic = true
                 true
             }
@@ -38,6 +40,9 @@ class RtspAuth(
     }
 
     val ready: Boolean get() = basic || challenge != null
+
+    /** True when the camera asked for Basic and got it (so the user can be told / it can be remembered). */
+    val usedBasic: Boolean get() = basic
 
     fun header(
         method: String,

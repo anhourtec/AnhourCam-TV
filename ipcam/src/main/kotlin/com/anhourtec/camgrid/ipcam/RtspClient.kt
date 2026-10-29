@@ -15,7 +15,15 @@ import java.net.URI
 class RtspException(
     message: String,
     val status: Int = 0,
-) : IOException(message)
+) : IOException(message) {
+    companion object {
+        /** [status] when the camera answered but offers no H.264/H.265 video. */
+        const val NO_VIDEO = -1
+
+        /** [status] when the camera only offers Basic login and Basic was not allowed. */
+        const val BASIC_ONLY = -2
+    }
+}
 
 /**
  * Plays the video of one RTSP stream over TCP (RTP interleaved on the RTSP connection, RFC 2326
@@ -29,9 +37,14 @@ class RtspClient(
     private val sink: FrameSink,
     private val width: Int = DEFAULT_WIDTH,
     private val height: Int = DEFAULT_HEIGHT,
+    /** Basic login sends the password readable; the app allows it only for cameras that need it. */
+    allowBasic: Boolean = true,
 ) : Closeable {
     private val target = RtspUrl.parse(url, user, password)
-    private val auth = target.user?.let { RtspAuth(it, target.password.orEmpty()) }
+    private val auth = target.user?.let { RtspAuth(it, target.password.orEmpty(), allowBasic) }
+
+    /** After [open]: the camera only accepted Basic login. */
+    val usedBasic: Boolean get() = auth?.usedBasic == true
     private val socket = Socket()
     private lateinit var input: InputStream
     private lateinit var output: OutputStream
@@ -51,7 +64,8 @@ class RtspClient(
         request("OPTIONS", target.url)
         val describe = request("DESCRIBE", target.url, "Accept: application/sdp\r\n")
         val base = describe.headers["content-base"] ?: describe.headers["content-location"] ?: target.url
-        val track = Sdp.videoTrack(describe.body, base) ?: throw RtspException("no H.264/H.265 video in this stream")
+        val track =
+            Sdp.videoTrack(describe.body, base) ?: throw RtspException("no H.264/H.265 video in this stream", RtspException.NO_VIDEO)
         val setup = request("SETUP", track.control, "Transport: RTP/AVP/TCP;unicast;interleaved=0-1\r\n")
         val sessionHeader = setup.headers["session"] ?: throw RtspException("no session from camera")
         session = sessionHeader.substringBefore(';').trim()
@@ -115,7 +129,11 @@ class RtspClient(
             val challenges = response.allHeaders.filter { it.first == "www-authenticate" }.map { it.second }
             val accepted =
                 challenges.firstOrNull { it.startsWith("Digest", true) && auth.accept(it) } ?: challenges.firstOrNull { auth.accept(it) }
-            if (accepted != null) response = exchange(method, uri, extra)
+            if (accepted != null) {
+                response = exchange(method, uri, extra)
+            } else if (challenges.any { it.startsWith("Basic", true) }) {
+                basicOnly()
+            }
         }
         if (response.status == UNAUTHORIZED) throw RtspException("wrong user name or password", UNAUTHORIZED)
         if (response.status !in OK_RANGE) throw RtspException("$method failed: ${response.status}", response.status)
@@ -211,6 +229,8 @@ class RtspClient(
             read += n
         }
     }
+
+    private fun basicOnly(): Nothing = throw RtspException("camera only accepts Basic login", RtspException.BASIC_ONLY)
 
     private fun badReply(): Nothing = throw RtspException("bad reply from camera")
 

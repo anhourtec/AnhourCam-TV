@@ -124,6 +124,40 @@ class RtspClientTest {
     }
 
     @Test
+    fun `a Basic-only camera is refused unless Basic is allowed`() {
+        ServerSocket(0, 1, InetAddress.getLoopbackAddress()).use { server ->
+            thread(isDaemon = true) {
+                server.accept().use { socket ->
+                    val reader = BufferedReader(InputStreamReader(socket.getInputStream(), Charsets.ISO_8859_1))
+                    repeat(2) {
+                        val lines = generateSequence { reader.readLine() }.takeWhile { it.isNotEmpty() }.toList()
+                        requests += lines.joinToString("\n")
+                        val cseq = lines.first { it.startsWith("CSeq") }.substringAfter(':').trim()
+                        val status = if (it == 0) "200 OK" else "401 Unauthorized\r\nWWW-Authenticate: Basic realm=\"cam\""
+                        socket.getOutputStream().write("RTSP/1.0 $status\r\nCSeq: $cseq\r\n\r\n".toByteArray())
+                    }
+                }
+            }
+            val client =
+                RtspClient(
+                    "rtsp://127.0.0.1:${server.localPort}/live",
+                    "admin",
+                    "saved",
+                    FrameSink {
+                        _,
+                        _,
+                        ->
+                    },
+                    allowBasic = false,
+                )
+            val e = assertThrows<RtspException> { client.open() }
+            assertEquals(RtspException.BASIC_ONLY, e.status)
+            assertTrue(requests.none { "Authorization" in it }, "the saved password is never sent with Basic")
+            client.close()
+        }
+    }
+
+    @Test
     fun `wrong password is reported as such`() {
         ServerSocket(0, 1, InetAddress.getLoopbackAddress()).use { server ->
             fakeCamera("good", server)
