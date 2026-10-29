@@ -15,8 +15,29 @@ android {
         versionName = "0.2.0-preview"
     }
 
+    // Release signing key: set per computer in ~/.gradle/gradle.properties (or as environment
+    // variables on CI), never in the repo. Without them, release builds are simply unsigned.
+    fun secret(name: String): String? =
+        providers
+            .gradleProperty(name)
+            .orElse(providers.environmentVariable(name))
+            .orNull
+            ?.takeIf { it.isNotBlank() }
+    val keystore = secret("ANHOURCAM_KEYSTORE_FILE")?.let { file(it.replaceFirst("~", System.getProperty("user.home"))) }
+    signingConfigs {
+        if (keystore != null && keystore.exists()) {
+            create("release") {
+                storeFile = keystore
+                storePassword = secret("ANHOURCAM_KEYSTORE_PASSWORD")
+                keyAlias = secret("ANHOURCAM_KEY_ALIAS") ?: "anhourcam"
+                keyPassword = secret("ANHOURCAM_KEY_PASSWORD") ?: secret("ANHOURCAM_KEYSTORE_PASSWORD")
+            }
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig = signingConfigs.findByName("release")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")

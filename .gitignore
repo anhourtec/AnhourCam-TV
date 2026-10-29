@@ -27,3 +27,9 @@ out/
 CLAUDE.md
 HANDOFF.md
 .claude/
+
+# Maintainer task list (local only)
+todo.md
+# Release signing keys never enter the repo
+*.jks
+*.keystore
