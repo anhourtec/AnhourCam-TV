@@ -1,9 +1,11 @@
 package com.anhourtec.camgrid.ipcam
 
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
 import java.io.IOException
 import java.security.MessageDigest
 import java.security.SecureRandom
@@ -40,6 +42,20 @@ class OnvifClient(
     private val password: String,
 ) {
     private var clockOffsetMs = 0L
+    private val httpAuth = RtspAuth(user, password)
+
+    private fun send(
+        url: String,
+        envelope: String,
+    ): Response {
+        val builder = Request.Builder().url(url).post(envelope.toRequestBody(SOAP))
+        if (httpAuth.ready) {
+            val target = url.toHttpUrl()
+            val uri = target.encodedPath + (target.encodedQuery?.let { "?$it" } ?: "")
+            httpAuth.header("POST", uri)?.let { builder.header("Authorization", it) }
+        }
+        return http.newCall(builder.build()).execute()
+    }
 
     /** All H.264/H.265 profiles, largest first, with their stream addresses. */
     fun streams(): List<OnvifStream> {
@@ -85,16 +101,18 @@ class OnvifClient(
         url: String,
         envelope: String,
     ): String {
-        val request =
-            Request
-                .Builder()
-                .url(url)
-                .post(envelope.toRequestBody(SOAP))
-                .build()
-        http.newCall(request).execute().use { response ->
-            val text = response.body.string()
-            if (text.contains("NotAuthorized", true) || response.code == UNAUTHORIZED) throw OnvifException("wrong user name or password")
-            if (!response.isSuccessful) throw OnvifException("camera answered ${response.code}")
+        var response = send(url, envelope)
+        // Many cameras require HTTP Digest on top of (or instead of) WS-Security: answer the
+        // challenge once. Basic is never used here, so the password is never sent readable.
+        if (response.code == UNAUTHORIZED) {
+            val challenge = response.headers("WWW-Authenticate").firstOrNull { it.startsWith("Digest", ignoreCase = true) }
+            response.close()
+            if (challenge != null && httpAuth.accept(challenge)) response = send(url, envelope)
+        }
+        response.use {
+            val text = it.body.string()
+            if (text.contains("NotAuthorized", true) || it.code == UNAUTHORIZED) throw OnvifException("wrong user name or password")
+            if (!it.isSuccessful) throw OnvifException("camera answered ${it.code}")
             return text
         }
     }
