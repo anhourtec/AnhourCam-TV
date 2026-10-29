@@ -178,21 +178,22 @@ button:hover{filter:brightness(1.05)}button:active{transform:scale(.99)}
 .foot{margin-top:20px;color:#5f6873;font-size:13px;text-align:center}
 fieldset{border:0;margin:18px 0 0;padding:0}legend{font-size:14px;color:var(--dim);margin-bottom:8px}
 .grids{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}
-.gridopt{display:flex;flex-direction:column;align-items:center;gap:6px;margin:0;padding:8px;border:1px solid var(--line);border-radius:14px;cursor:pointer;color:var(--text)}
+.gridopt{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px;margin:0;padding:8px;border:1px solid var(--line);border-radius:14px;cursor:pointer;color:var(--text)}
 .gridopt input{position:absolute;opacity:0;pointer-events:none}
 .gridopt b{font-size:14px}
 .gridopt:focus-within{box-shadow:0 0 0 3px rgba(200,251,208,.35)}
 .gridopt:has(input:checked){border-color:var(--accent);background:rgba(200,251,208,.08)}
-.mini,.preview{display:grid;grid-template-columns:repeat(60,1fr);grid-template-rows:repeat(60,1fr);aspect-ratio:16/9;width:100%}
+/* minmax(0,1fr): tracks may shrink below their content, so previews never widen the page. */
+.mini,.preview{display:grid;grid-template-columns:repeat(60,minmax(0,1fr));grid-template-rows:repeat(60,minmax(0,1fr));aspect-ratio:16/9;width:100%;min-width:0}
 .mini i,.preview i{background:#3a434e;margin:1px;border-radius:3px}
 .gridopt input:checked+.mini i{background:var(--accent)}
 .preview{margin:16px 0 4px;border-radius:12px;overflow:hidden}
 .preview i{display:grid;place-items:center;background:#1c232b;color:var(--dim);font-size:clamp(9px,2.6vw,14px);font-style:normal;font-weight:600;margin:2px}
 button.secondary{background:transparent;color:var(--text);border:1px solid var(--line);margin-top:12px}
 .tiles{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.tiles li{display:grid;grid-template-columns:72px 1fr;align-items:center;gap:10px}
+.tiles li{display:grid;grid-template-columns:72px minmax(0,1fr);align-items:center;gap:10px}
 .tiles label{margin:0;font-size:14px}
-select{width:100%;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#0b0e12;color:var(--text);font:inherit;font-size:16px}
+select{width:100%;min-width:0;text-overflow:ellipsis;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:#0b0e12;color:var(--text);font:inherit;font-size:16px}
 select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px rgba(200,251,208,.15)}
 .pills{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}
 .pill{padding:8px 14px;border-radius:999px;border:1px solid var(--line);color:var(--text);text-decoration:none;font-size:15px}
