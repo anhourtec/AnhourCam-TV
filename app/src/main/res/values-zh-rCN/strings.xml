@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_eyebrow">推荐</string>
+    <string name="phone_title">用手机登录</string>
+    <string name="phone_step1">在同一 Wi-Fi 下的手机或电脑上打开</string>
+    <string name="phone_step2">然后输入此配对码</string>
+    <string name="phone_note">配对码只能使用一次，10 分钟后失效。</string>
+    <string name="phone_expired">此配对码已失效。</string>
+    <string name="phone_new_code">获取新配对码</string>
+    <string name="phone_no_network">请将电视连接到 Wi-Fi 或有线网络，才能用手机登录。</string>
+    <string name="tv_title">或在电视上直接登录</string>
+    <string name="login_email">邮箱或用户名</string>
+    <string name="login_password">密码</string>
+    <string name="login_captcha_hint">输入图片中的数字</string>
+    <string name="login_new_image">换一张</string>
+    <string name="login_sign_in">登录</string>
+    <string name="login_signing_in">正在登录…</string>
+    <string name="login_captcha_description">BitVision 图片验证码</string>
+    <string name="login_failed">登录失败：%1$s</string>
+    <string name="login_failed_code">登录失败（代码 %1$s）</string>
+    <string name="login_captcha_error">无法加载图片验证码，请检查电视的网络连接。</string>
+    <string name="language_button">语言：%1$s</string>
+    <string name="language_title">语言</string>
+    <string name="live_loading">正在连接摄像头…</string>
+    <string name="live_error">无法开始实时预览：%1$s</string>
+    <string name="disclaimer">非官方应用 · 与 BitVision 无关</string>
+    <string name="live_no_device">此账号下没有在线的录像机。请在 BitVision 应用中确认录像机在线。</string>
+    <string name="live_step_account">正在打开你的账号…</string>
+    <string name="live_step_device">正在连接 %1$s…</string>
+    <string name="live_step_cameras">正在启动摄像头…</string>
+    <string name="tile_connecting">正在连接…</string>
+    <string name="tile_no_signal">此摄像头没有画面\n%1$d 秒后重试</string>
+    <string name="tile_no_decoder">这台电视无法同时播放更多摄像头</string>
+    <string name="tile_no_signal_manual">此摄像头没有画面\n按确定键重试</string>
+</resources>

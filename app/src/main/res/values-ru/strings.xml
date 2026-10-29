@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_eyebrow">Рекомендуем</string>
+    <string name="phone_title">Вход с телефона</string>
+    <string name="phone_step1">На телефоне или компьютере в той же сети Wi-Fi откройте</string>
+    <string name="phone_step2">Затем введите этот код</string>
+    <string name="phone_note">Код действует один раз и истекает через 10 минут.</string>
+    <string name="phone_expired">Срок действия кода истёк.</string>
+    <string name="phone_new_code">Новый код</string>
+    <string name="phone_no_network">Подключите телевизор к Wi-Fi или кабелю, чтобы войти с телефона.</string>
+    <string name="tv_title">Или войдите на телевизоре</string>
+    <string name="login_email">Эл. почта или имя пользователя</string>
+    <string name="login_password">Пароль</string>
+    <string name="login_captcha_hint">Цифры с картинки</string>
+    <string name="login_new_image">Другая картинка</string>
+    <string name="login_sign_in">Войти</string>
+    <string name="login_signing_in">Выполняется вход…</string>
+    <string name="login_captcha_description">Код с картинки (CAPTCHA) BitVision</string>
+    <string name="login_failed">Не удалось войти: %1$s</string>
+    <string name="login_failed_code">Не удалось войти (код %1$s)</string>
+    <string name="login_captcha_error">Не удалось загрузить код с картинки. Проверьте подключение телевизора к интернету.</string>
+    <string name="language_button">Язык: %1$s</string>
+    <string name="language_title">Язык</string>
+    <string name="live_loading">Подключение к камерам…</string>
+    <string name="live_error">Не удалось запустить просмотр: %1$s</string>
+    <string name="disclaimer">Неофициальное приложение · не связано с BitVision</string>
+    <string name="live_no_device">В этом аккаунте нет регистраторов в сети. Проверьте в приложении BitVision, что регистратор подключён.</string>
+    <string name="live_step_account">Открываем аккаунт…</string>
+    <string name="live_step_device">Подключение к %1$s…</string>
+    <string name="live_step_cameras">Запуск камер…</string>
+    <string name="tile_connecting">Подключение…</string>
+    <string name="tile_no_signal">Нет видео с этой камеры\nПовтор через %1$d с</string>
+    <string name="tile_no_decoder">Этот телевизор не может показывать больше камер одновременно</string>
+    <string name="tile_no_signal_manual">Нет видео с этой камеры\nНажмите OK, чтобы повторить</string>
+</resources>

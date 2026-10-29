@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/grid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
+
+    <!-- Full-screen loader shown while signing in and opening the NVR. -->
+    <LinearLayout
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_screen"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.anhourtec.camgrid.tv.ui.GridLoader
+            android:id="@+id/loading_mark"
+            android:layout_width="72dp"
+            android:layout_height="72dp" />
+
+        <TextView
+            android:id="@+id/loading_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:gravity="center"
+            android:maxWidth="640dp"
+            android:text="@string/live_loading"
+            android:textColor="@color/text"
+            android:textSize="20sp" />
+    </LinearLayout>
+</merge>

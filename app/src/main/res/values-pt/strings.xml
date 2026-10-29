@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_eyebrow">Recomendado</string>
+    <string name="phone_title">Entre pelo celular</string>
+    <string name="phone_step1">Num celular ou computador na mesma rede Wi-Fi, abra</string>
+    <string name="phone_step2">Depois digite este código</string>
+    <string name="phone_note">O código vale uma vez e expira em 10 minutos.</string>
+    <string name="phone_expired">Este código expirou.</string>
+    <string name="phone_new_code">Gerar novo código</string>
+    <string name="phone_no_network">Conecte a TV ao Wi-Fi ou à rede cabeada para entrar pelo celular.</string>
+    <string name="tv_title">Ou entre aqui na TV</string>
+    <string name="login_email">E-mail ou usuário</string>
+    <string name="login_password">Senha</string>
+    <string name="login_captcha_hint">Números da imagem</string>
+    <string name="login_new_image">Nova imagem</string>
+    <string name="login_sign_in">Entrar</string>
+    <string name="login_signing_in">Entrando…</string>
+    <string name="login_captcha_description">Código da imagem (CAPTCHA) do BitVision</string>
+    <string name="login_failed">Não foi possível entrar: %1$s</string>
+    <string name="login_failed_code">Não foi possível entrar (código %1$s)</string>
+    <string name="login_captcha_error">Não foi possível carregar o código da imagem. Verifique a internet da TV.</string>
+    <string name="language_button">Idioma: %1$s</string>
+    <string name="language_title">Idioma</string>
+    <string name="live_loading">Conectando às câmeras…</string>
+    <string name="live_error">Não foi possível iniciar a transmissão: %1$s</string>
+    <string name="disclaimer">App não oficial · sem vínculo com a BitVision</string>
+    <string name="live_no_device">Nenhum gravador on-line nesta conta. Verifique no app BitVision se o gravador está on-line.</string>
+    <string name="live_step_account">Abrindo sua conta…</string>
+    <string name="live_step_device">Conectando a %1$s…</string>
+    <string name="live_step_cameras">Iniciando as câmeras…</string>
+    <string name="tile_connecting">Conectando…</string>
+    <string name="tile_no_signal">Sem vídeo desta câmera\nNova tentativa em %1$d s</string>
+    <string name="tile_no_decoder">Esta TV não consegue reproduzir mais câmeras ao mesmo tempo</string>
+    <string name="tile_no_signal_manual">Sem vídeo desta câmera\nPressione OK para tentar de novo</string>
+</resources>

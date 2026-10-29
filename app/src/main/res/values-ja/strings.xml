@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_eyebrow">おすすめ</string>
+    <string name="phone_title">スマートフォンでサインイン</string>
+    <string name="phone_step1">同じ Wi-Fi のスマートフォンまたはパソコンで開く</string>
+    <string name="phone_step2">次にこのコードを入力</string>
+    <string name="phone_note">コードは 1 回だけ使用でき、10 分で無効になります。</string>
+    <string name="phone_expired">このコードは期限切れです。</string>
+    <string name="phone_new_code">新しいコード</string>
+    <string name="phone_no_network">スマートフォンでサインインするには、テレビを Wi-Fi または有線 LAN に接続してください。</string>
+    <string name="tv_title">またはテレビでサインイン</string>
+    <string name="login_email">メールアドレスまたはユーザー名</string>
+    <string name="login_password">パスワード</string>
+    <string name="login_captcha_hint">画像の数字</string>
+    <string name="login_new_image">別の画像</string>
+    <string name="login_sign_in">サインイン</string>
+    <string name="login_signing_in">サインインしています…</string>
+    <string name="login_captcha_description">BitVision の画像認証コード</string>
+    <string name="login_failed">サインインできませんでした：%1$s</string>
+    <string name="login_failed_code">サインインできませんでした（コード %1$s）</string>
+    <string name="login_captcha_error">画像認証コードを読み込めません。テレビのインターネット接続を確認してください。</string>
+    <string name="language_button">言語：%1$s</string>
+    <string name="language_title">言語</string>
+    <string name="live_loading">カメラに接続しています…</string>
+    <string name="live_error">ライブ表示を開始できません：%1$s</string>
+    <string name="disclaimer">非公式アプリ · BitVision とは無関係です</string>
+    <string name="live_no_device">このアカウントにオンラインのレコーダーがありません。BitVision アプリでレコーダーがオンラインか確認してください。</string>
+    <string name="live_step_account">アカウントを開いています…</string>
+    <string name="live_step_device">%1$s に接続しています…</string>
+    <string name="live_step_cameras">カメラを起動しています…</string>
+    <string name="tile_connecting">接続しています…</string>
+    <string name="tile_no_signal">このカメラの映像がありません\n%1$d 秒後に再試行します</string>
+    <string name="tile_no_decoder">このテレビではこれ以上のカメラを同時に再生できません</string>
+    <string name="tile_no_signal_manual">このカメラの映像がありません\n決定ボタンで再試行</string>
+</resources>

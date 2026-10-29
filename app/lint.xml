@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<lint>
+    <!-- The TV launcher banner must be 320x180dp; it is drawn once by the launcher, not per frame. -->
+    <issue id="VectorRaster">
+        <ignore path="src/main/res/drawable/banner.xml" />
+    </issue>
+</lint>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">CamGrid TV</string>
+    <string name="pair_code_format" translatable="false">%1$s %2$s</string>
+    <string name="tile_channel" translatable="false">CH%1$d</string>
+    <string name="tile_debug" translatable="false">CH%1$d · %2$s %3$s · %4$s · %5$d fps · first %6$.1f s · dropped %7$d</string>
+    <string name="pair_code_expired" translatable="false">——— ———</string>
+    <string name="phone_eyebrow">Recommended</string>
+    <string name="phone_title">Sign in from your phone</string>
+    <string name="phone_step1">On a phone or computer on the same Wi-Fi, open</string>
+    <string name="phone_step2">Then enter this code</string>
+    <string name="phone_note">The code works once and expires after 10 minutes.</string>
+    <string name="phone_expired">This code has expired.</string>
+    <string name="phone_new_code">Get a new code</string>
+    <string name="phone_no_network">Connect the TV to Wi-Fi or Ethernet to sign in from your phone.</string>
+    <string name="tv_title">Or sign in here on the TV</string>
+    <string name="login_email">Email or username</string>
+    <string name="login_password">Password</string>
+    <string name="login_captcha_hint">Digits in the picture</string>
+    <string name="login_new_image">New picture</string>
+    <string name="login_sign_in">Sign in</string>
+    <string name="login_signing_in">Signing in…</string>
+    <string name="login_captcha_description">Picture code (CAPTCHA) from BitVision</string>
+    <string name="login_failed">Sign-in failed: %1$s</string>
+    <string name="login_failed_code">Sign-in failed (code %1$s)</string>
+    <string name="login_captcha_error">Couldn\'t load the picture code. Check the TV\'s internet connection.</string>
+    <string name="language_button">Language: %1$s</string>
+    <string name="language_title">Language</string>
+    <string name="live_loading">Connecting to your cameras…</string>
+    <string name="live_error">Couldn\'t start live view: %1$s</string>
+    <string name="disclaimer">Unofficial app · not affiliated with BitVision</string>
+    <string name="live_no_device">No online NVR on this account. Check that your recorder is online in the BitVision app.</string>
+    <string name="live_step_account">Opening your account…</string>
+    <string name="live_step_device">Connecting to %1$s…</string>
+    <string name="live_step_cameras">Starting cameras…</string>
+    <string name="tile_connecting">Connecting…</string>
+    <string name="tile_no_signal">No video from this camera\nTrying again in %1$d s</string>
+    <string name="tile_no_decoder">This TV can\'t play more cameras at once</string>
+    <string name="tile_no_signal_manual">No video from this camera\nPress OK to try again</string>
+</resources>

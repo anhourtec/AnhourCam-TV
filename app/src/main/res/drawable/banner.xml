@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 320x180 TV launcher banner: a 2x2 grid mark and the app name. No third-party marks. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="320dp" android:height="180dp"
+    android:viewportWidth="320" android:viewportHeight="180">
+    <path android:fillColor="#FF0B0D10" android:pathData="M0,0h320v180h-320z" />
+    <path android:fillColor="#FFCFFFCF" android:pathData="M40,58h28v28h-28zM72,58h28v28h-28zM40,90h28v28h-28zM72,90h28v28h-28z" />
+    <path android:fillColor="#FFE8EAED" android:pathData="M124,76h6v28h-6zM136,76h24v6h-24zM136,98h24v6h-24zM136,76h6v28h-6zM170,76h24v6h-24zM170,76h6v28h-6zM170,98h24v6h-24zM188,88h6v16h-6zM180,88h14v6h-14zM204,76h6v28h-6zM210,76h14v6h-14zM218,82h6v6h-6zM210,88h14v6h-14zM218,94h6v10h-6zM234,76h6v28h-6zM250,76h6v28h-6zM256,76h16v6h-16zM256,98h16v6h-16zM272,82h6v16h-6z" />
+</vector>

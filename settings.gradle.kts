@@ -19,3 +19,4 @@ rootProject.name = "camgrid-tv"
 include(":bitvision-client")
 include(":bitvision-client-cli")
 include(":pairing")
+include(":app")

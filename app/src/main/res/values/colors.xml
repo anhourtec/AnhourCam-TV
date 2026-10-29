@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#FF0B0D10</color>
+    <color name="text">#FFE8EAED</color>
+    <color name="text_dim">#FF9AA0A6</color>
+    <color name="accent">#FFCFFFCF</color>
+    <color name="overlay">#99000000</color> <!-- check-redaction:allow colour value -->
+</resources>
