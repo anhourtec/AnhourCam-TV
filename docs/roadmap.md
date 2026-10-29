@@ -7,7 +7,17 @@ _Last updated: 2026-10-29 (Phase 2)_
 
 ## Now
 
-**Phase 2: Video proof of concept** (in progress)
+**Phase 4: Grid editor** (in progress)
+- [x] Layout model (`:layouts`): 11 grid shapes, any camera from any NVR, swap/clear/rename, grow fills the next cameras, shrink keeps choices
+- [x] Saved on the TV (`layouts.json`): layouts, default and last-watched layout
+- [x] Live view of saved layouts across several NVRs; only changed tiles restart
+- [x] On-TV editor: hold OK → choose camera (grouped by NVR), move, clear, grid size (visual previews), sign out
+- [x] Tiles beyond the TV's decoders wait and take over a decoder as soon as one frees
+- [ ] Edit layouts from a phone or computer via the pairing page
+- [ ] Several named layouts (switch / new / rename / delete / default)
+- [ ] Snapshots for tiles beyond the decoder budget
+
+**Phase 2: Video proof of concept** (mostly done)
 - [x] Android app module (AGP 9.5, minSdk 25, no GMS), leanback launcher entry + banner
 - [x] One stream: WebSocket → depacketizer → MediaCodec (HEVC) → SurfaceView
 - [x] 2×2 grid on a real Google TV: 2 hardware tiles at 26 fps, 1 software tile (stalls)

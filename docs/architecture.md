@@ -162,3 +162,8 @@ rate limits + body size limits · no credential/token logging.
 | 2026-10-29 | compileSdk 37 / targetSdk 37 | OkHttp 5.5's Android artifact requires compileSdk 37; app still runs on API 25+ |
 | 2026-10-29 | Phase 2 PoC UI uses Android Views; Compose for TV arrives with the real UI (Phase 3/4) | Fast PoC; the decoder pipeline is UI-independent |
 | 2026-10-29 | In-app language (cn/en/jp/por/py, default en) independent of the system locale | Matches the portal's language list; same codes sent in its `language` cookie |
+| 2026-10-29 | Layouts stored as one JSON file (`layouts.json`, atomic replace) instead of Room | A few KB of data; no annotation processing, smaller APK, faster start |
+| 2026-10-29 | `:layouts` pure-JVM module (60×60-unit grid, 11 templates) shared by TV and phone editor | One tested model for both editors |
+| 2026-10-29 | `GatewayPool`: one gateway session per gateway, one device login per NVR, shared by tiles | Mix cameras from several NVRs in one grid |
+| 2026-10-29 | Grid updates reconcile tiles instead of rebuilding | Changing one camera restarts one stream; moves restart none |
+| 2026-10-29 | TV editor in Android Views with a custom `TvDialog`; Compose for TV still deferred | Lean on the 930 MB test TV; consistent custom look |

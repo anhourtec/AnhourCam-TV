@@ -48,3 +48,8 @@
   channel stays selectable (user decides). Security review of pairing + app: no confirmed
   findings; follow-ups applied (pairing stops on Home, duplicate-header rejection, wider redaction).
   45 tests, 0 lint issues.
+
+## Phase 4: grid editor
+- 2026-10-29: `:layouts` module (6 tests), saved layouts, multi-NVR live grid with tile reconciling,
+  on-TV editor with modern dialogs (icons, NVR-grouped camera picker, visual grid-size picker),
+  scaled tile labels, decoder hand-off queue. Verified on the TV: cameras from two NVRs in one grid.
