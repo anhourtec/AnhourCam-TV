@@ -4,7 +4,7 @@ AnhourCam TV isn't on Google Play or the Amazon Appstore; you install it yoursel
 It takes about ten minutes the first time.
 
 > **Status:** there is no downloadable release yet. Until the first release is published on the
-> [Releases page](https://github.com/anhourtec/CamGrid-TV/releases), install it from a computer
+> [Releases page](https://github.com/anhourtec/AnhourCam-TV/releases), install it from a computer
 > (option A). Option B (no computer) works as soon as a release exists.
 
 ## What you need
@@ -41,10 +41,10 @@ It takes about ten minutes the first time.
    ```
    `adb devices` should now list your TV.
 4. **Get the app.** Download `camgrid-tv.apk` from the
-   [Releases page](https://github.com/anhourtec/CamGrid-TV/releases) once available, or build it
+   [Releases page](https://github.com/anhourtec/AnhourCam-TV/releases) once available, or build it
    yourself (needs JDK 17+ and the Android SDK):
    ```bash
-   git clone https://github.com/anhourtec/CamGrid-TV && cd CamGrid-TV
+   git clone https://github.com/anhourtec/AnhourCam-TV && cd AnhourCam-TV
    ./gradlew :app:assembleDebug            # → app/build/outputs/apk/debug/app-debug.apk
    ```
 5. **Install it:**
@@ -63,7 +63,7 @@ It takes about ten minutes the first time.
    - *Fire TV:* Settings → My Fire TV → **Developer options** → **Install unknown apps** → turn on
      **Downloader**.
 3. In Downloader, enter the APK link from the
-   [Releases page](https://github.com/anhourtec/CamGrid-TV/releases), download it and press
+   [Releases page](https://github.com/anhourtec/AnhourCam-TV/releases), download it and press
    **Install**.
 
 ## Step 2: First start
