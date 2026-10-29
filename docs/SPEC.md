@@ -1,4 +1,4 @@
-# CamGrid TV
+# AnhourCam TV
 
 > Working name. A minimal, open-source **Google TV / Android TV** app for watching cameras from NVRs registered to a **BitVision cloud account**, with NVR-style multi-camera grids.
 
@@ -8,7 +8,7 @@ This is the full build specification and phase plan. Read it top to bottom befor
 
 ## 1. What we're building
 
-BitVision has phone apps but **no TV app**. CamGrid TV fills that gap:
+BitVision has phone apps but **no TV app**. AnhourCam TV fills that gap:
 
 - Log in to a BitVision cloud account, either **on the TV** or **from any phone/laptop on the same Wi-Fi** through a local pairing page.
 - See every NVR on the account and every channel (camera) on each NVR.
@@ -423,4 +423,4 @@ Turn off Wireless/USB debugging when you're done. The app does not need it to ru
 
 ## 12. License
 
-Apache License 2.0 — see [`LICENSE`](../LICENSE). Copyright 2026 anhourtec and the CamGrid TV contributors, for this project's own code only. BitVision and all BitVision software, services and trademarks belong to their respective owner(s); see [`NOTICE.md`](../NOTICE.md) for the full ownership, non-affiliation and disclaimer statement. No BitVision trademarks or logos in the app name, icon, or artwork.
+Apache License 2.0 — see [`LICENSE`](../LICENSE). Copyright 2026 anhourtec and the AnhourCam TV contributors, for this project's own code only. BitVision and all BitVision software, services and trademarks belong to their respective owner(s); see [`NOTICE.md`](../NOTICE.md) for the full ownership, non-affiliation and disclaimer statement. No BitVision trademarks or logos in the app name, icon, or artwork.

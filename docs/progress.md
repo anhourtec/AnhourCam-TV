@@ -67,3 +67,7 @@
 - 2026-10-29 (later): README rebuilt with screenshots (TV images blurred for privacy, web images
   from a local preview with made-up cameras) and a step-by-step install guide (Google TV and
   Fire TV; adb now, Downloader once a release exists). Fixed the phone editor widening the page.
+- 2026-10-29 (later): renamed to **AnhourCam TV** with a new logo in the AnHourTec family style
+  (thin all-caps wordmark, "O" replaced by the product mark in AnHourTec blue): app name, icon,
+  TV banner, phone-page favicon and header, README. Internal identifiers unchanged. README restored
+  to its own structure, keeping only the new Screenshots section and the full install guide.

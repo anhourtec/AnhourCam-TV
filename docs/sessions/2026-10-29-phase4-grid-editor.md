@@ -19,3 +19,6 @@
   dialog detection; caught on review, redone with border-colour detection and rounded masks);
   web screenshots from a local preview with made-up cameras. Found and fixed a horizontal
   overflow on the phone editor (60-column CSS grids didn't shrink). Full install guide added.
+- Renamed to AnhourCam TV; new logo generated from one geometry (docs/brand). README restored to
+  its previous structure after feedback (only screenshots + install guide added).
+- Google TV kept showing the old name and icon until `versionCode` was bumped (1 → 2, 0.2.0-preview): its launcher caches labels per version.

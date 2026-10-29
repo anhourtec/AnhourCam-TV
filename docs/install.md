@@ -1,6 +1,6 @@
-# Install CamGrid TV on your TV
+# Install AnhourCam TV on your TV
 
-CamGrid TV isn't on Google Play or the Amazon Appstore; you install it yourself ("sideload").
+AnhourCam TV isn't on Google Play or the Amazon Appstore; you install it yourself ("sideload").
 It takes about ten minutes the first time.
 
 > **Status:** there is no downloadable release yet. Until the first release is published on the
@@ -68,7 +68,7 @@ It takes about ten minutes the first time.
 
 ## Step 2: First start
 
-1. Open **CamGrid TV** from your apps row.
+1. Open **AnhourCam TV** from your apps row.
 2. The TV shows an address like `http://192.168.x.x:8743` and a 6-digit code. On your phone
    (same Wi-Fi), open that address, enter the code, then your BitVision email, password and the
    digits in the picture. (You can also sign in right on the TV.)
@@ -90,4 +90,4 @@ address on the card, enter its code, choose grids and cameras, and **Save to TV*
 
 - **Update:** install the new APK the same way (`adb install -r …`, or download it again in
   Downloader). Your sign-in and layouts are kept.
-- **Remove:** Settings → Apps → CamGrid TV → **Uninstall**.
+- **Remove:** Settings → Apps → AnhourCam TV → **Uninstall**.

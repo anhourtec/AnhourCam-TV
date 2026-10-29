@@ -1,67 +1,75 @@
-[![CamGrid TV](.github/screenshots/menu.png)](https://github.com/anhourtec/CamGrid-TV)
-
 <p align="center">
-  <a href="https://github.com/anhourtec/CamGrid-TV">
-    <h1 align="center">CamGrid TV</h1>
-  </a>
-  <p align="center">
-    Watch your BitVision cameras on Google TV, Android TV and Fire TV.
-    Live NVR-style grids, any camera from any recorder in any tile, set up from the remote or
-    from your phone, and remembered on the TV. Native, fast and open source.
-    <br />
-    <br />
-    <a href="#install-on-your-tv">Install</a>
-    ·
-    <a href="#features">Features</a>
-    ·
-    <a href="#screenshots">Screenshots</a>
-    ·
-    <a href="docs/README.md">Docs</a>
-    ·
-    <a href="docs/roadmap.md">Roadmap</a>
-    ·
-    <a href="https://github.com/anhourtec/CamGrid-TV/releases">Releases</a>
-  </p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/brand/anhourcam-logo-dark.svg">
+    <img src="docs/brand/anhourcam-logo-light.svg" alt="AnhourCam TV" width="420">
+  </picture>
 </p>
 
-<div align="center">
+<h1 align="center">AnhourCam TV</h1>
 
-![Kotlin 2.4](https://img.shields.io/badge/Kotlin-2.4-7F52FF?labelColor=black&style=for-the-badge&logo=kotlin)
-![Android TV 7.1+](https://img.shields.io/badge/Android_TV-7.1%2B-2563EB?labelColor=black&style=for-the-badge&logo=android)
-![Google TV and Fire TV](https://img.shields.io/badge/Google_TV_·_Fire_TV-supported-2563EB?labelColor=black&style=for-the-badge)
-![License Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-2563EB?labelColor=black&style=for-the-badge)
+<p align="center">
+  <b>Watch your BitVision cameras on Google TV, Android TV and Fire TV.</b><br>
+  Live NVR camera grids (4, 9, 16 and more) on the big screen. Native, fast and open source.
+</p>
 
-</div>
+<p align="center">
+  <a href="https://github.com/anhourtec/CamGrid-TV/stargazers"><img src="https://img.shields.io/github/stars/anhourtec/CamGrid-TV?style=flat&color=cfffcf&labelColor=15181e" alt="Stars"></a>
+  <a href="https://github.com/anhourtec/CamGrid-TV/releases"><img src="https://img.shields.io/github/v/release/anhourtec/CamGrid-TV?include_prereleases&style=flat&color=cfffcf&labelColor=15181e&label=release" alt="Release"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache--2.0-cfffcf?style=flat&labelColor=15181e" alt="License: Apache-2.0"></a>
+  <img src="https://img.shields.io/badge/platform-Google%20TV%20%C2%B7%20Android%20TV%20%C2%B7%20Fire%20TV-cfffcf?style=flat&labelColor=15181e" alt="Platforms: Google TV, Android TV, Fire TV">
+  <img src="https://img.shields.io/badge/status-early%20development-ffd27f?style=flat&labelColor=15181e" alt="Status: early development">
+</p>
 
-Built by [AnHourTec](https://anhourtec.com) in Victoria, BC, Canada.
+<p align="center">
+  Built and maintained by <a href="https://github.com/anhourtec"><b>anhourtec</b></a> ·
+  <a href="https://github.com/anhourtec/CamGrid-TV">github.com/anhourtec/CamGrid-TV</a>
+</p>
 
 > **Unofficial.** Not affiliated with, endorsed by or supported by BitVision. BitVision and all
 > related software, services and trademarks belong to their owners. See [NOTICE.md](NOTICE.md).
-> BitVision has apps for [Android phones](https://play.google.com/store/apps/details?id=com.gzch.lsplat.lsbtvapp&hl=en),
-> [iPhone](https://apps.apple.com/in/app/bitvision/id1419463554) and the [web](https://bitvision.app/),
-> but none for TVs. CamGrid TV fills that gap for your own account and cameras.
 
-## Features
+## Start here
 
-- **NVR-style grids:** 1, 2, 4, 6, 8, 9, 10, 13, 16, 25 and 36 tiles. Growing a grid fills the new
-  tiles with your next cameras; shrinking it keeps your choices for later.
-- **Any camera, any tile:** mix cameras from several NVRs in one grid. Hold OK on a tile to choose
-  its camera (grouped by NVR), move it, clear it or change the grid size.
-- **Several layouts:** "Home", "Shop", "Night"… switch with ◀ ▶ at the edge of the grid and pick
-  the one that opens first.
-- **Set up from your phone:** open the address shown on the TV, enter its code, then pick grids,
-  cameras and layouts in a phone-friendly page. The TV updates the moment you save.
-- **Sign in from your phone:** no typing with the remote. The BitVision picture code (CAPTCHA) is
-  shown right in the app.
-- **Fast and lean:** native Kotlin, hardware H.265/H.264 decoding straight to the screen, no
-  WebView. Only the tiles that change restart.
-- **Never an empty tile:** tiles beyond what your TV can play live show still images that refresh
-  every few seconds, and go live as soon as a decoder frees up.
-- **Remembers everything:** layouts, grid sizes, which camera sits where, and the last screen you
-  watched.
-- **Five languages:** English, 中文（简体）, 日本語, Português, Русский, on the TV and the phone page.
-- **Private:** talks only to BitVision's cloud, like the official apps. Your password is used once
-  to sign in and is never stored.
+| You want to | Go to |
+|---|---|
+| **Know if it works yet** | [Status](#status): early development, not ready to install yet. |
+| **Watch BitVision cameras on a TV** | [What you get](#what-you-get) and [Supported devices](#supported-devices). |
+| **Install it (when released)** | [Install](#install): sideload over Wi-Fi, no Play Store needed. |
+| **Use BitVision on a phone instead** | The official apps: [Android (Google Play)](https://play.google.com/store/apps/details?id=com.gzch.lsplat.lsbtvapp&hl=en) · [iPhone/iPad (App Store)](https://apps.apple.com/in/app/bitvision/id1419463554) · [Web portal](https://bitvision.app/) |
+| **Help build it** | [Contributing](CONTRIBUTING.md) and the [roadmap](docs/roadmap.md). |
+
+[Why this exists](#why-this-exists) · [What you get](#what-you-get) · [Screenshots](#screenshots) · [Status](#status) ·
+[Supported devices](#supported-devices) · [Install](#install) · [How it works](#how-it-works) ·
+[Build and run](#build-and-run-on-your-tv-developers) · [Questions people ask](#questions-people-ask) · [Contributing](#contributing) · [Credits](#credits)
+
+## Why this exists
+
+BitVision has apps for [Android phones](https://play.google.com/store/apps/details?id=com.gzch.lsplat.lsbtvapp&hl=en),
+[iPhone](https://apps.apple.com/in/app/bitvision/id1419463554) and the [web](https://bitvision.app/),
+but **no app for TVs**. If you have BitVision NVRs or DVRs for home or shop CCTV, there has been
+no good way to put your cameras on the living-room or shop-counter TV.
+
+AnhourCam TV fills that gap: sign in with **your own** BitVision account and see every camera from
+every NVR on the account, in the grid layouts you know from an NVR monitor.
+
+## What you get
+
+| | |
+|---|---|
+| **NVR-style grids** | 1, 2, 4, 6, 8, 9, 10, 13, 16, 25 and 36 tiles. Bigger grids fill themselves with your next cameras. |
+| **Any camera, any tile** | Mix cameras from several NVRs in one grid. On the TV: hold OK on a tile to choose a camera, move it or change the grid size. |
+| **Several layouts** | "Home", "Shop", "Night"… switch with ◀ ▶ at the edge of the grid; pick the one that opens first. |
+| **Edit from your phone** | Open the address shown on the TV, enter the code, pick the grid and a camera for every tile, save: the TV updates at once. |
+| **Fullscreen in HD** | Press OK on a tile for the high-quality stream; Back returns to the grid. |
+| **Easy sign-in** | Open the address shown on the TV on any phone or laptop on the same Wi-Fi, enter the 6-digit code, sign in there. No typing with the remote. |
+| **Your language** | English, 中文（简体）, 日本語, Português, Русский on the TV and the phone page. |
+| **Remembers everything** | Your layouts, which camera sits in which tile, grid sizes and the last screen you watched are kept on the TV. |
+| **Tour mode** | Cycle through pages or layouts automatically. |
+| **Remote-first** | Every action works with a basic D-pad remote. Dark, minimal, video first. |
+| **Fast** | Native Kotlin with hardware H.265/H.264 decoding straight to the screen. No WebView, no browser inside. Tiles beyond what your TV can play live show refreshing still images. |
+| **Private** | Talks only to BitVision's cloud, like the official apps. Your password is used once to sign in and is never stored. |
+
+Screenshots will be added once the first build is ready.
 
 ## Screenshots
 
@@ -80,9 +88,37 @@ Built by [AnHourTec](https://anhourtec.com) in Victoria, BC, Canada.
 TV screenshots come from a real Google TV; **camera images are blurred for privacy** and the TV's
 address is hidden. Phone and computer screenshots use made-up camera names.
 
-## Install on your TV
+## Status
 
-CamGrid TV isn't on Google Play or the Amazon Appstore; you install it yourself ("sideload").
+**Early development.** Nothing to install yet. Progress is tracked in [docs/progress.md](docs/progress.md)
+and [docs/roadmap.md](docs/roadmap.md).
+
+| Phase | What | State |
+|---|---|---|
+| 0 | Learn how the BitVision web portal streams video | ✅ done |
+| 1 | Kotlin client library | ✅ done |
+| 2 | Native video playback proof of concept | ✅ done |
+| 3 | TV app + sign-in (TV and phone pairing) | ✅ mostly done |
+| 4 | Grids, layout editor (TV + phone), fullscreen, tour mode | in progress |
+| 5 | Performance polish + first release APK | planned |
+
+Watch or star the repo to hear about the first release.
+
+## Supported devices
+
+| Platform | Support |
+|---|---|
+| **Google TV** (Chromecast with Google TV, Google TV Streamer, Sony, TCL, Hisense Google TVs…) | Target |
+| **Android TV** 7.1+ (NVIDIA Shield, Xiaomi Mi Box, Philips, Sharp…) | Target |
+| **Amazon Fire TV** (Fire TV Stick, Stick 4K, Cube, Fire TV smart TVs) | Target (sideload) |
+| Samsung Tizen, LG webOS, Roku, Apple TV | Not supported (not Android) |
+
+How many cameras play live at once depends on your device's video decoder. Tiles beyond that
+show a still image until you select them.
+
+## Install
+
+AnhourCam TV isn't on Google Play or the Amazon Appstore; you install it yourself ("sideload").
 It takes about ten minutes the first time.
 
 > **Status:** there is no downloadable release yet. Until the first release is published on the
@@ -150,7 +186,7 @@ It takes about ten minutes the first time.
 
 ### Step 2: First start
 
-1. Open **CamGrid TV** from your apps row.
+1. Open **AnhourCam TV** from your apps row.
 2. The TV shows an address like `http://192.168.x.x:8743` and a 6-digit code. On your phone
    (same Wi-Fi), open that address, enter the code, then your BitVision email, password and the
    digits in the picture. (You can also sign in right on the TV.)
@@ -172,24 +208,57 @@ address on the card, enter its code, choose grids and cameras, and **Save to TV*
 
 - **Update:** install the new APK the same way (`adb install -r …`, or download it again in
   Downloader). Your sign-in and layouts are kept.
-- **Remove:** Settings → Apps → CamGrid TV → **Uninstall**.
+- **Remove:** Settings → Apps → AnhourCam TV → **Uninstall**.
 
-## Supported devices
+## Build and run on your TV (developers)
 
-| Platform | Support |
-| --- | --- |
-| **Google TV** (Chromecast with Google TV, Google TV Streamer, Sony, TCL, Hisense, Skyworth…) | Yes |
-| **Android TV** 7.1+ (NVIDIA Shield, Xiaomi Mi Box, Philips, Sharp…) | Yes |
-| **Amazon Fire TV** (Fire TV Stick, Stick 4K, Cube, Fire TV smart TVs) | Yes (sideload) |
-| Samsung Tizen, LG webOS, Roku, Apple TV | No (not Android) |
+Every step we use, in order. You need a computer on the same Wi-Fi as the TV, JDK 17+ and the
+Android SDK platform-tools (`adb`).
 
-How many tiles play live at once depends on your TV's video decoders; the rest show refreshing
-still images. Tested devices and results: [docs/devices](docs/devices/).
+1. **Turn on developer mode on the TV.** Settings → System → About → press OK on
+   *Android TV OS build* 7 times.
+2. **Turn on wireless debugging.** Settings → System → Developer options → *Wireless debugging* →
+   *Pair device with pairing code*. Keep that screen open.
+3. **Pair and connect** (use the IP, ports and code shown on the TV):
+   ```bash
+   adb pair <TV_IP>:<PAIRING_PORT> <PAIRING_CODE>
+   adb connect <TV_IP>:<CONNECT_PORT>   # usually automatic after pairing; check with: adb devices
+   ```
+4. **Build and install:**
+   ```bash
+   git clone https://github.com/anhourtec/CamGrid-TV && cd CamGrid-TV
+   ./gradlew :app:assembleDebug
+   adb install -r app/build/outputs/apk/debug/app-debug.apk
+   ```
+5. **Open AnhourCam TV** from the TV's apps row.
+6. **Sign in from your phone:** the TV shows an address like `http://192.168.x.x:8743` and a
+   6-digit code. Open the address on your phone (same Wi-Fi), enter the code, then your BitVision
+   email, password and the digits in the picture. The TV signs in and opens your cameras.
+   (Or sign in directly on the TV with the remote.)
+7. **Use it:** arrows move between tiles, OK opens a camera fullscreen (Back returns), hold OK on
+   a tile for its menu (choose camera, move, clear, grid size, layouts, edit from phone, sign out).
+   ◀ ▶ at the edge of the grid switches between your saved layouts.
+8. **Edit from your phone:** tile menu → *Edit layout from phone or computer*; open the address on
+   the card, enter its code, choose grid and cameras, *Save to TV*. Back closes the card.
+9. When you're done, turn *Wireless debugging* off again (the app doesn't need it).
+
+Quality checks before every change: `./gradlew ktlintCheck detekt test :app:lintDebug`.
+
+## How it works
+
+1. You sign in with your BitVision account, on the TV or from your phone through a one-time
+   pairing page served by the TV on your local network.
+2. AnhourCam TV lists your NVRs and their channels, as the web portal does.
+3. Each tile opens the camera's live stream from BitVision's cloud relay and hands the H.265/H.264
+   video to the TV's hardware decoder.
+
+Technical details: [architecture](docs/architecture.md) · [streaming](docs/streaming.md) ·
+[security](docs/security.md) · [full spec](docs/SPEC.md).
 
 ## Questions people ask
 
 **Is there a BitVision app for Android TV, Google TV or Fire TV?**
-Not an official one, as far as we know. CamGrid TV is an unofficial, open-source app that does
+Not an official one, as far as we know. AnhourCam TV is an unofficial, open-source app that does
 this job.
 
 **Can I watch BitVision cameras on my TV?**
@@ -198,17 +267,17 @@ and Fire TV (Firestick), with multi-camera grids.
 
 **Can I install the BitVision phone app on my TV instead?**
 You can try to sideload the phone APK, but phone apps are made for touch screens and usually work
-poorly with a TV remote. CamGrid TV is built for the remote from the start.
+poorly with a TV remote. AnhourCam TV is built for the remote from the start.
 
 **Does it work with my NVR or DVR brand?**
 If your recorder shows up in your BitVision account (the BitVision app or
-[bitvision.app](https://bitvision.app/)), CamGrid TV aims to support it.
+[bitvision.app](https://bitvision.app/)), AnhourCam TV aims to support it.
 
 **Does it need my NVR's IP address or port forwarding?**
 No. Like the official apps, it uses your BitVision cloud account.
 
 **Do I need a browser or a computer to sign in?**
-No. BitVision asks for a short picture code (CAPTCHA) when you sign in. CamGrid TV shows that
+No. BitVision asks for a short picture code (CAPTCHA) when you sign in. AnhourCam TV shows that
 picture on the TV, or on your phone if you sign in from your phone, and you type the digits. Nothing
 else to install.
 
@@ -232,55 +301,20 @@ TV. Phone pairing uses a short-lived, single-use code on your local network. See
 **Is this official or affiliated with BitVision?**
 No. See [NOTICE.md](NOTICE.md). Use it only with your own account and devices.
 
-## Built with
-
-- [Kotlin](https://kotlinlang.org/) 2.4 and coroutines, native Android (Views), no WebView
-- Android **MediaCodec** hardware decoding straight to `SurfaceView`
-- [OkHttp](https://square.github.io/okhttp/) 5 for HTTPS and WebSockets
-- [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) for JSON
-- A small built-in web server (plain `ServerSocket`, no framework) for the phone pages
-- Gradle 9 with ktlint, detekt and Android Lint (zero issues policy), JUnit 6
-
-## Project structure
-
-```
-app/                   Android TV app (screens, tiles, decoding, layouts on the TV)
-bitvision-client/      Pure Kotlin client: portal sign-in, devices, live-view protocol
-bitvision-client-cli/  Command-line tool to test the client on a computer
-pairing/               LAN server for phone sign-in and the phone layout editor
-layouts/               Layout model shared by the TV and the phone editor
-docs/                  Spec, architecture, protocol, security, roadmap, devices, session logs
-scripts/               Secret scanner used before every commit
-.github/screenshots/   README screenshots (camera images blurred)
-```
-
-## Development
-
-```bash
-./gradlew test                                  # unit tests (all modules)
-./gradlew ktlintCheck detekt :app:lintDebug     # lint (must report zero issues)
-./gradlew :app:assembleDebug                    # build the TV app
-adb install -r app/build/outputs/apk/debug/app-debug.apk
-```
-
-Full specification: [docs/SPEC.md](docs/SPEC.md) · architecture: [docs/architecture.md](docs/architecture.md)
-· protocol notes: [docs/streaming.md](docs/streaming.md) · security: [docs/security.md](docs/security.md).
-
 ## Contributing
 
 Issues and pull requests are welcome; see [CONTRIBUTING.md](CONTRIBUTING.md). Security issues:
 [SECURITY.md](SECURITY.md). Please never post account details, device serials, IP addresses or
 camera images in issues.
 
+## Credits
+
+Created and maintained by **[anhourtec](https://github.com/anhourtec)**. If AnhourCam TV helps
+you, star the repo and share it with anyone stuck watching their CCTV on a phone.
+
 ## License
 
 [Apache License 2.0](LICENSE) for this project's own code. BitVision, its apps, services and
 trademarks belong to their respective owners. See [NOTICE.md](NOTICE.md).
-
-## Support
-
-- Questions and bugs: [GitHub issues](https://github.com/anhourtec/CamGrid-TV/issues)
-- Made by [AnHourTec](https://anhourtec.com). If CamGrid TV helps you, star the repo and share it
-  with anyone stuck watching their CCTV on a phone.
 
 <!-- Keywords: BitVision TV app, BitVision Android TV, BitVision Google TV, BitVision Fire TV, BitVision Firestick, BitVision NVR on TV, BitVision DVR TV, watch CCTV on Google TV, NVR multi-camera grid Android TV, bitvision.app TV -->

@@ -1,7 +1,7 @@
 # Skyworth Google TV (MediaTek MT5867 / T56), Android 14
 
 The project's first real test device (model string `SWTV_24AE_FHD`). A typical low-end Google TV:
-if CamGrid runs well here, it runs well on most TVs.
+if AnhourCam TV runs well here, it runs well on most TVs.
 
 | | |
 |---|---|
@@ -19,7 +19,7 @@ if CamGrid runs well here, it runs well on most TVs.
 | `c2.mtk.avc.decoder` | hardware H.264 | 1920×1088 | 2 |
 | `c2.android.hevc.decoder` | software H.265 | 4096×4096 | CPU-bound |
 
-## Measured with CamGrid (Phase 2 PoC, 2×2 grid of sub-streams)
+## Measured with AnhourCam TV (Phase 2 PoC, 2×2 grid of sub-streams)
 
 | Tile | Stream | Decoder | Result |
 |---|---|---|---|

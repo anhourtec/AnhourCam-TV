@@ -1,6 +1,6 @@
 # Roadmap
 
-Living plan for CamGrid TV. Updated at the end of every working session.
+Living plan for AnhourCam TV. Updated at the end of every working session.
 Product spec: [SPEC.md](SPEC.md) · Phase status detail: [progress.md](progress.md).
 
 _Last updated: 2026-10-29 (Phase 4)_

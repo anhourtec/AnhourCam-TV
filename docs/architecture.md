@@ -171,3 +171,4 @@ rate limits + body size limits · no credential/token logging.
 | 2026-10-29 | Pairing token renews on each editor request (`touch`), still capped by the 10-minute server life | Editing can take longer than 5 minutes |
 | 2026-10-29 | Still images = one key frame per camera, decoded off-budget with a software decoder | No snapshot API on the portal; the NVR starts every stream with a key frame |
 | 2026-10-29 | App module gets JVM unit tests (JUnit 6) for pure code such as YUV conversion | Test without a device |
+| 2026-10-29 | Product renamed to AnhourCam TV; package, applicationId, modules and repo name unchanged | Changing the applicationId would install a separate app and lose saved layouts |
