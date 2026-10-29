@@ -1,5 +1,6 @@
 package com.anhourtec.camgrid.client.page
 
+import com.anhourtec.camgrid.client.ClientException
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -73,4 +74,4 @@ object DevicePageParser {
 
 class PageFormatException(
     message: String,
-) : Exception(message)
+) : ClientException(message)

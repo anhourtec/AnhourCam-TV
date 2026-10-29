@@ -51,11 +51,26 @@ class SessionCookieJar(
                 .build()
     }
 
+    /** Sets the portal's own `language` cookie (cn, en, jp, por, py) so its messages match the UI. */
+    @Synchronized
+    fun setLanguage(code: String) {
+        cookies[LANGUAGE_COOKIE] =
+            Cookie
+                .Builder()
+                .name(LANGUAGE_COOKIE)
+                .value(code)
+                .hostOnlyDomain(host)
+                .path("/")
+                .secure()
+                .build()
+    }
+
     @Synchronized
     fun clear() = cookies.clear()
 
     companion object {
         const val SESSION_COOKIE = "PHPSESSID"
+        const val LANGUAGE_COOKIE = "language"
         const val DEFAULT_HOST = "bitvision.app"
     }
 }

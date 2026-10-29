@@ -1,5 +1,6 @@
 package com.anhourtec.camgrid.client.gateway
 
+import com.anhourtec.camgrid.client.ClientException
 import com.anhourtec.camgrid.client.media.RelayAck
 import com.anhourtec.camgrid.client.page.DeviceDetail
 import com.anhourtec.camgrid.client.page.ServiceAddress
@@ -11,6 +12,7 @@ import com.anhourtec.camgrid.client.protocol.Route
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -38,6 +40,8 @@ class GatewaySession(
     private val accountName: String,
     private val scope: CoroutineScope,
     private val clock: () -> Long = System::currentTimeMillis,
+    /** Debug hook: receives every message in and out, with secrets masked by [Redact]. */
+    private val trace: ((String) -> Unit)? = null,
 ) : Closeable {
     private val incoming = MutableSharedFlow<Incoming>(extraBufferCapacity = INCOMING_BUFFER)
     private val events =
@@ -46,6 +50,7 @@ class GatewaySession(
                 webSocket: WebSocket,
                 text: String,
             ) {
+                trace?.invoke("<- " + Redact.secrets(text))
                 Incoming.parse(text)?.let { incoming.tryEmit(it) }
             }
         }
@@ -62,7 +67,7 @@ class GatewaySession(
 
     suspend fun connect() {
         socket = http.newWebSocket(Request.Builder().url(service.userGateUrl).build(), events)
-        withTimeout(TIMEOUT_MS) { events.opened.await() }
+        awaitOrFail("gateway connection") { events.opened.await() }
         val res = request(Messages.gatewayLogin(accountName, clock())) { it.cmdId == Cmd.LOGIN_RES }
         if (res.code != 0) throw ProtocolException("gateway login failed: code ${res.code}")
         ownClientId = res.long(res.cmdData, "client_id")
@@ -178,15 +183,30 @@ class GatewaySession(
     ): Incoming =
         coroutineScope {
             val reply = async(start = CoroutineStart.UNDISPATCHED) { incoming.first(match) }
+            trace?.invoke("-> " + Redact.secrets(message))
             val sent = socket?.send(message) ?: false
             if (!sent) {
                 reply.cancel()
                 throw ProtocolException("gateway socket is not open")
             }
-            withTimeout(TIMEOUT_MS) { reply.await() }
+            awaitOrFail("reply") { reply.await() }
         }
 
     companion object {
+        /**
+         * Waits up to [TIMEOUT_MS]. A timeout becomes a [ProtocolException], not a
+         * cancellation, so callers handle it like any other failure.
+         */
+        internal suspend fun <T> awaitOrFail(
+            what: String,
+            block: suspend () -> T,
+        ): T =
+            try {
+                withTimeout(TIMEOUT_MS) { block() }
+            } catch (_: TimeoutCancellationException) {
+                throw ProtocolException("timed out waiting for $what")
+            }
+
         /** The portal's heartbeat interval. */
         const val HEARTBEAT_MS = 200_000L
         private const val TIMEOUT_MS = 15_000L
@@ -198,4 +218,4 @@ class GatewaySession(
 class DeviceLoginException(
     deviceId: String,
     resultCode: Int,
-) : Exception("device $deviceId refused login: resultCode $resultCode")
+) : ClientException("device $deviceId refused login: resultCode $resultCode")

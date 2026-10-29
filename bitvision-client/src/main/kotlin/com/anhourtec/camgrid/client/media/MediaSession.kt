@@ -1,6 +1,7 @@
 package com.anhourtec.camgrid.client.media
 
 import com.anhourtec.camgrid.client.gateway.DeviceLink
+import com.anhourtec.camgrid.client.gateway.GatewaySession
 import com.anhourtec.camgrid.client.gateway.SocketEvents
 import com.anhourtec.camgrid.client.page.ServiceAddress
 import com.anhourtec.camgrid.client.protocol.Cmd
@@ -11,7 +12,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeout
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -56,9 +56,9 @@ class MediaSession(
     suspend fun open(): RelayAck {
         val ws = http.newWebSocket(Request.Builder().url(service.streamUrl).build(), events)
         socket = ws
-        withTimeout(TIMEOUT_MS) { events.opened.await() }
+        GatewaySession.awaitOrFail("media connection") { events.opened.await() }
         ws.send(Messages.relayAsk(deviceId, clock()))
-        val relay = withTimeout(TIMEOUT_MS) { ack.await() }
+        val relay = GatewaySession.awaitOrFail("relay ack") { ack.await() }
         heartbeat =
             scope.launch {
                 while (isActive) {
@@ -86,7 +86,6 @@ class MediaSession(
 
     private companion object {
         const val HEARTBEAT_MS = 200_000L
-        const val TIMEOUT_MS = 15_000L
         const val NORMAL_CLOSE = 1000
     }
 }

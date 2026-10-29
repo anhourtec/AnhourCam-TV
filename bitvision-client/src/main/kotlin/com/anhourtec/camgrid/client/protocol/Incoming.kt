@@ -1,5 +1,6 @@
 package com.anhourtec.camgrid.client.protocol
 
+import com.anhourtec.camgrid.client.ClientException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
@@ -58,4 +59,4 @@ class Incoming(
 
 class ProtocolException(
     message: String,
-) : Exception(message)
+) : ClientException(message)

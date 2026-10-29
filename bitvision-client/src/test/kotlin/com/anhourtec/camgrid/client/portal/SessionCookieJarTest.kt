@@ -21,6 +21,14 @@ class SessionCookieJarTest {
     }
 
     @Test
+    fun `language cookie is sent alongside the session`() {
+        val jar = SessionCookieJar()
+        jar.restore("abc")
+        jar.setLanguage("jp")
+        assertEquals(mapOf("PHPSESSID" to "abc", "language" to "jp"), jar.loadForRequest(portal).associate { it.name to it.value })
+    }
+
+    @Test
     fun `cookies from other hosts never replace the session`() {
         val jar = SessionCookieJar()
         jar.restore("abc")
