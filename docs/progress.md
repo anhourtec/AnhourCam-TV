@@ -4,10 +4,11 @@
 |---|---|---|
 | 0 API discovery | **done** (gate met); carry-overs: session idle timeout, concurrent-stream limit, audio frames | **yes** |
 | 1 bitvision-client | **done**: live CLI run streamed SD and HD; 25 tests, lint clean | **yes** |
-| 2 Video PoC | **in progress**: 3 live tiles on a real Google TV; stream-limit question open | no |
-| 3 TV shell + login | **partly done early**: on-TV login, LAN phone pairing, 5 languages | — |
-| 4 Grids | **in progress**: TV + phone editors, saved multi-NVR layouts | — |
-| 5 Polish | not started | — |
+| 2 Video PoC | **done** (leftovers: decoder priority, faster recovery, 30-min run): 4 live tiles on a real Google TV | **yes** |
+| 3 TV shell + login | **done**: on-TV login with CAPTCHA, LAN phone pairing, 5 languages | **yes** |
+| 4 Grids | **mostly done**: TV + phone editors, named layouts, still images; left: device cache, tour mode, settings | — |
+| 5 Polish | not started (README screenshots + install guide done) | — |
+| 6 Any IP camera | **started**: plan in [ipcam.md](ipcam.md); `:ipcam` code written, not yet built/tested | — |
 
 ## Phase 0 — API discovery
 - 2026-10-29: Repo scaffolding, docs, redaction checker created. Capture plan written (`capture-plan.md`).
@@ -71,3 +72,11 @@
   (thin all-caps wordmark, "O" replaced by the product mark in AnHourTec blue): app name, icon,
   TV banner, phone-page favicon and header, README. Internal identifiers unchanged. README restored
   to its own structure, keeping only the new Screenshots section and the full install guide.
+
+## Phase 6: any IP camera (started 2026-10-29)
+
+Goal: usable without BitVision. Observed a competing app's setup page (feature list only) and the
+maintainer's LAN: 9–10 RTSP cameras on port 554, no ONVIF multicast replies, ONVIF device service
+on at least one. Plan, design and rules: [ipcam.md](ipcam.md). Step 6a (`:ipcam`: scanner, ONVIF
+client, RTSP over TCP with Basic/Digest, SDP, H.264/H.265 RTP depacketizer) is written but not yet
+built or tested.

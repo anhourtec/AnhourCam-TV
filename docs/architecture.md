@@ -35,6 +35,7 @@ Product spec: [`SPEC.md`](SPEC.md) §4–§7. Plan: [`roadmap.md`](roadmap.md).
 | `:app` | Android app | `:bitvision-client`, `:pairing`, `:layouts`, coroutines | The TV app (Android Views) |
 | `:layouts` | Kotlin/JVM lib | kotlinx.serialization | Layout model: grid templates, camera per tile, JSON codec |
 | `:pairing` | Kotlin/JVM lib | — (JDK only) | LAN pairing server: strict HTTP parser, pairing rules, no-JS pages in 5 languages |
+| `:ipcam` | Kotlin/JVM lib | `:bitvision-client` (FrameSink/FrameHeader only), OkHttp | Generic IP cameras: LAN scan, ONVIF lookup, RTSP over TCP, H.264/H.265 RTP depacketizer (Phase 6, [ipcam.md](ipcam.md)) |
 
 ### `:bitvision-client` packages (`com.anhourtec.camgrid.client`)
 
@@ -172,3 +173,8 @@ rate limits + body size limits · no credential/token logging.
 | 2026-10-29 | Still images = one key frame per camera, decoded off-budget with a software decoder | No snapshot API on the portal; the NVR starts every stream with a key frame |
 | 2026-10-29 | App module gets JVM unit tests (JUnit 6) for pure code such as YUV conversion | Test without a device |
 | 2026-10-29 | Product renamed to AnhourCam TV; package, applicationId, modules and repo name unchanged | Changing the applicationId would install a separate app and lose saved layouts |
+| 2026-10-29 | Phase 6: generic IP cameras in a separate `:ipcam` JVM module, own RTSP client (no ExoPlayer) | Same zero-copy FrameSink → MediaCodec path as BitVision, no new dependency (~0 KB), BitVision code untouched |
+| 2026-10-29 | IP cameras as `CameraRef("ip:<uuid>", 0)` | Saved layouts need no migration; mixes with BitVision cameras everywhere |
+| 2026-10-29 | RTSP over TCP interleaved only (no UDP) | Works through any home network without opening ports; one socket per tile |
+| 2026-10-29 | LAN scan = ONVIF WS-Discovery + TCP sweep of 554/8554 on the private /24 | The maintainer's cameras ignore WS-Discovery but answer RTSP |
+| 2026-10-29 | GitHub repo renamed to `anhourtec/AnhourCam-TV` | Matches the product name |

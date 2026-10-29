@@ -36,6 +36,7 @@ BitVision has phone apps but **no TV app**. AnhourCam TV fills that gap:
 | 3 | TV app shell + login (on-TV and LAN pairing) | Working auth flows |
 | 4 | Device/channel browser + grid engine | Saved layouts, multi-tile live view |
 | 5 | Polish, performance, docs | Release APK, install guide |
+| 6 | Any IP camera (RTSP / ONVIF), usable without BitVision | `:ipcam` module, dashboard camera pages; see [ipcam.md](ipcam.md) and §13 |
 
 **Do not start a phase until the previous phase's acceptance criteria are met.** If Phase 0 shows the video transport is not natively playable (see §3.5), stop and report before going further.
 
@@ -418,8 +419,25 @@ Turn off Wireless/USB debugging when you're done. The app does not need it to ru
 - [ ] Phase 3: on-TV login + LAN pairing login on port 8743 with short-lived tokens
 - [ ] Phase 4: built-in grids ✅, on-TV editor ✅, phone editor ✅, fullscreen ✅, named layouts ✅, still images ✅, tour mode
 - [ ] Phase 5: performance pass, decoder budget UX, `docs/install.md`, signed release APK on GitHub Releases
+- [ ] Phase 6: scan + add IP cameras from the dashboard (scan / address / brand / RTSP URL, shared or per-camera login), RTSP tiles next to BitVision, no-account mode
 
 ---
+
+## 13. Any IP camera (Phase 6)
+
+Added 2026-10-29 to make the app useful beyond BitVision. Full design and step plan:
+[ipcam.md](ipcam.md). In short:
+
+- Cameras are found by a LAN scan (ONVIF WS-Discovery + RTSP port check on the TV's own private
+  /24) or added by address (ONVIF), by brand (our own RTSP path presets) or by RTSP URL.
+- Logins: one shared login for all IP cameras, overridable per camera; stored Keystore-encrypted,
+  never shown back, logged or put in layouts.
+- Adding/editing happens on the phone/computer dashboard (pairing server, same code + token rules),
+  reachable only while the TV's "IP cameras" card is open.
+- IP cameras are `CameraRef("ip:<id>", 0)`: they mix into all grids and layouts; BitVision code
+  paths stay unchanged. RTSP runs over TCP; H.264 and H.265 decode through the same TileDecoder.
+- The app works without a BitVision account ("Use IP cameras only").
+- Support requests go to GitHub issues: https://github.com/anhourtec/AnhourCam-TV/issues
 
 ## 12. License
 

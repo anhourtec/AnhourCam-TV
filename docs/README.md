@@ -9,11 +9,13 @@
 | [api.md](api.md) | Every BitVision REST/XHR endpoint | partial |
 | [auth.md](auth.md) | Login, session, CAPTCHA, device credentials | partial |
 | [streaming.md](streaming.md) | Video request → transport → framing → codec | live view captured |
+| [ipcam.md](ipcam.md) | Phase 6: any IP camera (RTSP/ONVIF): plan, design, findings | live |
+| [brand/](brand/) | AnhourCam TV logo (wordmark, mark) | live |
 | [open-questions.md](open-questions.md) | Unresolved / inferred behaviour | live |
 | [../NOTICE.md](../NOTICE.md) | BitVision ownership, trademarks, disclaimer | live |
 | [security.md](security.md) | Threat model, pairing server, redaction | draft |
 | [capture-plan.md](capture-plan.md) | Phase 0 Playwright capture checklist | live |
-| [install.md](install.md) | Sideload instructions | draft (from SPEC §9) |
+| [install.md](install.md) | Step-by-step install (Google TV, Fire TV) | live |
 | [samples/](samples/) | **Redacted** request/response samples | live view |
 | [devices/](devices/) | Tested TVs: chip, decoders, measured results | live |
 | [sessions/](sessions/) | Per-session logs | live |
