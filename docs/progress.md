@@ -4,8 +4,8 @@
 |---|---|---|
 | 0 API discovery | **done** (gate met); carry-overs: session idle timeout, concurrent-stream limit, audio frames | **yes** |
 | 1 bitvision-client | **done**: live CLI run streamed SD and HD; 25 tests, lint clean | **yes** |
-| 2 Video PoC | next | — |
-| 3 TV shell + login | not started | — |
+| 2 Video PoC | **in progress**: 3 live tiles on a real Google TV; stream-limit question open | no |
+| 3 TV shell + login | **partly done early**: on-TV login, LAN phone pairing, 5 languages | — |
 | 4 Grids | not started | — |
 | 5 Polish | not started | — |
 
@@ -32,3 +32,19 @@
   client, no browser). `devices` listed both NVRs; `stream` delivered 720×480 at 23.9 fps and
   1920×1080 at 23.2 fps. Step timings recorded in streaming.md. Gateway works without the portal
   cookie, so live view can run from a cache. Added `SessionKeeper`.
+
+## Phase 2: video proof of concept
+- 2026-10-29: `:app` (AGP 9.5, compileSdk 37, minSdk 25, no GMS, 2.4 MB debug APK). TileDecoder:
+  socket buffer → MediaCodec input (one copy) → SurfaceView, low-latency mode, drop-to-key-frame.
+  DecoderBudget picks hardware first. On the Skyworth Google TV (docs/devices): CH1+CH2 hardware
+  26 fps, CH3 (1280×720) software with stalls, CH4 no stream (open question #9). 83 MB RSS.
+- Pulled forward from Phase 3 at the maintainer's request: LAN pairing server (`:pairing`, pure
+  JVM, 17 tests), modern TV sign-in screen with D-pad focus order and no auto keyboard, 5
+  languages on TV and phone page (portal's `language` cookie kept in sync). Maintainer signed the
+  TV in from a phone successfully.
+- 2026-10-29 (later): fixed a stream leak (stopVideo was never sent on exit) that made channels
+  fail after restarts; streams also stop on Home/screensaver. CH4/CH13–16 confirmed dead in the
+  official portal. Animated grid loader + per-tile connecting/no-video states with backoff; every
+  channel stays selectable (user decides). Security review of pairing + app: no confirmed
+  findings; follow-ups applied (pairing stops on Home, duplicate-header rejection, wider redaction).
+  45 tests, 0 lint issues.

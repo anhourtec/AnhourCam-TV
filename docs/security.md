@@ -26,7 +26,13 @@
 - CLI strips control characters from portal-supplied text before printing (no terminal escape injection).
 - Gradle distribution pinned by SHA-256; wrapper jar verified against the official checksum.
 
-## LAN pairing server (SPEC §5.2)
+## LAN pairing server (SPEC §5.2): implemented in `:pairing`
+
+Implementation notes: plain-HTML pages with **no JavaScript** (CSP `default-src 'none'`, forms only);
+strict HTTP/1.1 parser (8 KB head, 4 KB body, no chunked, one request per connection, 10 s read
+timeout, 4 concurrent connections); `Host` header must be the TV's own IP (DNS-rebinding defence);
+pairing token in an `HttpOnly; SameSite=Strict` cookie, never in URLs; 30 requests/min per IP;
+login form values are never logged. 17 unit tests cover the rules below.
 - Port 8743, runs only while Pairing screen is open (≤10 min), binds to active LAN interface.
 - Rejects non-private sources (outside RFC1918, link-local, IPv6 ULA).
 - 6-digit single-use code; 5 failures → regenerate + 30 s lockout.

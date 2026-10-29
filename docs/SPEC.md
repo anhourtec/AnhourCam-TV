@@ -222,7 +222,12 @@ Typing passwords with a TV remote is painful, so the TV runs a small local web s
 - Plain HTTP is accepted on the LAN given the short-lived, single-use design. Document this trade-off in `docs/security.md`. Optional later: a self-signed HTTPS mode.
 - Never log credentials or tokens, on the TV or in the server.
 
-**Optional extras on the pairing page (later milestone):** manage saved layouts and rename tiles from a phone. Only behind a fresh pairing token.
+**Manage layouts from a phone or laptop (Phase 4, required):** everything the on-TV layout
+editor does (§7.3) is also available on the pairing page: choose a grid size (1, 2, 4, 6, 8, 9,
+10, 13, 16 …), pick the NVR and camera for every tile from any NVR on the account, set the order
+(drag or arrows), rename, save, set default. On the TV: Settings → "Manage from phone" shows the
+address and a fresh code; the same pairing rules apply (single-use code, 5-minute IP-bound token,
+server stops when the screen closes). Changes save on the TV and the live grid updates at once.
 
 ### 5.3 Session handling: the app must never "time out" like the website
 
@@ -260,7 +265,12 @@ Implementation depends on Phase 0 findings. Pick the matching path:
 - **Grid tiles always use the sub-stream.** Fullscreen uses the main stream and switches back when leaving fullscreen.
 - **Decoder budget:** query `MediaCodecList` at startup, estimate how many concurrent decoders the device supports, and expose a setting. If a layout exceeds the budget, show the extra tiles as snapshots with a "tap to play" state, or reduce the resolution. Never crash or show black tiles silently.
 - Only tiles on screen hold streams. Pages/tours release streams for tiles not visible.
-- Reconnect with exponential backoff (max 30 s). Show per-tile status: connecting, live, offline, error.
+- Reconnect with exponential backoff (5 → 10 → 20 → 30 s). Per-tile states: **connecting**
+  (animated grid loader), **live**, **no video** ("No video from this camera, trying again in N s");
+  the tile keeps its place, because the user chose that camera. Every channel stays selectable;
+  the app never hides channels on its own.
+- Always send stopVideo (8232) when a tile stops, even when the app is closing (process-wide
+  scope, 3 s limit). The NVR keeps streaming abandoned sessions otherwise and runs out of slots.
 - Low latency: minimal buffering, drop late frames rather than building delay.
 - Audio: off by default. When enabled, only the focused or fullscreen tile plays audio.
 
@@ -289,10 +299,27 @@ Higher counts are allowed but warned about against the decoder budget (snapshots
 
 ### 7.3 Layout editor (TV, D-pad friendly)
 
-- Choose a template or custom shape.
-- Select a tile → pick an NVR → pick a channel (list with names and online status).
-- Swap and move tiles, clear tiles, rename the layout.
+- Choose a template or custom shape; change the grid size of an existing layout at any time
+  (cameras already placed stay in order, extra ones move to the next page).
+- Select a tile → pick an NVR → pick a channel (list with names, online status and a live or
+  last-known thumbnail). Any camera from **any NVR on the account** can go in any tile.
+- **Rearrange with the remote:** hold OK on a tile → "Move" → arrows carry it, OK drops it (it
+  swaps with the tile it lands on); "Swap camera", "Clear tile" and "Rename layout" in the same menu.
 - Save, set as default (opens on app launch), delete, duplicate.
+
+### 7.3a The app remembers everything
+
+All of this is saved on the TV (Room for layouts, DataStore for settings) and restored on launch,
+across reboots and app updates. "Log out" keeps it; only "Reset everything" clears it:
+
+- every saved layout: grid size, tile → `{nvrId, channelId}` mapping, name, order;
+- the default layout, and the last layout + page that was on screen (the app reopens exactly there);
+- per-tile and per-layout stream quality overrides, audio choice, tour-mode settings;
+- the app language and the pairing port;
+- cached device list and last snapshot per camera (shown instantly while streams connect).
+
+Layouts refer to cameras by NVR ID + channel number, so they survive a device-list refresh; a
+camera that disappears from the account shows "Camera unavailable" instead of breaking the layout.
 
 ### 7.4 Viewing
 

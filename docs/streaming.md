@@ -93,6 +93,10 @@ The two values are what the client then sends in 8224 and 8232 (verified on two 
 `msg_id` is one counter per device link, shared by both sockets (8208 = 1, 8224 = 2, 8216 = 3 …).
 Implemented in `bitvision-client` (`GatewaySession`, `MediaSession`).
 
+**Always stop explicitly.** If a client disappears without stopVideo (8232), the NVR keeps
+pushing that stream into a dead relay session for a long time, and NVRs have few stream slots.
+Observed 2026-10-29: after a few app restarts without stops, other channels stopped starting.
+
 **Stop / switch quality / switch channel:** 8232 (stopVideo, same `req_info`) + 8236 (stopAudio)
 → 8233 + 8448, and the client closes the media socket (code 1006 observed). Then "play" again
 with the new `channelNo` / `streamId`. Quality switch = stop + play with the other `streamId`.

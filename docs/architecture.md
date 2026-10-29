@@ -33,7 +33,7 @@ Product spec: [`SPEC.md`](SPEC.md) §4–§7. Plan: [`roadmap.md`](roadmap.md).
 | `:bitvision-client` | Kotlin/JVM lib | OkHttp, kotlinx.serialization, coroutines | Auth, signing, devices, channels, stream negotiation |
 | `:bitvision-client-cli` | Kotlin/JVM app | `:bitvision-client` | Smoke test against the real API |
 | `:app` | Android app | `:bitvision-client`, Compose TV, Room, Ktor | The TV app |
-| `pairing-web/` | static assets | — | Bundled into `:app` assets, served by the pairing server |
+| `:pairing` | Kotlin/JVM lib | — (JDK only) | LAN pairing server: strict HTTP parser, pairing rules, no-JS pages in 5 languages |
 
 ### `:bitvision-client` packages (`com.anhourtec.camgrid.client`)
 
@@ -157,3 +157,8 @@ rate limits + body size limits · no credential/token logging.
 | 2026-10-29 | detekt line length aligned to ktlint (140), guard-clause returns allowed | Tools must not disagree |
 | 2026-10-29 | Live view starts from an encrypted device cache, independent of the web session | Gateway never sees the portal cookie; avoids website-style timeouts and saves ~5.7 s per start |
 | 2026-10-29 | Keep gateway + device links open; open tile media sockets in parallel | Measured ~3 s per gateway/NVR handshake and ~4 s per tile |
+| 2026-10-29 | Pairing server hand-written on `ServerSocket` instead of Ktor | ~0 KB of dependencies vs several MB; tiny fixed surface; every rule unit-tested on the JVM |
+| 2026-10-29 | Pairing pages are plain HTML forms, no JavaScript (so no `pairing-web/` TypeScript build) | Works on any browser, strictest CSP possible |
+| 2026-10-29 | compileSdk 37 / targetSdk 37 | OkHttp 5.5's Android artifact requires compileSdk 37; app still runs on API 25+ |
+| 2026-10-29 | Phase 2 PoC UI uses Android Views; Compose for TV arrives with the real UI (Phase 3/4) | Fast PoC; the decoder pipeline is UI-independent |
+| 2026-10-29 | In-app language (cn/en/jp/por/py, default en) independent of the system locale | Matches the portal's language list; same codes sent in its `language` cookie |
