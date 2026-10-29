@@ -1,0 +1,27 @@
+# Security
+
+## Secrets hygiene
+- Never commit credentials, tokens, session IDs, emails, device serials/IDs, IPs, geolocation,
+  camera images, or unredacted captures.
+- `scripts/check-redaction` runs as a git pre-commit hook; run it manually before every commit.
+- Raw captures live in git-ignored `captures/`.
+- Placeholders: `<TOKEN>`, `<SESSION_ID>`, `<EMAIL>`, `<USER_ID>`, `<DEVICE_ID_n>`, `<SERIAL_n>`, `<IP_n>`, `<LAT>`, `<LON>`.
+
+## On-device secrets
+- Password used once, never persisted. Tokens encrypted at rest (Keystore).
+- Release builds log no network bodies.
+
+## LAN pairing server (README §5.2)
+- Port 8743, runs only while Pairing screen is open (≤10 min), binds to active LAN interface.
+- Rejects non-private sources (outside RFC1918, link-local, IPv6 ULA).
+- 6-digit single-use code; 5 failures → regenerate + 30 s lockout.
+- Pairing token: 256-bit random, single-use, 5 min, bound to client IP.
+- Constant-time comparisons; rate limits; body size limits; no secret logging.
+
+### Trade-off: plain HTTP on the LAN
+Credentials cross the LAN in plaintext during pairing. Accepted because the server is
+short-lived, single-use, IP-bound and LAN-only. A LAN attacker sniffing at that exact moment
+could capture the password. Mitigation later: optional self-signed HTTPS mode.
+
+## Out of scope / never
+CAPTCHA bypass, rate-limit evasion, accessing accounts or devices the user doesn't own.

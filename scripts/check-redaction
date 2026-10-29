@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# Scan files for token-like strings, emails, IPs and serials before committing.
+# Usage: scripts/check-redaction            # staged files (pre-commit mode)
+#        scripts/check-redaction FILE...    # explicit files
+#        scripts/check-redaction --all      # every tracked + untracked, non-ignored file
+set -euo pipefail
+
+if [[ "${1:-}" == "--all" ]]; then
+  files=$(git ls-files --cached --others --exclude-standard)
+elif [[ $# -gt 0 ]]; then
+  files=$(printf '%s\n' "$@")
+else
+  files=$(git diff --cached --name-only --diff-filter=ACM)
+  staged=1
+fi
+[[ -z "$files" ]] && exit 0
+
+# In pre-commit mode scan the staged blob, not the working tree, so later edits can't hide a secret.
+tmp=$(mktemp -d)
+trap 'rm -rf "$tmp"' EXIT
+
+patterns=(
+  'eyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}'                 # JWT
+  '[Bb]earer[[:space:]]+[A-Za-z0-9._~+/-]{16,}'               # bearer token
+  '[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'            # email
+  '\b([0-9]{1,3}\.){3}[0-9]{1,3}\b'                           # IPv4
+  '\b[0-9a-fA-F]{32,}\b'                                      # long hex (tokens, md5/sha)
+  '(token|session|sid|secret|passw(or)?d|signature|sign)"?[[:space:]]*[:=][[:space:]]*"[^"<]{12,}"'  # key/value secrets
+  '\b[A-Z0-9]{2,6}[0-9]{6,}[A-Z0-9]*\b'                       # device-serial-ish
+)
+# Lines matching these are allowed (placeholders, docs examples, attribution).
+allow='<[A-Z_0-9]+>|127\.0\.0\.1|0\.0\.0\.0|192\.0\.2\.|198\.51\.100\.|203\.0\.113\.|example\.(com|org)|check-redaction:allow'
+
+status=0
+while IFS= read -r f; do
+  [[ "$f" == scripts/check-redaction ]] && continue
+  src="$f"
+  if [[ "${staged:-0}" == 1 ]]; then
+    src="$tmp/blob"
+    git show ":$f" > "$src" 2>/dev/null || continue
+  fi
+  [[ -f "$src" ]] || continue
+  file -b --mime -- "$src" | grep -q 'charset=binary' && continue
+  for p in "${patterns[@]}"; do
+    hits=$(grep -nEo -e "$p" -- "$src" 2>/dev/null || true)
+    [[ -z "$hits" ]] && continue
+    while IFS= read -r h; do
+      line=$(sed -n "${h%%:*}p" < "$src")
+      echo "$line" | grep -qE "$allow" && continue
+      echo "REDACTION: $f:${h%%:*}: ${h#*:}"
+      status=1
+    done <<< "$hits"
+  done
+done <<< "$files"
+
+if [[ $status -ne 0 ]]; then
+  echo "check-redaction: possible secrets found. Redact, or append 'check-redaction:allow' to a false-positive line." >&2
+fi
+exit $status

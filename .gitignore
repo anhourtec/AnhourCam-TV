@@ -1,0 +1,28 @@
+# Raw captures and secrets — never commit
+captures/
+*.har
+*.pcap
+.env
+*.keystore
+*.jks
+local.properties
+secrets.properties
+
+# Build
+.gradle/
+build/
+out/
+*.apk
+*.aab
+.kotlin/
+
+# IDE / OS
+.idea/
+*.iml
+.DS_Store
+.vscode/
+
+# Local agent files — never commit
+CLAUDE.md
+HANDOFF.md
+.claude/
