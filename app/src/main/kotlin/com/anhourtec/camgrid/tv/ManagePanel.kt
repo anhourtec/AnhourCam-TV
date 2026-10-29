@@ -4,6 +4,7 @@ import android.app.Activity
 import android.view.View
 import android.widget.TextView
 import com.anhourtec.camgrid.layouts.LayoutState
+import com.anhourtec.camgrid.pairing.CameraBackend
 import com.anhourtec.camgrid.pairing.LayoutBackend
 import com.anhourtec.camgrid.pairing.LayoutSnapshot
 import com.anhourtec.camgrid.pairing.PairingServer
@@ -25,6 +26,7 @@ internal class ManagePanel(
     private val scope: CoroutineScope,
     private val snapshot: () -> LayoutSnapshot,
     private val onApply: (LayoutState) -> Unit,
+    private val cameras: CameraBackend? = null,
 ) {
     private val panel: View = activity.findViewById(R.id.manage_panel)
     private var server: PairingServer? = null
@@ -51,7 +53,7 @@ internal class ManagePanel(
         val started =
             address?.let {
                 try {
-                    PairingServer(it, layouts = backend, state = state, onSignedIn = {}).also(PairingServer::start)
+                    PairingServer(it, layouts = backend, cameras = cameras, state = state, onSignedIn = {}).also(PairingServer::start)
                 } catch (_: IOException) {
                     null
                 }

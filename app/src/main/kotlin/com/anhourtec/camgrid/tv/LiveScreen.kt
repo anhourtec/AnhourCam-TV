@@ -12,12 +12,17 @@ import android.widget.TextView
 import com.anhourtec.camgrid.client.ClientException
 import com.anhourtec.camgrid.client.portal.PortalClient
 import com.anhourtec.camgrid.client.portal.SessionExpiredException
+import com.anhourtec.camgrid.ipcam.CameraProbe
+import com.anhourtec.camgrid.ipcam.IpCamera
+import com.anhourtec.camgrid.ipcam.IpCameraList
 import com.anhourtec.camgrid.layouts.Layout
 import com.anhourtec.camgrid.layouts.LayoutCodec
 import com.anhourtec.camgrid.layouts.LayoutState
 import com.anhourtec.camgrid.pairing.CameraOption
 import com.anhourtec.camgrid.pairing.LayoutSnapshot
 import com.anhourtec.camgrid.tv.data.DeviceDirectory
+import com.anhourtec.camgrid.tv.data.IpCameraManager
+import com.anhourtec.camgrid.tv.data.IpCameraStore
 import com.anhourtec.camgrid.tv.data.LayoutRepository
 import com.anhourtec.camgrid.tv.ui.Hint
 import com.anhourtec.camgrid.tv.video.CellGridLayout
@@ -41,12 +46,14 @@ import java.util.UUID
 class LiveScreen(
     private val activity: Activity,
     private val http: OkHttpClient,
-    portal: PortalClient,
+    portal: PortalClient?,
+    private val ipStore: IpCameraStore,
     private val scope: CoroutineScope,
     private val onSignedOut: () -> Unit,
 ) {
     private val layouts = LayoutRepository(activity)
-    val directory = DeviceDirectory(portal)
+    val directory = DeviceDirectory(portal, activity.getString(R.string.ip_group))
+    private val probe = CameraProbe(http)
     private val budget = DecoderBudget()
     private val debug = (activity.applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
     private val tiles = mutableListOf<Tile>()
@@ -72,19 +79,32 @@ class LiveScreen(
         grid = CellGridLayout(activity)
         activity.findViewById<FrameLayout>(R.id.grid_host).addView(grid)
         hint = Hint(activity.findViewById(R.id.hint))
+
         manage =
-            ManagePanel(activity, scope, snapshot = {
-                val cameras = directory.cameras.map { CameraOption(it.ref, it.deviceName, it.channelName) }
-                LayoutSnapshot(state, cameras)
-            }, onApply = { if (state.current != null) apply(it) })
+            ManagePanel(
+                activity,
+                scope,
+                snapshot = {
+                    val cameras = directory.cameras.map { CameraOption(it.ref, it.deviceName, it.channelName) }
+                    LayoutSnapshot(state, cameras)
+                },
+                onApply = { if (state.current != null) apply(it) },
+                cameras =
+                    IpCameraManager(http, ipStore) { list, id ->
+                        activity.runOnUiThread { ipCamerasChanged(list, id) }
+                    },
+            )
         val loadingText = activity.findViewById<TextView>(R.id.loading_text)
 
         suspend fun prepare() {
             loadingText.setText(R.string.live_step_account)
             directory.load()
+            val ipCameras = ipStore.load()
+            directory.ipCameras = ipCameras.cameras
+            val login = { camera: IpCamera -> ipStore.login(ipStore.load(), camera) }
             pool = GatewayPool(http, scope, directory.accountName)
-            runner = TileRunner(http, scope, directory, pool!!, budget, stills)
-            snapshots = SnapshotRunner(http, scope, directory, pool!!, budget, stills)
+            runner = TileRunner(http, scope, directory, pool!!, budget, stills, IpTileStreams(login))
+            snapshots = SnapshotRunner(http, scope, directory, pool!!, budget, stills, probe, login)
             state = layouts.load()
             if (directory.cameras.isEmpty()) throw NoCamerasException()
             if (state.current == null) {
@@ -112,14 +132,16 @@ class LiveScreen(
                 onSignedOut()
             } catch (_: NoCamerasException) {
                 activity.findViewById<View>(R.id.loading_mark).visibility = View.GONE
-                loadingText.setText(R.string.live_no_device)
+                // Nothing to show yet: open the phone card so cameras can be added right away.
+                loadingText.setText(if (directory.hasBitVision) R.string.live_no_device else R.string.live_no_cameras_add)
+                manage?.start()
             } catch (e: IOException) {
                 fail(e)
             } catch (e: ClientException) {
                 fail(e)
             }
         }
-        ticker = scope.launch { tick() }
+        ticker = scope.launch { tickEverySecond({ tiles.toList() }, { runner }, debug) }
     }
 
     fun onKeyDown(
@@ -294,22 +316,44 @@ class LiveScreen(
         if (switched) next.current?.let { hint.show(activity.getString(R.string.layouts_switched, it.name)) }
     }
 
+    /** The dashboard added, changed or removed an IP camera (or the shared login). */
+    private fun ipCamerasChanged(
+        list: IpCameraList,
+        changedId: String?,
+    ) {
+        directory.ipCameras = list.cameras
+        if (runner == null) return
+        if (state.current == null) {
+            val cameras = directory.cameras.filter { it.deviceOnline }.map { it.ref }
+            if (cameras.isEmpty()) return
+            val first = LayoutCodec.firstLayout(UUID.randomUUID().toString(), activity.getString(R.string.layout_default_name), cameras)
+            state = state.put(first).copy(defaultId = first.id, lastId = first.id)
+            layouts.save(state)
+        }
+        // A changed camera (new address or login) restarts its tiles; others keep playing.
+        val changed = changedId?.let { DeviceDirectory.ref(IpCamera(it, "", "", "")) }
+        tiles
+            .filter {
+                it.camera == changed || (
+                    changedId == null && it.camera?.deviceId?.startsWith(
+                        IpCamera.REF_PREFIX,
+                    ) == true
+                )
+            }.forEach {
+                runner?.stop(it)
+                runner?.start(it)
+            }
+        render()
+        snapshots?.start { runner?.waitingTiles.orEmpty() }
+    }
+
     private fun menu(tile: Tile) {
         val layout = state.current ?: return
         TileMenu(activity, directory).open(tile.index, tile.camera?.let(directory::camera), layout, actions)
     }
 
-    private suspend fun tick() {
-        while (scope.isActive) {
-            delay(TICK_MS)
-            val now = SystemClock.elapsedRealtime()
-            tiles.toList().forEach { runner?.tick(it, now, debug) }
-        }
-    }
-
     private companion object {
         const val TAG = "CamGrid"
-        const val TICK_MS = 1000L
     }
 }
 

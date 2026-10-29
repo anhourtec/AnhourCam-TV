@@ -218,8 +218,17 @@
                     android:id="@+id/sign_in"
                     style="@style/PrimaryButton"
                     android:layout_marginTop="18dp"
+                    android:nextFocusDown="@id/ip_only"
                     android:nextFocusUp="@id/code"
                     android:text="@string/login_sign_in" />
+
+                <Button
+                    android:id="@+id/ip_only"
+                    style="@style/GhostButton"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="12dp"
+                    android:nextFocusUp="@id/sign_in"
+                    android:text="@string/login_ip_only" />
 
                 <TextView
                     android:id="@+id/status"

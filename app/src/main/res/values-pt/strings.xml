@@ -40,7 +40,11 @@
     <string name="menu_clear">Esvaziar este quadro</string>
     <string name="menu_grid">Tamanho da grade</string>
     <string name="menu_manage_phone">Editar layout pelo celular ou computador</string>
+    <string name="menu_ip_cameras">Câmeras IP (adicionar pelo celular ou computador)</string>
+    <string name="live_no_cameras_add">Ainda não há câmeras. Adicione câmeras IP pelo celular ou computador: abra o endereço no canto.</string>
     <string name="menu_sign_out">Sair</string>
+    <string name="menu_sign_in_bitvision">Entrar no BitVision</string>
+    <string name="login_ip_only">Sem conta BitVision? Usar só câmeras IP</string>
     <string name="picker_empty">Quadro vazio</string>
     <string name="shape_full">tela cheia</string>
     <string name="shape_side">lado a lado</string>
@@ -49,6 +53,7 @@
     <string name="shape_center">1 grande no centro + %1$d</string>
     <string name="shape_uniform">%1$d×%2$d</string>
     <string name="nvr_offline">%1$s · off-line</string>
+    <string name="ip_group">Câmeras IP</string>
     <plurals name="tile_no_decoder">
         <item quantity="one">Aguardando um decodificador livre\nEsta TV reproduz %1$d câmera ao mesmo tempo</item>
         <item quantity="many">Aguardando um decodificador livre\nEsta TV reproduz %1$d câmeras ao mesmo tempo</item>

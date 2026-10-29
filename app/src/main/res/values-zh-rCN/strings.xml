@@ -40,7 +40,11 @@
     <string name="menu_clear">清空此画面</string>
     <string name="menu_grid">宫格数量</string>
     <string name="menu_manage_phone">用手机或电脑编辑布局</string>
+    <string name="menu_ip_cameras">IP 摄像机（用手机或电脑添加）</string>
+    <string name="live_no_cameras_add">还没有摄像机。请用手机或电脑打开角落中的地址来添加 IP 摄像机。</string>
     <string name="menu_sign_out">退出登录</string>
+    <string name="menu_sign_in_bitvision">登录 BitVision</string>
+    <string name="login_ip_only">没有 BitVision 账号？仅使用 IP 摄像机</string>
     <string name="picker_empty">空白画面</string>
     <string name="shape_full">全屏</string>
     <string name="shape_side">左右并排</string>
@@ -49,6 +53,7 @@
     <string name="shape_center">中间 1 大 + %1$d</string>
     <string name="shape_uniform">%1$d×%2$d</string>
     <string name="nvr_offline">%1$s · 离线</string>
+    <string name="ip_group">IP 摄像机</string>
     <plurals name="tile_no_decoder">
         <item quantity="other">等待空闲的视频解码器\n这台电视最多同时播放 %1$d 个画面</item>
     </plurals>

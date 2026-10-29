@@ -3,12 +3,15 @@ package com.anhourtec.camgrid.tv
 import android.os.SystemClock
 import com.anhourtec.camgrid.client.ClientException
 import com.anhourtec.camgrid.client.media.MediaSession
+import com.anhourtec.camgrid.ipcam.IpCamera
 import com.anhourtec.camgrid.tv.data.DeviceDirectory
 import com.anhourtec.camgrid.tv.video.DecoderBudget
 import com.anhourtec.camgrid.tv.video.SnapshotCache
 import com.anhourtec.camgrid.tv.video.TileDecoder
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import java.io.IOException
@@ -24,6 +27,7 @@ internal class TileRunner(
     private val pool: GatewayPool,
     private val budget: DecoderBudget,
     private val stills: SnapshotCache,
+    private val ipStreams: IpTileStreams,
 ) {
     /** Tiles waiting for a decoder; the next one starts as soon as another tile frees one. */
     private val waiting = ArrayDeque<Tile>()
@@ -56,6 +60,13 @@ internal class TileRunner(
     ) {
         val camera = tile.camera ?: return
         try {
+            val ip = directory.ipCamera(camera)
+            if (ip != null) {
+                ipStreams.play(tile, ip, decoder)
+                return
+            }
+            // An IP camera that was deleted: never ask BitVision about it.
+            if (camera.deviceId.startsWith(IpCamera.REF_PREFIX)) throw IOException("camera removed")
             val detail = directory.detail(camera.deviceId)
             val (session, link) = pool.open(detail)
             tile.session = session
@@ -67,6 +78,8 @@ internal class TileRunner(
             session.playVideo(link, camera.channelNo, tile.quality.streamId, ack)
             media.startStream(link, camera.channelNo, tile.quality.streamId)
         } catch (e: IOException) {
+            // Stopping an IP camera tile closes its socket, which ends here: that is not a failure.
+            if (!currentCoroutineContext().isActive) return
             tile.fail(e)
             retryLater(tile)
         } catch (e: ClientException) {
@@ -126,5 +139,20 @@ internal class TileRunner(
         const val RETRY_S = 5
         const val MS_PER_S = 1000L
         const val NO_PICTURE_MS = 20_000L
+    }
+}
+
+private const val TICK_MS = 1000L
+
+/** Once a second, for as long as the caller runs: labels, and give up on tiles without a picture. */
+internal suspend fun tickEverySecond(
+    tiles: () -> List<Tile>,
+    runner: () -> TileRunner?,
+    debug: Boolean,
+) {
+    while (currentCoroutineContext().isActive) {
+        delay(TICK_MS)
+        val now = SystemClock.elapsedRealtime()
+        tiles().forEach { runner()?.tick(it, now, debug) }
     }
 }

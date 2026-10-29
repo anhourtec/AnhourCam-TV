@@ -32,6 +32,9 @@ internal object StreamStops {
     /** Frees the tile's decoder now; returns the stream to stop on the NVR, if one was started. */
     fun detach(tile: Tile): Request? {
         tile.job?.cancel()
+        // IP cameras: closing the connection ends the stream (RTSP TEARDOWN); nothing else to stop.
+        tile.rtsp?.close()
+        tile.rtsp = null
         tile.decoder?.close()
         val ack = tile.ack
         val connection = tile.session?.let { session -> tile.link?.let { link -> session to link } }

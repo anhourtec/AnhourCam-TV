@@ -53,8 +53,14 @@ internal class TileMenu(
             .row(R.drawable.ic_grid, activity.getString(R.string.menu_grid)) { pickGrid(layout, actions) }
             .row(R.drawable.ic_layers, activity.getString(R.string.menu_layouts)) { actions.layouts() }
             .row(R.drawable.ic_phone, activity.getString(R.string.menu_manage_phone)) { actions.manageFromPhone() }
-            .row(R.drawable.ic_logout, activity.getString(R.string.menu_sign_out), danger = true) { actions.signOut() }
-            .show()
+            .row(R.drawable.ic_camera, activity.getString(R.string.menu_ip_cameras)) { actions.manageFromPhone() }
+            .row(
+                R.drawable.ic_logout,
+                activity.getString(if (directory.hasBitVision) R.string.menu_sign_out else R.string.menu_sign_in_bitvision),
+                danger = directory.hasBitVision,
+            ) {
+                actions.signOut()
+            }.show()
     }
 
     /** Cameras grouped by NVR, the current one ticked. */
@@ -73,6 +79,14 @@ internal class TileMenu(
             val header = if (device.online) device.name else activity.getString(R.string.nvr_offline, device.name)
             dialog.section(header)
             directory.cameras.filter { it.ref.deviceId == device.deviceId }.forEach { cam ->
+                dialog.row(R.drawable.ic_camera, cam.channelName, checked = cam.ref == current) {
+                    actions.changed(layout.assign(index, cam.ref))
+                }
+            }
+        }
+        if (directory.ipCameraInfos.isNotEmpty()) {
+            dialog.section(activity.getString(R.string.ip_group))
+            directory.ipCameraInfos.forEach { cam ->
                 dialog.row(R.drawable.ic_camera, cam.channelName, checked = cam.ref == current) {
                     actions.changed(layout.assign(index, cam.ref))
                 }

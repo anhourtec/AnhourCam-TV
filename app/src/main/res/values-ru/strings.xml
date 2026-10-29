@@ -40,7 +40,11 @@
     <string name="menu_clear">Очистить плитку</string>
     <string name="menu_grid">Размер сетки</string>
     <string name="menu_manage_phone">Изменить раскладку с телефона или компьютера</string>
+    <string name="menu_ip_cameras">IP-камеры (добавить с телефона или компьютера)</string>
+    <string name="live_no_cameras_add">Камер пока нет. Добавьте IP-камеры с телефона или компьютера: откройте адрес в углу.</string>
     <string name="menu_sign_out">Выйти</string>
+    <string name="menu_sign_in_bitvision">Войти в BitVision</string>
+    <string name="login_ip_only">Нет аккаунта BitVision? Только IP-камеры</string>
     <string name="picker_empty">Пустая плитка</string>
     <string name="shape_full">весь экран</string>
     <string name="shape_side">рядом</string>
@@ -49,6 +53,7 @@
     <string name="shape_center">1 большая в центре + %1$d</string>
     <string name="shape_uniform">%1$d×%2$d</string>
     <string name="nvr_offline">%1$s · не в сети</string>
+    <string name="ip_group">IP-камеры</string>
     <plurals name="tile_no_decoder">
         <item quantity="one">Ожидание свободного видеодекодера\nЭтот телевизор показывает до %1$d камеры одновременно</item>
         <item quantity="few">Ожидание свободного видеодекодера\nЭтот телевизор показывает до %1$d камер одновременно</item>

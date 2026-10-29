@@ -44,7 +44,11 @@
     <string name="menu_clear">Clear this tile</string>
     <string name="menu_grid">Grid size</string>
     <string name="menu_manage_phone">Edit layout from phone or computer</string>
+    <string name="menu_ip_cameras">IP cameras (add from phone or computer)</string>
+    <string name="live_no_cameras_add">No cameras yet. Add IP cameras from your phone or computer: open the address in the corner.</string>
     <string name="menu_sign_out">Sign out</string>
+    <string name="menu_sign_in_bitvision">Sign in to BitVision</string>
+    <string name="login_ip_only">No BitVision account? Use IP cameras only</string>
     <string name="picker_empty">Empty tile</string>
     <string name="shape_full">full screen</string>
     <string name="shape_side">side by side</string>
@@ -53,6 +57,7 @@
     <string name="shape_center">1 large in the middle + %1$d</string>
     <string name="shape_uniform">%1$d×%2$d</string>
     <string name="nvr_offline">%1$s · offline</string>
+    <string name="ip_group">IP cameras</string>
     <plurals name="tile_no_decoder">
         <item quantity="one">Waiting for a free video decoder\nThis TV plays %1$d camera at once</item>
         <item quantity="other">Waiting for a free video decoder\nThis TV plays %1$d cameras at once</item>

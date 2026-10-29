@@ -14,6 +14,7 @@ import android.widget.TextView
 import com.anhourtec.camgrid.client.portal.LoginResult
 import com.anhourtec.camgrid.client.portal.PortalClient
 import com.anhourtec.camgrid.tv.data.AppLanguage
+import com.anhourtec.camgrid.tv.data.IpCameraStore
 import com.anhourtec.camgrid.tv.data.SecretStore
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -38,11 +39,19 @@ class MainActivity : Activity() {
         store = SecretStore(this)
         portal.cookies.setLanguage(AppLanguage.current(this).code)
         val session = store.get(SESSION_KEY)
-        if (session == null) {
-            showLogin()
-        } else {
-            portal.cookies.restore(session)
-            showLive()
+        when {
+            session != null -> {
+                portal.cookies.restore(session)
+                showLive()
+            }
+
+            ipOnly -> {
+                showLive()
+            }
+
+            else -> {
+                showLogin()
+            }
         }
     }
 
@@ -95,19 +104,28 @@ class MainActivity : Activity() {
         event: KeyEvent,
     ): Boolean = live?.onKeyUp(keyCode) == true || super.onKeyUp(keyCode, event)
 
+    /** No BitVision account: only IP cameras (Phase 6). Remembered until the user signs in. */
+    private var ipOnly: Boolean
+        get() = getSharedPreferences(PREFS, MODE_PRIVATE).getBoolean(IP_ONLY_KEY, false)
+        set(value) = getSharedPreferences(PREFS, MODE_PRIVATE).edit().putBoolean(IP_ONLY_KEY, value).apply()
+
     private fun showLive() {
         pairing.stop()
-        live = LiveScreen(this, http, portal, scope, ::onSignedOut).also { it.show() }
+        val account = if (ipOnly && store.get(SESSION_KEY) == null) null else portal
+        live = LiveScreen(this, http, account, IpCameraStore(this, store), scope, ::onSignedOut).also { it.show() }
     }
 
     private fun onSignedIn() {
         portal.cookies.sessionId?.let { store.put(SESSION_KEY, it) }
+        ipOnly = false
         showLive()
     }
 
+    /** Sign out of BitVision, or (IP cameras only) go to the sign-in screen to add an account. */
     private fun onSignedOut() {
         live?.stop()
         live = null
+        ipOnly = false
         store.remove(SESSION_KEY)
         portal.cookies.clear()
         portal.cookies.setLanguage(AppLanguage.current(this).code)
@@ -118,6 +136,10 @@ class MainActivity : Activity() {
         setContentView(R.layout.activity_login)
         setUpLanguageButton()
         TvLoginForm(this, portal, scope, ::onSignedIn).setUp()
+        findViewById<Button>(R.id.ip_only).setOnClickListener {
+            ipOnly = true
+            showLive()
+        }
         pairing.start()
         findViewById<EditText>(R.id.email).requestFocus()
     }
@@ -143,5 +165,7 @@ class MainActivity : Activity() {
 
     private companion object {
         const val SESSION_KEY = "portal_session"
+        const val PREFS = "app_mode"
+        const val IP_ONLY_KEY = "ip_cameras_only"
     }
 }

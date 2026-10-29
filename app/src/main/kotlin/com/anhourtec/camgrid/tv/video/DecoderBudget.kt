@@ -60,7 +60,17 @@ class DecoderBudget(
 
     companion object {
         const val MIME = "video/hevc"
+        const val AVC = "video/avc"
         const val DEFAULT_SOFTWARE_LIMIT = 2
+
+        /** An H.264 decoder, hardware or software as asked (either, if only one kind exists). */
+        fun avcDecoder(hardware: Boolean): String? {
+            val all =
+                MediaCodecList(MediaCodecList.REGULAR_CODECS)
+                    .codecInfos
+                    .filter { !it.isEncoder && AVC in it.supportedTypes && !it.name.endsWith(".secure") }
+            return (all.firstOrNull { isHardware(it) == hardware } ?: all.firstOrNull())?.name
+        }
 
         private fun isHardware(info: MediaCodecInfo): Boolean =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

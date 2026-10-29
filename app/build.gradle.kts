@@ -77,6 +77,7 @@ dependencies {
     implementation(project(":bitvision-client"))
     implementation(project(":pairing"))
     implementation(project(":layouts"))
+    implementation(project(":ipcam"))
     implementation(libs.kotlinx.coroutines.android)
 
     testImplementation(platform(libs.junit.bom))

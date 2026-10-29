@@ -47,7 +47,7 @@ class TileDecoder(
     ) {
         if (!running || (waitingForKeyFrame && !header.isKeyFrame)) return
         if (waitingForKeyFrame) {
-            if (codec == null) start(header.width, header.height)
+            if (codec == null) start(header.width, header.height, header.hevc)
             waitingForKeyFrame = false
         }
         stats.size = "${header.width}x${header.height}"
@@ -81,14 +81,19 @@ class TileDecoder(
     private fun start(
         width: Int,
         height: Int,
+        hevc: Boolean,
     ) {
+        // H.264 IP cameras: same slot accounting, the TV's AVC decoder of the same kind.
+        // INFERRED: TVs share decoder hardware between codecs, so one budget fits both.
+        val name = if (hevc) slot.decoder.name else DecoderBudget.avcDecoder(slot.decoder.hardware) ?: return
+        val mime = if (hevc) DecoderBudget.MIME else DecoderBudget.AVC
         val format =
-            MediaFormat.createVideoFormat(DecoderBudget.MIME, width, height).apply {
+            MediaFormat.createVideoFormat(mime, width, height).apply {
                 setInteger(MediaFormat.KEY_MAX_INPUT_SIZE, MAX_INPUT_BYTES)
                 setInteger(MediaFormat.KEY_PRIORITY, REALTIME_PRIORITY)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) setInteger(MediaFormat.KEY_LOW_LATENCY, 1)
             }
-        val created = MediaCodec.createByCodecName(slot.decoder.name)
+        val created = MediaCodec.createByCodecName(name)
         created.configure(format, surface, null, 0)
         created.start()
         codec = created

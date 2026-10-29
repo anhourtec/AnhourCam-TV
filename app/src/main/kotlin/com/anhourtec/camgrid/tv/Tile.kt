@@ -7,6 +7,7 @@ import com.anhourtec.camgrid.client.gateway.GatewaySession
 import com.anhourtec.camgrid.client.media.MediaSession
 import com.anhourtec.camgrid.client.media.RelayAck
 import com.anhourtec.camgrid.client.protocol.StreamQuality
+import com.anhourtec.camgrid.ipcam.RtspClient
 import com.anhourtec.camgrid.layouts.CameraRef
 import com.anhourtec.camgrid.tv.video.TileDecoder
 import com.anhourtec.camgrid.tv.video.TileView
@@ -26,6 +27,9 @@ internal class Tile(
     var ack: RelayAck? = null
     var session: GatewaySession? = null
     var link: DeviceLink? = null
+
+    /** The RTSP connection of an IP camera tile (closed from the main thread to stop it). */
+    @Volatile var rtsp: RtspClient? = null
     var job: Job? = null
     var retryJob: Job? = null
     var startedAt = 0L

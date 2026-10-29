@@ -40,7 +40,11 @@
     <string name="menu_clear">このタイルを空にする</string>
     <string name="menu_grid">分割数</string>
     <string name="menu_manage_phone">スマホやパソコンでレイアウトを編集</string>
+    <string name="menu_ip_cameras">IP カメラ（スマホやパソコンで追加）</string>
+    <string name="live_no_cameras_add">カメラがまだありません。スマホやパソコンで右下のアドレスを開き、IP カメラを追加してください。</string>
     <string name="menu_sign_out">サインアウト</string>
+    <string name="menu_sign_in_bitvision">BitVision にサインイン</string>
+    <string name="login_ip_only">BitVision アカウントがない場合: IP カメラだけを使う</string>
     <string name="picker_empty">空のタイル</string>
     <string name="shape_full">全画面</string>
     <string name="shape_side">左右に並べる</string>
@@ -49,6 +53,7 @@
     <string name="shape_center">中央に大 1 + %1$d</string>
     <string name="shape_uniform">%1$d×%2$d</string>
     <string name="nvr_offline">%1$s · オフライン</string>
+    <string name="ip_group">IP カメラ</string>
     <plurals name="tile_no_decoder">
         <item quantity="other">空きデコーダーを待っています\nこのテレビの同時再生は %1$d 台まで</item>
     </plurals>

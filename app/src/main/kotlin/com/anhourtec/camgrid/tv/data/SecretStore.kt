@@ -12,7 +12,7 @@ import javax.crypto.spec.GCMParameterSpec
 
 /**
  * Small encrypted key-value store: AES-256-GCM with a non-exportable Android Keystore key.
- * Holds the portal session (never the password).
+ * Holds the portal session (never the BitVision password) and IP camera passwords.
  */
 class SecretStore(
     context: Context,
