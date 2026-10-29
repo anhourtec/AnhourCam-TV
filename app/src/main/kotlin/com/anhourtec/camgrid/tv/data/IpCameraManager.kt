@@ -1,5 +1,6 @@
 package com.anhourtec.camgrid.tv.data
 
+import android.util.Log
 import com.anhourtec.camgrid.ipcam.BrandPreset
 import com.anhourtec.camgrid.ipcam.CameraProbe
 import com.anhourtec.camgrid.ipcam.CameraScanner
@@ -225,8 +226,11 @@ class IpCameraManager(
             try {
                 OnvifClient(http, "http://$host/onvif/device_service", user, password).streams()
             } catch (e: OnvifException) {
+                Log.w(TAG, "ONVIF: ${e.message}")
                 return Streams.failed(if (e.message == WRONG_LOGIN) CameraError.WRONG_LOGIN else CameraError.NO_ONVIF)
-            } catch (_: IOException) {
+            } catch (e: IOException) {
+                // Only the error type: messages may contain addresses, never credentials, but keep logs short.
+                Log.w(TAG, "ONVIF unreachable: ${e.javaClass.simpleName}")
                 emptyList()
             }
         if (found.isEmpty()) return Streams.failed(CameraError.NO_ONVIF)
@@ -282,6 +286,7 @@ class IpCameraManager(
         try {
             Attempt.Ok(probe.test(url, login.user, login.password, allowBasic = login.typed))
         } catch (e: RtspException) {
+            Log.w(TAG, "RTSP test failed: status ${e.status}")
             Attempt.Failed(
                 when (e.status) {
                     UNAUTHORIZED -> CameraError.WRONG_LOGIN
@@ -290,7 +295,8 @@ class IpCameraManager(
                     else -> CameraError.UNREACHABLE
                 },
             )
-        } catch (_: IOException) {
+        } catch (e: IOException) {
+            Log.w(TAG, "RTSP test failed: ${e.javaClass.simpleName}")
             Attempt.Failed(CameraError.UNREACHABLE)
         }
 
@@ -307,6 +313,7 @@ class IpCameraManager(
         const val DEFAULT_USER = "admin"
         const val WRONG_LOGIN = "wrong user name or password"
         const val UNAUTHORIZED = 401
+        const val TAG = "CamGrid"
         val LOGIN_ERRORS = setOf(CameraError.WRONG_LOGIN, CameraError.BASIC_NEEDS_TYPED_PASSWORD)
     }
 }

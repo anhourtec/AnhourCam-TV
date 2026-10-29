@@ -9,6 +9,7 @@ import com.anhourtec.camgrid.tv.video.TileDecoder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
+import java.io.IOException
 
 /**
  * Plays IP camera tiles: RTSP over TCP straight into the tile's decoder (sub-stream in grids,
@@ -39,8 +40,15 @@ internal class IpTileStreams(
                 client.close()
                 return@withRtspPortFallback
             }
-            client.open()
-            client.play()
+            try {
+                client.open()
+                client.play()
+            } catch (
+                @Suppress("TooGenericExceptionCaught") e: RuntimeException,
+            ) {
+                // A camera sending something we can't parse is "no video", never a crash of the TV app.
+                throw IOException("bad stream from camera (${e.javaClass.simpleName})", e)
+            }
         }
     }
 }

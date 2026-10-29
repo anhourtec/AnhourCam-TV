@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  IP cameras on the home network only speak plain HTTP for ONVIF and snapshot images, so cleartext
+  is allowed in general. BitVision is always HTTPS: cleartext stays off for its domains.
+-->
+<network-security-config xmlns:tools="http://schemas.android.com/tools">
+    <base-config
+        cleartextTrafficPermitted="true"
+        tools:ignore="InsecureBaseConfiguration" />
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true">bitvision.app</domain>
+    </domain-config>
+</network-security-config>
