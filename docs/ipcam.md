@@ -38,7 +38,17 @@ _Status: step 6a done (2026-10-29); next: real-camera test with the CLI, then 6b
   `/onvif/device_service`; another closes the connection there (ONVIF elsewhere or absent →
   manual RTSP address / brand path).
 - `DESCRIBE rtsp://<ip>:554/` with no login gets **no reply** on these cameras: the stream
-  path is required (ONVIF `GetStreamUri` or a brand template). (inferred: needs login + path)
+  path is required (ONVIF `GetStreamUri` or a brand template).
+- **ONVIF needs HTTP Digest** (`WWW-Authenticate: Digest qop="auth", realm="IP Camera"`) on every
+  call except `GetCapabilities` / `GetSystemDateAndTime`; WS-Security alone gets HTTP 401. The
+  client answers the Digest challenge once (never Basic). Verified with the CLI on a real camera.
+- ONVIF on that camera lists `mainStream` 1920×1080 at `rtsp://<ip>:80/0` and `secondStream`
+  1280×720 at `rtsp://<ip>:80/1`, snapshot `http://<ip>:80/snap.jpg`. It reports the RTSP URL
+  on **port 80**, but RTSP works on **both 80 and 554**.
+- ONVIF says `H264`, but the RTSP stream is **H.265**: trust the SDP, never the ONVIF encoding.
+- RTSP sub-stream over TCP: **25 fps, first frame ~0.2 s** after connecting (BitVision: ~4 s).
+- Cameras on one network can have **different passwords** (one camera rejected the login that
+  works on others), so per-camera logins are needed, not only a shared one.
 
 ## Design
 

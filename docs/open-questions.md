@@ -25,8 +25,8 @@ Anything not directly observed. Code that relies on one of these carries `// INF
 | 19 | Software live decoding vs. still images on weak TVs | open | On the MT5867, software live tiles stalled more while still images were decoding. Option: live only on hardware decoders on such TVs, stills for the rest |
 | 20 | HOME CH1/CH2 "no video" after many reinstalls today | watching | Likely NVR still holding streams from app kills; normal exits stop streams. Recheck after the NVR has been idle |
 | 21 | IP camera resolution before the first frame | open | RTP carries none; ONVIF profiles give it, else the decoder is configured at 1920×1080 and adapts to the SPS (inferred). Check 4K cameras and H.264 decoders on the test TV |
-| 22 | RTSP paths of the maintainer's cameras (LSWebServer family) | open | `DESCRIBE /` gets no reply; ONVIF answers on at least one camera. Get paths via ONVIF `GetStreamUri` with the maintainer typing the login (CLI) |
+| 22 | RTSP paths of the maintainer's cameras (LSWebServer family) | **resolved** | ONVIF (HTTP Digest) gives `/0` main 1080p and `/1` sub 720p, snapshot `/snap.jpg`; RTSP plays on :554 and :80 (CLI, 2026-10-29). Brand preset candidate: `rtsp://<ip>:554/0` and `/1` |
 | 23 | Why don't these cameras answer ONVIF WS-Discovery? | open | No reply to the multicast probe from the Mac; maybe disabled in camera settings or multicast filtered. Scan falls back to the RTSP port sweep |
 | 25 | Basic auth from a device that impersonates a camera | open (hardening) | A LAN device offering only Basic gets the password in Base64. When wiring into the app: remember Digest per camera, Basic only if the camera used it when added |
 | 24 | H.264 decoder count on the test TV | open | DecoderBudget counts HEVC decoders today; AVC needs its own count (Phase 6b) |
-
+| 26 | Real bitrate of the RTSP sub-stream | **resolved** | Saved 10 s clip (never viewed, deleted): ffmpeg decoded 250/250 frames, 0 errors, 1280×720 HEVC Main, VPS/SPS/PPS + 1 IDR + 249 P. Low bitrate = still night scene |

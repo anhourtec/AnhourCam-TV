@@ -34,3 +34,12 @@
 - Reviews: /security-review — no findings ≥ 8 (2 low notes; username quoting fixed);
   security-audit quick run-11 — confirmed 0, needs_validation 0.
 - README: contributors badge; status badge "preview".
+
+## Real-camera test (maintainer ran the CLI)
+- `onvif` first failed with "wrong user name or password": the camera answers HTTP 401 with
+  `Digest qop="auth", realm="IP Camera"`; we only sent WS-Security. Fixed: answer the Digest
+  challenge once (never Basic). Then ONVIF listed `/0` 1080p, `/1` 720p, `snap.jpg`.
+- `rtsp` on the sub-stream: H.265 (ONVIF said H264), 25 fps, first frame ~0.2 s, on :554 and :80.
+- Another camera rejects that password → per-camera logins needed.
+- Decided with the maintainer: first verify a saved clip with ffmpeg (step 1), then finish 6b–6e
+  without stopping, then do the release together.
