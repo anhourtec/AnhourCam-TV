@@ -54,4 +54,11 @@
     </plurals>
     <string name="manage_close">保存后这里会立即更新。按返回键关闭。</string>
     <string name="tile_still">静态画面</string>
+    <string name="menu_layouts">布局</string>
+    <string name="layouts_new">新建布局</string>
+    <string name="layouts_make_default">将“%1$s”设为默认</string>
+    <string name="layouts_delete">删除“%1$s”</string>
+    <string name="layouts_default_badge">%1$s · 默认</string>
+    <string name="layout_new_name">布局 {n}</string>
+    <string name="layouts_switched">%1$s · 在边缘按 ◀ ▶ 切换布局</string>
 </resources>

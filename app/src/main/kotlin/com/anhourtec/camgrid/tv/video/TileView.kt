@@ -92,28 +92,34 @@ class TileView(
     }
 
     /** Label, message and loader follow the tile's size: compact in 4×4, roomy fullscreen. */
-    override fun onSizeChanged(
-        w: Int,
-        h: Int,
-        oldw: Int,
-        oldh: Int,
+    private var sizedForHeight = -1
+
+    /**
+     * Sizes text and loader for this tile's height before the children are measured (doing it
+     * after layout left text boxes at their old height and cut off lines).
+     */
+    override fun onMeasure(
+        widthMeasureSpec: Int,
+        heightMeasureSpec: Int,
     ) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        val density = resources.displayMetrics.density
-        val heightDp = h / density
-        label.textSize = (heightDp * LABEL_RATIO).coerceIn(LABEL_MIN_SP, LABEL_MAX_SP)
-        message.textSize = (heightDp * MESSAGE_RATIO).coerceIn(MESSAGE_MIN_SP, MESSAGE_MAX_SP)
-        val pad = (label.textSize * PAD_RATIO).toInt()
-        label.setPadding(pad, pad / 2, pad, pad / 2)
-        badge.textSize = label.textSize / density
-        badge.setPadding(pad, pad / 2, pad, pad / 2)
-        (badge.layoutParams as LayoutParams).setMargins(pad, pad, pad, pad)
-        val loaderPx = (h * LOADER_RATIO).toInt().coerceIn((LOADER_MIN_DP * density).toInt(), (LOADER_DP * density).toInt())
-        loader.layoutParams =
-            loader.layoutParams.apply {
-                width = loaderPx
-                height = loaderPx
-            }
+        val h = MeasureSpec.getSize(heightMeasureSpec)
+        if (h > 0 && h != sizedForHeight) {
+            sizedForHeight = h
+            val density = resources.displayMetrics.density
+            val heightDp = h / density
+            val labelSp = (heightDp * LABEL_RATIO).coerceIn(LABEL_MIN_SP, LABEL_MAX_SP)
+            label.textSize = labelSp
+            badge.textSize = labelSp
+            message.textSize = (heightDp * MESSAGE_RATIO).coerceIn(MESSAGE_MIN_SP, MESSAGE_MAX_SP)
+            val pad = (labelSp * density * PAD_RATIO).toInt()
+            label.setPadding(pad, pad / 2, pad, pad / 2)
+            badge.setPadding(pad, pad / 2, pad, pad / 2)
+            (badge.layoutParams as LayoutParams).setMargins(pad, pad, pad, pad)
+            val loaderPx = (h * LOADER_RATIO).toInt().coerceIn((LOADER_MIN_DP * density).toInt(), (LOADER_DP * density).toInt())
+            loader.layoutParams.width = loaderPx
+            loader.layoutParams.height = loaderPx
+        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
     /** Connecting: the loader, over the camera's last still image when there is one. */

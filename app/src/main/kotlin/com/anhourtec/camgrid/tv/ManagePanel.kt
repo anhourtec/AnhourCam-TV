@@ -3,7 +3,7 @@ package com.anhourtec.camgrid.tv
 import android.app.Activity
 import android.view.View
 import android.widget.TextView
-import com.anhourtec.camgrid.layouts.Layout
+import com.anhourtec.camgrid.layouts.LayoutState
 import com.anhourtec.camgrid.pairing.LayoutBackend
 import com.anhourtec.camgrid.pairing.LayoutSnapshot
 import com.anhourtec.camgrid.pairing.PairingServer
@@ -24,7 +24,7 @@ internal class ManagePanel(
     private val activity: Activity,
     private val scope: CoroutineScope,
     private val snapshot: () -> LayoutSnapshot,
-    private val onSave: (Layout) -> Unit,
+    private val onApply: (LayoutState) -> Unit,
 ) {
     private val panel: View = activity.findViewById(R.id.manage_panel)
     private var server: PairingServer? = null
@@ -46,7 +46,7 @@ internal class ManagePanel(
             object : LayoutBackend {
                 override fun snapshot() = readSnapshot()
 
-                override fun save(layout: Layout) = activity.runOnUiThread { onSave(layout) }
+                override fun apply(state: LayoutState) = activity.runOnUiThread { onApply(state) }
             }
         val started =
             address?.let {

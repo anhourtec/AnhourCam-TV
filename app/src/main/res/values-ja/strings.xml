@@ -54,4 +54,11 @@
     </plurals>
     <string name="manage_close">保存するとすぐにここに反映されます。戻るで閉じます。</string>
     <string name="tile_still">静止画</string>
+    <string name="menu_layouts">レイアウト</string>
+    <string name="layouts_new">新しいレイアウト</string>
+    <string name="layouts_make_default">「%1$s」をデフォルトにする</string>
+    <string name="layouts_delete">「%1$s」を削除</string>
+    <string name="layouts_default_badge">%1$s · デフォルト</string>
+    <string name="layout_new_name">レイアウト {n}</string>
+    <string name="layouts_switched">%1$s · 端で ◀ ▶ を押すとレイアウト切替</string>
 </resources>

@@ -28,6 +28,8 @@ internal class TileMenu(
 
         fun manageFromPhone()
 
+        fun layouts()
+
         fun signOut()
     }
 
@@ -49,6 +51,7 @@ internal class TileMenu(
         }
         dialog
             .row(R.drawable.ic_grid, activity.getString(R.string.menu_grid)) { pickGrid(layout, actions) }
+            .row(R.drawable.ic_layers, activity.getString(R.string.menu_layouts)) { actions.layouts() }
             .row(R.drawable.ic_phone, activity.getString(R.string.menu_manage_phone)) { actions.manageFromPhone() }
             .row(R.drawable.ic_logout, activity.getString(R.string.menu_sign_out), danger = true) { actions.signOut() }
             .show()

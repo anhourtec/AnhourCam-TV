@@ -19,9 +19,11 @@ import com.anhourtec.camgrid.pairing.CameraOption
 import com.anhourtec.camgrid.pairing.LayoutSnapshot
 import com.anhourtec.camgrid.tv.data.DeviceDirectory
 import com.anhourtec.camgrid.tv.data.LayoutRepository
+import com.anhourtec.camgrid.tv.ui.Hint
 import com.anhourtec.camgrid.tv.video.CellGridLayout
 import com.anhourtec.camgrid.tv.video.DecoderBudget
 import com.anhourtec.camgrid.tv.video.SnapshotCache
+import com.anhourtec.camgrid.tv.video.TileView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -61,7 +63,7 @@ class LiveScreen(
     private var ticker: Job? = null
     private val focused: Tile? get() = tiles.firstOrNull { it.view?.hasFocus() == true }
     private lateinit var grid: CellGridLayout
-    private lateinit var hint: TextView
+    private lateinit var hint: Hint
 
     fun show() {
         activity.setContentView(R.layout.activity_live)
@@ -69,12 +71,12 @@ class LiveScreen(
         activity.window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         grid = CellGridLayout(activity)
         activity.findViewById<FrameLayout>(R.id.grid_host).addView(grid)
-        hint = activity.findViewById(R.id.hint)
+        hint = Hint(activity.findViewById(R.id.hint))
         manage =
             ManagePanel(activity, scope, snapshot = {
                 val cameras = directory.cameras.map { CameraOption(it.ref, it.deviceName, it.channelName) }
-                LayoutSnapshot(state.current ?: Layout("", "", "4"), cameras)
-            }, onSave = { if (state.current != null) update(it) })
+                LayoutSnapshot(state, cameras)
+            }, onApply = { if (state.current != null) apply(it) })
         val loadingText = activity.findViewById<TextView>(R.id.loading_text)
 
         suspend fun prepare() {
@@ -105,7 +107,7 @@ class LiveScreen(
                 prepare()
                 render()
                 snapshots?.start { runner?.waitingTiles.orEmpty() }
-                showHint(activity.getString(R.string.live_hint))
+                hint.show(activity.getString(R.string.live_hint))
             } catch (_: SessionExpiredException) {
                 onSignedOut()
             } catch (_: NoCamerasException) {
@@ -120,13 +122,6 @@ class LiveScreen(
         ticker = scope.launch { tick() }
     }
 
-    /** Re-reads the saved layouts (after an edit from the phone) and redraws. */
-    fun reload() {
-        state = layouts.load()
-        fullscreen = null
-        render()
-    }
-
     fun onKeyDown(
         keyCode: Int,
         event: KeyEvent,
@@ -138,34 +133,21 @@ class LiveScreen(
                 true
             }
 
+            KeyEvent.KEYCODE_DPAD_LEFT -> {
+                flip(-1, View.FOCUS_LEFT)
+            }
+
+            KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                flip(1, View.FOCUS_RIGHT)
+            }
+
             KeyEvent.KEYCODE_MENU -> {
                 focused?.let { menu(it) }
                 true
             }
 
             KeyEvent.KEYCODE_BACK -> {
-                when {
-                    manage?.isOpen == true -> {
-                        manage?.stop()
-                        true
-                    }
-
-                    moving != null -> {
-                        moving = null
-                        hint.visibility = View.GONE
-                        true
-                    }
-
-                    fullscreen != null -> {
-                        fullscreen = null
-                        render()
-                        true
-                    }
-
-                    else -> {
-                        false
-                    }
-                }
+                back()
             }
 
             else -> {
@@ -193,8 +175,8 @@ class LiveScreen(
 
             from != null -> {
                 moving = null
-                hint.visibility = View.GONE
-                if (from != tile.index) update(layout.swap(from, tile.index))
+                hint.hide()
+                if (from != tile.index) apply(state.saved(layout.swap(from, tile.index)))
             }
 
             tile.waitingForUser -> {
@@ -236,12 +218,14 @@ class LiveScreen(
 
     private val actions =
         object : TileMenu.Actions {
-            override fun changed(layout: Layout) = update(layout)
+            override fun changed(layout: Layout) = apply(state.saved(layout))
 
             override fun move(index: Int) {
                 moving = index
-                showHint(activity.getString(R.string.move_hint), sticky = true)
+                hint.show(activity.getString(R.string.move_hint), sticky = true)
             }
+
+            override fun layouts() = LayoutsMenu(activity, directory).open(state) { apply(it) }
 
             override fun manageFromPhone() {
                 manage?.start()
@@ -265,24 +249,54 @@ class LiveScreen(
         }
     }
 
-    private fun update(layout: Layout) {
-        state = state.put(layout).copy(lastId = layout.id)
-        layouts.save(state)
+    /** Back closes the phone card, cancels a move, or leaves fullscreen; otherwise it exits. */
+    private fun back(): Boolean {
+        when {
+            manage?.isOpen == true -> {
+                manage?.stop()
+            }
+
+            moving != null -> {
+                moving = null
+                hint.hide()
+            }
+
+            fullscreen != null -> {
+                fullscreen = null
+                render()
+            }
+
+            else -> {
+                return false
+            }
+        }
+        return true
+    }
+
+    /** At the grid's edge, ◀ ▶ flip between saved layouts (inside the grid they move focus). */
+    private fun flip(
+        by: Int,
+        direction: Int,
+    ): Boolean {
+        val atEdge = focused?.view?.focusSearch(direction) !is TileView
+        val flip = atEdge && fullscreen == null && moving == null && state.layouts.size > 1
+        if (flip) apply(state.cycle(by))
+        return flip
+    }
+
+    /** Saves and shows a new layout state; announces the layout name when it changed. */
+    private fun apply(next: LayoutState) {
+        val switched = next.current?.id != state.current?.id
+        state = next
+        layouts.save(next)
+        fullscreen = null
         render()
+        if (switched) next.current?.let { hint.show(activity.getString(R.string.layouts_switched, it.name)) }
     }
 
     private fun menu(tile: Tile) {
         val layout = state.current ?: return
         TileMenu(activity, directory).open(tile.index, tile.camera?.let(directory::camera), layout, actions)
-    }
-
-    private fun showHint(
-        text: String,
-        sticky: Boolean = false,
-    ) {
-        hint.text = text
-        hint.visibility = View.VISIBLE
-        if (!sticky) hint.postDelayed({ if (moving == null) hint.visibility = View.GONE }, HINT_MS)
     }
 
     private suspend fun tick() {
@@ -296,7 +310,6 @@ class LiveScreen(
     private companion object {
         const val TAG = "CamGrid"
         const val TICK_MS = 1000L
-        const val HINT_MS = 5000L
     }
 }
 
