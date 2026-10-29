@@ -11,6 +11,7 @@ Anything not directly observed. Code that relies on one of these carries `// INF
 | 5 | Does login require CAPTCHA? | **yes, every web login: STOP CONDITION** | `login.js` requires `yzm`. **Decided 2026-10-29: the human types it.** TV + pairing page show the CAPTCHA image; no bypass/OCR; keep the session alive |
 | 6 | Codec per stream type? | **resolved** | Both H.265; main 1920×1080, sub 720×480, ~25 fps (header offsets 12 = height, 16 = width) |
 | 7 | How does the gateway WS authenticate the user? | open | 4101 carries only the username; observe only, never test |
-| 8 | Header offsets 0, 32, 36; frame type 7 | open | Constants 0x24, 0, 8. Type 7 = large P frame every ~75 frames; treat as P |
+| 8 | Header offsets 0, 32, 36; frame types 5, 7 | open | Constants 0x24, 0, 8. Type 7 = large P frame every ~75 frames; treat as P. Type 5 = audio (inferred from portal) |
 | 9 | Concurrent streams per account? | open | One media socket per playback confirmed; the cloud's limit on concurrent relay sessions is untested (Phase 2, own account) |
 | 10 | Audio frame format? | open | 8229 says `encodeType` 2 (G.711, inferred), 16, 8-bit, mono. No audio frames on the tested camera (no mic?) |
+| 11 | Does the CLI's restored `PHPSESSID` work for the gateway flow end to end? | open | First live run of `camgrid-cli stream` (needs the maintainer to log in via the CLI) |

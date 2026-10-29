@@ -13,7 +13,7 @@
 
 | Page | Contains |
 |---|---|
-| `GET /home/space` | Device list: links `/home/video/show?id=<DEVICE_ID>`, device name + type (NVR) |
+| `GET /home/space` | Account name (`.J-username`) and device tree: `<li id="camera-<ID>" data-status="1|0">` with `<a href="/home/video/show?id=<ID>" title="<name>">` and `<p>NVR <img…></p>`, followed by `<ol class="… channel-list" data-name="<name>">` of `<li data-channel="<0-based>" channel="<1-based>">…<span>CH1</span>` |
 | `GET /home/video/show?id=<DEVICE_ID>` | Device data + gateway URLs embedded in an inline script (below); channel list CH1…CHn |
 | `GET /home/video/show-playback?id=<DEVICE_ID>` | Playback page |
 | `GET /home/account/exits` | Logout |
@@ -60,9 +60,9 @@ for both test NVRs; always read it from here.
 
 | Method + path | Body | Purpose | Seen |
 |---|---|---|---|
-| `POST /home/account/ajax-login` | `username`, `password`, `yzm` | Login (CAPTCHA) | JS + network |
+| `POST /home/account/ajax-login` | `userName`, `password`, `yzm` | Login (CAPTCHA); code 0 or 2056 = success | JS + network |
 | `GET /home/account/yzm?t=<ms>` | — | CAPTCHA image | HTML |
-| `POST /home/account/update-unit-type` | TBD | Unit/region preference *(inferred)* | network |
+| `POST /home/account/update-unit-type` | `unitType` (1 = local plugin, 2 = no plugin) | Sent before login; client sends 2 | JS + network |
 | `POST /home/device/refresh-device-status` | `deviceId` | Refresh online state | JS |
 | `POST https://www.bitdog.com/home/account/get-device-status` | `device_id` | Online state → `data.device_status` | JS |
 | `POST /origin/device/get-lv-device-info` | JSON list | Device info for the local "middleware" path | JS |

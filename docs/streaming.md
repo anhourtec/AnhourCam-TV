@@ -66,21 +66,32 @@ For 513 messages, `cmdData` repeats routing fields (`msg_id` incrementing per re
 | 8248 / 8249 | searchPlayback | → / ← | playback, document only |
 | 8252 / 8253, 8262, 8264 | playbackVideo, playbackVideoEnd, stopPlaybackVideo | | playback, document only |
 
-The media socket opens with `{"functionName":"RelayAskPro","param":{"deviceId":…, "devUUID":…}}` and
-gets a 20-byte binary ack starting with magic `0x12345678` (LE).
+The media socket opens with `{"functionName":"RelayAskPro","param":{"deviceId":…, "devUUID":"1481703573"}}`
+(`devUUID` is a constant in the portal source, not per device) and gets a 20-byte binary **relay
+ack** (little-endian):
+
+| Offset | Size | Value |
+|---|---|---|
+| 0 | u32 | magic `0x12345678` |
+| 4 | u32 | `0x111` (message type) |
+| 8 | u32 | `8` (body length) |
+| 12 | u32 | **`nRelaySessionID`** |
+| 16 | u32 | **`nRelaySockFd`** |
+
+The two values are what the client then sends in 8224 and 8232 (verified on two captured sessions).
 
 ## Sequences
 
 **Open device** (once per NVR, signalling socket): 4101 → 4102 → 4103 → 4104 → 8208 → 8447 → 8209 (+ 8298).
 
 **Play a channel** (`channelNo` is 0-based; CH1 = 0):
-1. signalling: **8224** `{channelNo, streamId: -1 or the wanted id, nRelaySessionID, nRelaySockFd}` →
-   8447 → **8225** (channel info) → **8218** (relay session bound).
-2. open a **new** media socket → `RelayAskPro` → 20-byte ack.
+1. open a **new** media socket → `RelayAskPro` → 20-byte relay ack (`nRelaySessionID`, `nRelaySockFd`).
+2. signalling: **8224** `{channelNo, streamId, nRelaySessionID, nRelaySockFd}` → 8447 → **8225**
+   (channel info) → **8218** (relay session bound).
 3. media socket: **8216** `{channelNo, streamId, sessionType: 2}` → binary frames follow within ~1 s.
 
-`nRelaySessionID` / `nRelaySockFd` in 8224 are client-chosen *(inferred: random u32 + small int)*;
-the same pair is echoed in 8232 to stop.
+`msg_id` is one counter per device link, shared by both sockets (8208 = 1, 8224 = 2, 8216 = 3 …).
+Implemented in `bitvision-client` (`GatewaySession`, `MediaSession`).
 
 **Stop / switch quality / switch channel:** 8232 (stopVideo, same `req_info`) + 8236 (stopAudio)
 → 8233 + 8448, and the client closes the media socket (code 1006 observed). Then "play" again
@@ -97,7 +108,7 @@ Little-endian, one WebSocket message = one access unit.
 | Offset | Size | Observed | Meaning |
 |---|---|---|---|
 | 0 | u32 | `0x24` | constant / version *(inferred)* |
-| 4 | u32 | 1, 2, 7 | frame type: **1** key frame (VPS+SPS+PPS+IDR), **2** P frame, **7** large P frame every ~75 frames (≈3 s), decodes as a normal P frame (*inferred*: "virtual I-frame") |
+| 4 | u32 | 1, 2, 7 | frame type: **1** key frame (VPS+SPS+PPS+IDR), **2** P frame, **7** large P frame every ~75 frames (≈3 s), decodes as a normal P frame (*inferred*: "virtual I-frame"); **5** = audio *(inferred: portal sets `streamIsAudio = 5`; not yet seen)* |
 | 8 | u32 | 0,1,2… | sequence number per media session |
 | 12 | u32 | 480 / 1080 | **height** |
 | 16 | u32 | 720 / 1920 | **width** |

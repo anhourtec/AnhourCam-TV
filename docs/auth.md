@@ -4,11 +4,12 @@
 
 ## Web portal login: **image CAPTCHA on every login** ⚠️
 
-`POST https://bitvision.app/home/account/ajax-login`, form-encoded:
+First `POST /home/account/update-unit-type` with `unitType=2` ("no plugin" mode; the portal sends
+it before every login), then `POST https://bitvision.app/home/account/ajax-login`, form-encoded:
 
 | Field | Value |
 |---|---|
-| `username` | account email/username |
+| `userName` | account email/username (camelCase: the form input is `username`, but `login.js` posts `userName`) |
 | `password` | password as typed (sent over TLS; no client-side hashing observed in `login.js`) |
 | `yzm` | 4-character code from the image at `GET /home/account/yzm?t=<ms>` (session-bound) |
 
@@ -18,8 +19,10 @@ it. **Decision (2026-10-29):** the human solves it. The TV login screen and the 
 `/home/account/yzm` with the pending session cookie, show the image, and the user types the 4
 characters. The app then keeps that session alive as long as possible so sign-in is rare.
 
-Response: `code` = success or `LV_LOGIN_FAILED_CODE`; `data.ali_code`, `data.ali_country` stored
-in `sessionStorage` *(meaning unknown)*.
+Response JSON `{code, message, data}`. **`code` 0 (`CODE_SUCCESS`) or 2056 (`LV_LOGIN_FAILED_CODE`)
+both mean signed in**; anything else is an error whose text is in `message` (wrong password or
+CAPTCHA). `data` also carries `ali_code`, `ali_country`, `ali_area_id`, `app_key`, `app_secret`
+(a third-party cloud integration, *inferred*). The client ignores them and must never log them.
 
 ## Session
 - Session is the **`PHPSESSID`** cookie on `bitvision.app`: HttpOnly, SameSite=Lax, **browser-session
@@ -35,6 +38,12 @@ The live-view handshake (cmd 8208) sends the NVR's **local** username/password
 (`local_user` / `local_pwd`), which the portal embeds in the device page
 (`tipsDeviceInfo.curDeviceInfo`). The TV app must treat these as secrets: in memory only, never
 logged, encrypted if cached.
+
+## Account name
+
+The gateway registration (cmd 4101) uses the account name shown in the page header
+(`<a class="J-username">…</a>` on `/home/space`), exactly as the portal does. The client reads it
+from the page instead of storing it.
 
 ## Gateway authentication
 The gateway WebSockets are on a different host (`ws-jz.bitdog.com`), so the `PHPSESSID` cookie is
