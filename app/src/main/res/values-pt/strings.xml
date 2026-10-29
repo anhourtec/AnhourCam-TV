@@ -23,7 +23,6 @@
     <string name="language_title">Idioma</string>
     <string name="live_loading">Conectando às câmeras…</string>
     <string name="live_error">Não foi possível iniciar a transmissão: %1$s</string>
-    <string name="disclaimer">App não oficial · sem vínculo com a BitVision</string>
     <string name="live_no_device">Nenhum gravador on-line nesta conta. Verifique no app BitVision se o gravador está on-line.</string>
     <string name="live_step_account">Abrindo sua conta…</string>
     <string name="live_step_cameras">Iniciando as câmeras…</string>

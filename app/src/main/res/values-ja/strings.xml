@@ -23,7 +23,6 @@
     <string name="language_title">言語</string>
     <string name="live_loading">カメラに接続しています…</string>
     <string name="live_error">ライブ表示を開始できません：%1$s</string>
-    <string name="disclaimer">非公式アプリ · BitVision とは無関係です</string>
     <string name="live_no_device">このアカウントにオンラインのレコーダーがありません。BitVision アプリでレコーダーがオンラインか確認してください。</string>
     <string name="live_step_account">アカウントを開いています…</string>
     <string name="live_step_cameras">カメラを起動しています…</string>

@@ -27,7 +27,6 @@
     <string name="language_title">Language</string>
     <string name="live_loading">Connecting to your cameras…</string>
     <string name="live_error">Couldn\'t start live view: %1$s</string>
-    <string name="disclaimer">Unofficial app · not affiliated with BitVision</string>
     <string name="live_no_device">No online NVR on this account. Check that your recorder is online in the BitVision app.</string>
     <string name="live_step_account">Opening your account…</string>
     <string name="live_step_cameras">Starting cameras…</string>

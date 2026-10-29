@@ -23,7 +23,6 @@
     <string name="language_title">语言</string>
     <string name="live_loading">正在连接摄像头…</string>
     <string name="live_error">无法开始实时预览：%1$s</string>
-    <string name="disclaimer">非官方应用 · 与 BitVision 无关</string>
     <string name="live_no_device">此账号下没有在线的录像机。请在 BitVision 应用中确认录像机在线。</string>
     <string name="live_step_account">正在打开你的账号…</string>
     <string name="live_step_cameras">正在启动摄像头…</string>

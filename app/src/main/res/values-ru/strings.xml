@@ -23,7 +23,6 @@
     <string name="language_title">Язык</string>
     <string name="live_loading">Подключение к камерам…</string>
     <string name="live_error">Не удалось запустить просмотр: %1$s</string>
-    <string name="disclaimer">Неофициальное приложение · не связано с BitVision</string>
     <string name="live_no_device">В этом аккаунте нет регистраторов в сети. Проверьте в приложении BitVision, что регистратор подключён.</string>
     <string name="live_step_account">Открываем аккаунт…</string>
     <string name="live_step_cameras">Запуск камер…</string>
