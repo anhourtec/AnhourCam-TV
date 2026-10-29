@@ -3,8 +3,8 @@
 | Phase | Status | Gate met |
 |---|---|---|
 | 0 API discovery | **done** (gate met); carry-overs: session idle timeout, concurrent-stream limit, audio frames | **yes** |
-| 1 bitvision-client | **in progress**: library + CLI built, 20 tests, lint clean; live CLI run pending | no |
-| 2 Video PoC | not started | — |
+| 1 bitvision-client | **done**: live CLI run streamed SD and HD; 25 tests, lint clean | **yes** |
+| 2 Video PoC | next | — |
 | 3 TV shell + login | not started | — |
 | 4 Grids | not started | — |
 | 5 Polish | not started | — |
@@ -28,3 +28,7 @@
   `:bitvision-client-cli` has `login`, `devices`, `stream`, `logout`. 20 unit tests pass, including
   a fake-gateway end-to-end live-view test. Remaining for the gate: one live CLI run on the
   maintainer's account.
+- 2026-10-29: **Phase 1 gate met.** Maintainer signed in through the CLI (CAPTCHA shown by our
+  client, no browser). `devices` listed both NVRs; `stream` delivered 720×480 at 23.9 fps and
+  1920×1080 at 23.2 fps. Step timings recorded in streaming.md. Gateway works without the portal
+  cookie, so live view can run from a cache. Added `SessionKeeper`.

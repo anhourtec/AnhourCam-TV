@@ -7,35 +7,28 @@ _Last updated: 2026-10-29 (Phase 1)_
 
 ## Now
 
-**Phase 1: `:bitvision-client`** (pure Kotlin/JVM): in progress
-- [x] Gradle wrapper, version catalog, ktlint + detekt, `allWarningsAsErrors`
-- [x] Session: login with a human-typed CAPTCHA, `PHPSESSID` handling, logout
-- [x] Device list (`/home/space`) and device page parser (`tipsDeviceInfo`)
-- [x] Signalling WebSocket: envelope, heartbeat, open-device and play/stop commands
-- [x] Media WebSocket + relay ack + 44-byte frame depacketizer (zero-copy)
-- [x] Unit tests (20) incl. fake-gateway end-to-end; CLI (`login`, `devices`, `stream`, `logout`)
-- [ ] **Live CLI run on the maintainer's account** (login → devices → stream): the Phase 1 gate
-- [ ] Session keep-alive policy once the idle timeout is known
+**Phase 2: Video proof of concept** (next)
+- [ ] Android app module (AGP, minSdk 25, no GMS), leanback launcher entry
+- [ ] One stream: WebSocket → depacketizer → MediaCodec (HEVC) → SurfaceView, 30 min stable
+- [ ] Four sub-streams at once on a Chromecast with Google TV / Fire TV Stick class device
+- [ ] Measure decoder limits and time to first frame on real TV hardware
 
 **Phase 0 carry-overs**
-- [ ] Session idle timeout (how often users must sign in)
+- [ ] Session idle timeout (no longer critical: live view runs from cache; SessionKeeper pings)
 - [ ] Concurrent stream limit per account (Phase 2)
 - [ ] Audio frame format (needs a camera with a microphone)
 
 ## Next
 
-**Phase 2: Video proof of concept**
-- WebSocket → 44-byte depacketizer → MediaCodec (HEVC) → SurfaceView
-- 1 stream for 30 min stable; 4 sub-streams concurrently
-
 ## Later
 
-**Phase 3: TV shell + login.** Compose for TV, on-TV login, LAN pairing server on :8743.
+**Phase 3: TV shell + login.** Compose for TV, on-TV login with the CAPTCHA image and number pad, LAN pairing server on :8743 (CAPTCHA passed through to the phone), encrypted device cache, SessionKeeper.
 **Phase 4: Grids.** Device browser, built-in + custom layouts, editor, fullscreen, pages, tour mode.
 **Phase 5: Polish.** Performance and decoder budget, `docs/install.md` with screenshots, signed release APK.
 
 ## Done
 
+- **Phase 1: client library + CLI** (2026-10-29): live SD/HD streaming verified on the maintainer's account.
 - **Phase 0: API discovery** (2026-10-29): transport, framing, codec, commands and page data documented. See [progress](progress.md).
 
 ## Ideas / not scheduled

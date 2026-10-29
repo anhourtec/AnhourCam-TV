@@ -68,8 +68,8 @@ and [docs/roadmap.md](docs/roadmap.md).
 | Phase | What | State |
 |---|---|---|
 | 0 | Learn how the BitVision web portal streams video | ✅ done |
-| 1 | Kotlin client library | in progress |
-| 2 | Native video playback proof of concept | planned |
+| 1 | Kotlin client library | ✅ done |
+| 2 | Native video playback proof of concept | in progress |
 | 3 | TV app + sign-in (TV and phone pairing) | planned |
 | 4 | Grids, layout editor, fullscreen, tour mode | planned |
 | 5 | Performance polish + first release APK | planned |
@@ -128,6 +128,16 @@ If your recorder shows up in your BitVision account (the BitVision app or
 
 **Does it need my NVR's IP address or port forwarding?**
 No. Like the official apps, it uses your BitVision cloud account.
+
+**Do I need a browser or a computer to sign in?**
+No. BitVision asks for a short picture code (CAPTCHA) when you sign in. CamGrid TV shows that
+picture on the TV, or on your phone if you sign in from your phone, and you type the digits. Nothing
+else to install.
+
+**Will it log me out after a while, like the website?**
+No. Your cameras keep playing even if the website session expires, and the app keeps the session
+alive in the background. You only sign in again if the TV was off for a long time, and even then
+live view keeps working.
 
 **Is it safe? Where does my password go?**
 Only to BitVision's sign-in, once. It is never saved; only the session is kept, encrypted on the

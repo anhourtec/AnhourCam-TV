@@ -13,3 +13,12 @@
 - Live run not done: copying the browser's session cookie for the CLI was blocked by the permission
   system (credential materialization); the maintainer will log in through the CLI instead.
 - Pre-commit security review: 1 Low (session file TOCTOU) fixed; wss:// enforced; cookie jar host-only; 23 tests.
+
+## Live run (Phase 1 gate)
+- Maintainer signed in with the CLI: our client downloaded the CAPTCHA image and opened it; no
+  browser or Playwright involved. `devices` listed both NVRs (16 and 9 channels).
+- `stream`: SD 720×480 at 23.9 fps; HD 1920×1080 at 23.2 fps, ~510 kbit/s.
+- Step timings: portal 5.7 s, gateway connect 1.9 s, open device 1.2 s, media + ack 1.5 s,
+  play 1.1 s, first frame ~1.5 s later. Performance budgets in CLAUDE.md revised to match.
+- Gateway works without the portal cookie → live view from an encrypted cache; `SessionKeeper`
+  added; SPEC §5.3 "never time out" and the in-app CAPTCHA design written down.
