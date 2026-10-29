@@ -15,6 +15,17 @@ Thanks for helping put BitVision cameras on the big screen.
   probing of BitVision's servers.
 - Mark guessed protocol behaviour with `// INFERRED:` and add it to [docs/open-questions.md](docs/open-questions.md).
 
+## Build and test
+
+Requires JDK 17+. The Gradle wrapper downloads Gradle itself (checksum-pinned).
+
+```bash
+./gradlew test                    # unit tests, including a fake-gateway live-view test
+./gradlew ktlintCheck detekt      # lint (must be zero errors); ./gradlew ktlintFormat fixes formatting
+./gradlew :bitvision-client-cli:installDist
+bitvision-client-cli/build/install/bitvision-client-cli/bin/bitvision-client-cli login   # your own account
+```
+
 ## Code
 - Kotlin, native Android; no Google Play Services (Fire TV has none).
 - Zero lint/type errors: `./gradlew ktlintCheck detekt lint`; for `pairing-web/`:

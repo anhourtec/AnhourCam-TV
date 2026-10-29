@@ -15,6 +15,17 @@
 - NVR local credentials from the device page (`local_user`/`local_pwd`) are secrets: memory only, never logged.
 - Release builds log no network bodies.
 
+## Client library and CLI controls
+- Gateway URLs must be `wss://` (`DevicePageParser`): the gateway receives the NVR's password
+  (cmd 8208), so plain `ws://` is refused. All observed gateway URLs are `wss://`.
+- `SessionCookieJar` only stores and sends cookies for the portal host; a restored `PHPSESSID` is
+  host-only, `Secure` and `HttpOnly`. The gateway sockets use a client without the cookie jar.
+- `NvrCredentials` redacts itself in `toString`; no HTTP logging interceptor is installed.
+- CLI session file: directory `0700`, file created `0600` via temp file + atomic move (never
+  briefly world-readable). Passwords are read from the console without echo and never saved.
+- CLI strips control characters from portal-supplied text before printing (no terminal escape injection).
+- Gradle distribution pinned by SHA-256; wrapper jar verified against the official checksum.
+
 ## LAN pairing server (SPEC §5.2)
 - Port 8743, runs only while Pairing screen is open (≤10 min), binds to active LAN interface.
 - Rejects non-private sources (outside RFC1918, link-local, IPv6 ULA).

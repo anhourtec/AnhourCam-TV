@@ -35,6 +35,20 @@ Product spec: [`SPEC.md`](SPEC.md) §4–§7. Plan: [`roadmap.md`](roadmap.md).
 | `:app` | Android app | `:bitvision-client`, Compose TV, Room, Ktor | The TV app |
 | `pairing-web/` | static assets | — | Bundled into `:app` assets, served by the pairing server |
 
+### `:bitvision-client` packages (`com.anhourtec.camgrid.client`)
+
+| Package | Contents |
+|---|---|
+| `portal` | `PortalClient` (CAPTCHA, login, overview, device page, keep-alive, logout), `SessionCookieJar` (`PHPSESSID`, restorable) |
+| `page` | `DeviceListParser` (`/home/space`), `DevicePageParser` (`tipsDeviceInfo`), models; `NvrCredentials` redacts itself |
+| `protocol` | `Cmd` (command IDs and constants), `Messages` (outgoing JSON), `Incoming` (parsing), `StreamQuality` |
+| `gateway` | `GatewaySession` (signalling socket: register, open device, play/stop, heartbeat), `DeviceLink` |
+| `media` | `MediaSession` (media socket, relay ack, frame delivery), `FrameDepacketizer` + `FrameHeader` (zero-copy, no per-frame allocation), `RelayAck`, `FrameSink` |
+
+Live view in code: `PortalClient.overview()` + `deviceDetail()` → `GatewaySession.connect()` →
+`openDevice()` → `MediaSession.open()` → `playVideo()` → `MediaSession.startStream()`; frames arrive
+on `FrameSink` with the payload still in the socket buffer.
+
 ## Key flows
 
 1. **Login (TV):** form → `SessionManager.login()` → client auth → tokens encrypted at rest; password discarded.
@@ -98,6 +112,8 @@ rate limits + body size limits · no credential/token logging.
 | OkHttp | client | HTTP + WebSocket in one small, JVM-friendly lib |
 | kotlinx.serialization | client, app | Multiplatform JSON, no reflection |
 | kotlinx.coroutines | all | Async + Flow |
+| JUnit 6, kotlinx-coroutines-test, OkHttp MockWebServer 3 | tests | Unit tests and a fake gateway for the full live-view handshake |
+| ktlint (Gradle plugin 14.2, ktlint 1.8), detekt 2.0.0-alpha.6 | build | Lint rules; detekt 2 alpha is the only line that supports Kotlin 2.4 |
 | Compose for TV (`androidx.tv:tv-material`) | app | Official TV focus/D-pad components |
 | ~~Hilt~~ | — | Dropped for startup speed and APK size: manual constructor DI in one `AppGraph` |
 | ~~Media3~~ | — | Not needed: private framing goes straight to `MediaCodec` |
@@ -136,3 +152,6 @@ rate limits + body size limits · no credential/token logging.
 | 2026-10-29 | minSdk 25, no GMS | Fire TV (Fire OS 6/7/8) support |
 | 2026-10-29 | `pairing-web/` in TypeScript, strict, ESLint | Zero lint/type errors rule |
 | 2026-10-29 | Spec moved to `docs/SPEC.md`; public README is user-facing | Discoverability |
+| 2026-10-29 | Gradle 9.8.2 wrapper (SHA-256 pinned), Kotlin 2.4.21, JDK 17 toolchain, `allWarningsAsErrors` | Current stable versions; reproducible build |
+| 2026-10-29 | Package `com.anhourtec.camgrid`, no BitVision name in packages | Legal posture (NOTICE.md) |
+| 2026-10-29 | detekt line length aligned to ktlint (140), guard-clause returns allowed | Tools must not disagree |
