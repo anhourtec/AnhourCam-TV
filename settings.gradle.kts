@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "camgrid-tv"
 
+include(":bitvision-client")
