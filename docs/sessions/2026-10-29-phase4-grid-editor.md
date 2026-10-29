@@ -15,3 +15,7 @@
   the maintainer's 2×2 restored.
 - Named layouts on TV (dialog, ◀ ▶ at the edge) and phone (pills, new/default/delete); a test
   caught that deleting the default left none (fixed). Cut-off tile messages fixed (onMeasure).
+- README screenshots: TV captures blurred (first attempt leaked a strip of footage via loose
+  dialog detection; caught on review, redone with border-colour detection and rounded masks);
+  web screenshots from a local preview with made-up cameras. Found and fixed a horizontal
+  overflow on the phone editor (60-column CSS grids didn't shrink). Full install guide added.

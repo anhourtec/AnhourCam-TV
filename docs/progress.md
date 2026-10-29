@@ -64,3 +64,6 @@
   always survives a delete), TV "Layouts" dialog, ◀ ▶ at the grid edge flips layouts, phone editor
   with layout pills and New / Make default / Delete. Fixed cut-off tile messages (text now sized in
   onMeasure). 59 tests, 0 lint.
+- 2026-10-29 (later): README rebuilt with screenshots (TV images blurred for privacy, web images
+  from a local preview with made-up cameras) and a step-by-step install guide (Google TV and
+  Fire TV; adb now, Downloader once a release exists). Fixed the phone editor widening the page.
