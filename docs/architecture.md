@@ -39,7 +39,7 @@ Product spec: [`SPEC.md`](SPEC.md) §4–§7. Plan: [`roadmap.md`](roadmap.md).
 
 | Package | Contents |
 |---|---|
-| `portal` | `PortalClient` (CAPTCHA, login, overview, device page, keep-alive, logout), `SessionCookieJar` (`PHPSESSID`, restorable) |
+| `portal` | `PortalClient` (CAPTCHA, login, overview, device page, keep-alive, logout), `SessionCookieJar` (`PHPSESSID`, restorable), `SessionKeeper` (pings every 10 min, reports expiry) |
 | `page` | `DeviceListParser` (`/home/space`), `DevicePageParser` (`tipsDeviceInfo`), models; `NvrCredentials` redacts itself |
 | `protocol` | `Cmd` (command IDs and constants), `Messages` (outgoing JSON), `Incoming` (parsing), `StreamQuality` |
 | `gateway` | `GatewaySession` (signalling socket: register, open device, play/stop, heartbeat), `DeviceLink` |
@@ -155,3 +155,5 @@ rate limits + body size limits · no credential/token logging.
 | 2026-10-29 | Gradle 9.8.2 wrapper (SHA-256 pinned), Kotlin 2.4.21, JDK 17 toolchain, `allWarningsAsErrors` | Current stable versions; reproducible build |
 | 2026-10-29 | Package `com.anhourtec.camgrid`, no BitVision name in packages | Legal posture (NOTICE.md) |
 | 2026-10-29 | detekt line length aligned to ktlint (140), guard-clause returns allowed | Tools must not disagree |
+| 2026-10-29 | Live view starts from an encrypted device cache, independent of the web session | Gateway never sees the portal cookie; avoids website-style timeouts and saves ~5.7 s per start |
+| 2026-10-29 | Keep gateway + device links open; open tile media sockets in parallel | Measured ~3 s per gateway/NVR handshake and ~4 s per tile |

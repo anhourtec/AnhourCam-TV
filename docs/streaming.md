@@ -121,6 +121,21 @@ Little-endian, one WebSocket message = one access unit.
 
 Sizes: sub-stream key ≈ 13–14 KB, P 100–230 B; main stream key ≈ 60 KB, P ≈ 1.5 KB, type-7 ≈ 7.5 KB.
 
+## Measured latency (CLI, 2026-10-29, India → `ws-jz` gateway)
+
+| Step | Time | When it happens in the app |
+|---|---|---|
+| Portal: account + device page | 3.8 s + 1.9 s | Only when refreshing the cached device list |
+| Gateway: connect + register | 1.9 s | Once per gateway, kept open |
+| Gateway: open device (8208) | 1.2 s | Once per NVR, kept open |
+| Media socket + relay ack | 1.5 s | Per tile, all tiles in parallel |
+| playVideo → relay bound | 1.1 s | Per tile, in parallel |
+| 8216 → first frame | ~1.5 s | Per tile (waits for the camera's key frame) |
+
+Streams: sub 720×480 ~23 fps ~30–60 kbit/s; main 1920×1080 ~23 fps ~510 kbit/s.
+A warm grid (gateway + NVR already open) needs ~4 s per tile, in parallel; show the last snapshot
+meanwhile. The **gateway did not need the portal cookie** (none is sent on these sockets).
+
 ## Multi-view for the TV app
 
 The portal shows one channel at a time. Each playback is its own media socket and relay session,
