@@ -7,23 +7,20 @@ _Last updated: 2026-10-29_
 
 ## Now
 
-**Phase 0: API discovery** (in progress)
-- [x] Repo, docs, license, notice, redaction checker
-- [x] Playwright browser on the BitVision portal with WebSocket frame recorder
-- [x] Maintainer login (CAPTCHA solved by the human)
-- [x] Device list and channel list sources (server-rendered pages)
-- [x] Live view, 1 channel: H.265 Annex-B over WebSocket behind a 44-byte header, not encrypted
-- [x] First versions of `auth.md`, `api.md`, `streaming.md` + redacted samples
-- [x] Stop-condition check: video OK; login CAPTCHA confirmed, decided: the human types it (no bypass)
-- [ ] Remaining flows: main stream, 4-channel multi-view, stop, audio, snapshot ([capture plan](capture-plan.md))
-- [ ] Keepalive over a 5+ min session; session cookie lifetime (how often users must sign in)
+**Phase 1: `:bitvision-client`** (pure Kotlin/JVM): starting
+- [ ] Gradle wrapper, version catalog, ktlint + detekt, `allWarningsAsErrors`
+- [ ] Session: login with a human-typed CAPTCHA, `PHPSESSID` handling, logout
+- [ ] Device list (`/home/space`) and device page parser (`tipsDeviceInfo`)
+- [ ] Signalling WebSocket: envelope, heartbeat, open-device and play/stop commands
+- [ ] Media WebSocket + 44-byte frame depacketizer (zero-copy)
+- [ ] Unit tests against redacted samples; CLI smoke test (saves CAPTCHA image, user types it)
+
+**Phase 0 carry-overs**
+- [ ] Session idle timeout (how often users must sign in)
+- [ ] Concurrent stream limit per account (Phase 2)
+- [ ] Audio frame format (needs a camera with a microphone)
 
 ## Next
-
-**Phase 1: `:bitvision-client`** (pure Kotlin/JVM)
-- Gradle wrapper, version catalog, ktlint/detekt
-- Auth + signing, device/channel listing, stream negotiation
-- Unit tests against redacted samples; CLI smoke test
 
 **Phase 2: Video proof of concept**
 - WebSocket → 44-byte depacketizer → MediaCodec (HEVC) → SurfaceView
@@ -35,6 +32,10 @@ _Last updated: 2026-10-29_
 **Phase 4: Grids.** Device browser, built-in + custom layouts, editor, fullscreen, pages, tour mode.
 **Phase 5: Polish.** Performance and decoder budget, `docs/install.md` with screenshots, signed release APK.
 
+## Done
+
+- **Phase 0: API discovery** (2026-10-29): transport, framing, codec, commands and page data documented. See [progress](progress.md).
+
 ## Ideas / not scheduled
 - Self-signed HTTPS mode for pairing
 - Manage layouts from the phone pairing page
@@ -43,7 +44,7 @@ _Last updated: 2026-10-29_
 ## Risks
 | Risk | Impact | Mitigation |
 |---|---|---|
-| Video encrypted or WASM-only decoder | Blocks native playback | Stop condition; report before Phase 1 |
+| Video encrypted or WASM-only decoder | Blocks native playback | **Retired**: video is plain H.265 Annex-B |
 | Private API changes | App breaks | Keep client isolated; samples-based tests |
 | CAPTCHA on every web login (**confirmed**) | User must solve a 4-char image code to sign in | Never bypass. Decided: the human types it on the TV / phone pairing page; keep the session alive |
 | Low-end TV decoder limits | Fewer live tiles | Decoder budget + snapshot tiles |

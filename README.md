@@ -67,8 +67,8 @@ and [docs/roadmap.md](docs/roadmap.md).
 
 | Phase | What | State |
 |---|---|---|
-| 0 | Learn how the BitVision web portal streams video | in progress |
-| 1 | Kotlin client library | planned |
+| 0 | Learn how the BitVision web portal streams video | ✅ done |
+| 1 | Kotlin client library | in progress |
 | 2 | Native video playback proof of concept | planned |
 | 3 | TV app + sign-in (TV and phone pairing) | planned |
 | 4 | Grids, layout editor, fullscreen, tour mode | planned |

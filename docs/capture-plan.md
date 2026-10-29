@@ -6,18 +6,18 @@ traffic. Raw captures → `captures/` (git-ignored). Redacted extracts → `samp
 | # | Flow | Done | Notes |
 |---|---|---|---|
 | 1 | Login (shape only) | [x] | CAPTCHA required (auth.md) |
-| 2 | Token refresh / logout / expiry | [ ] | |
+| 2 | Token refresh / logout / expiry | [~] | `PHPSESSID`; logout `/home/account/exits`; idle expiry being measured |
 | 3 | Device (NVR) list, status, details | [x] | Server-rendered (api.md) |
 | 4 | Channel list per NVR | [x] | CH1–CH16 in page |
 | 5 | Live view, one channel, sub-stream | [x] | streaming.md |
-| 6 | Switch to main / HD | [ ] | |
-| 7 | 4-channel multi-view | [ ] | |
-| 8 | Stop live view | [ ] | |
-| 9 | Snapshot | [ ] | |
-| 10 | Audio on/off | [ ] | |
-| 11 | Playback / recordings (document only) | [ ] | |
-| 12 | PTZ (document only) | [ ] | |
-| 13 | Keepalive over 5+ min live session | [ ] | |
+| 6 | Switch to main / HD | [x] | streamId 0, 1080p |
+| 7 | 4-channel multi-view | [n/a] | Portal plays one channel at a time; per-channel sockets observed via CH2 switch |
+| 8 | Stop live view | [x] | 8232 + 8236 |
+| 9 | Snapshot | [x] | Client-side canvas grab, no network |
+| 10 | Audio on/off | [x] | 8228/8229, 8236; no audio frames on test camera |
+| 11 | Playback / recordings (document only) | [x] | Command IDs from portal table |
+| 12 | PTZ (document only) | [x] | 8284 `ptzCmd`; HTTP `/origin/device/ptz-action-control` |
+| 13 | Keepalive over 5+ min live session | [x] | HeartBeat every 200 s on both sockets |
 
 ## Method
 - XHR/Fetch: `browser_network_requests` + `browser_network_request` for bodies.
