@@ -23,3 +23,14 @@
 - `:ipcam` module (step 6a): `CameraScanner`, `OnvifClient`, `RtspClient` (+`RtspUrl`), `RtspAuth`,
   `Sdp`, `RtpDepacketizer`; `FrameHeader.hevc` flag added (default true, BitVision unchanged).
   Written but **not yet built, linted or tested**.
+
+## Later the same day: step 6a done
+- `:ipcam` builds clean (ktlint/detekt 0), 20 tests incl. RFC 2617 digest vector and a fake
+  loopback RTSP camera (Digest login, TCP interleaved, key frame delivered, no password on the wire).
+- CLI `scan` / `onvif` / `rtsp`; `scan` found the maintainer's 9 RTSP cameras.
+- Release signing reads `ANHOURCAM_KEYSTORE_*` from per-machine `~/.gradle/gradle.properties` or env;
+  `*.jks`/`*.keystore`/`todo.md` git-ignored. Key creation steps live in the local `todo.md`.
+- BitVision verified on the TV after the change: 4 live tiles.
+- Reviews: /security-review — no findings ≥ 8 (2 low notes; username quoting fixed);
+  security-audit quick run-11 — confirmed 0, needs_validation 0.
+- README: contributors badge; status badge "preview".

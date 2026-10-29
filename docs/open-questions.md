@@ -27,5 +27,6 @@ Anything not directly observed. Code that relies on one of these carries `// INF
 | 21 | IP camera resolution before the first frame | open | RTP carries none; ONVIF profiles give it, else the decoder is configured at 1920×1080 and adapts to the SPS (inferred). Check 4K cameras and H.264 decoders on the test TV |
 | 22 | RTSP paths of the maintainer's cameras (LSWebServer family) | open | `DESCRIBE /` gets no reply; ONVIF answers on at least one camera. Get paths via ONVIF `GetStreamUri` with the maintainer typing the login (CLI) |
 | 23 | Why don't these cameras answer ONVIF WS-Discovery? | open | No reply to the multicast probe from the Mac; maybe disabled in camera settings or multicast filtered. Scan falls back to the RTSP port sweep |
+| 25 | Basic auth from a device that impersonates a camera | open (hardening) | A LAN device offering only Basic gets the password in Base64. When wiring into the app: remember Digest per camera, Basic only if the camera used it when added |
 | 24 | H.264 decoder count on the test TV | open | DecoderBudget counts HEVC decoders today; AVC needs its own count (Phase 6b) |
 

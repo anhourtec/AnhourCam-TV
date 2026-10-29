@@ -8,7 +8,7 @@
 | 3 TV shell + login | **done**: on-TV login with CAPTCHA, LAN phone pairing, 5 languages | **yes** |
 | 4 Grids | **mostly done**: TV + phone editors, named layouts, still images; left: device cache, tour mode, settings | — |
 | 5 Polish | not started (README screenshots + install guide done) | — |
-| 6 Any IP camera | **started**: plan in [ipcam.md](ipcam.md); `:ipcam` code written, not yet built/tested | — |
+| 6 Any IP camera | **in progress**: 6a `:ipcam` done (20 tests, CLI scan finds 9 cameras); next real-camera test, then app tiles | — |
 
 ## Phase 0 — API discovery
 - 2026-10-29: Repo scaffolding, docs, redaction checker created. Capture plan written (`capture-plan.md`).

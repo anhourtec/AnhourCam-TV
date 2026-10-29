@@ -5,7 +5,7 @@ network that speaks RTSP (most do) can be added and mixed into the same grids as
 cameras. **The BitVision path must not change or regress**: IP cameras are a second camera
 source next to it, not a rewrite.
 
-_Status: planned + `:ipcam` module started (2026-10-29). See [roadmap](roadmap.md)._
+_Status: step 6a done (2026-10-29); next: real-camera test with the CLI, then 6b. See [roadmap](roadmap.md)._
 
 ## What users get
 
@@ -81,7 +81,7 @@ _Status: planned + `:ipcam` module started (2026-10-29). See [roadmap](roadmap.m
 
 1. **6a `:ipcam` module** — scanner, ONVIF, RTSP, depacketizer, unit tests; CLI commands
    `scan`, `onvif <host> <user>`, `rtsp <url> <user> [seconds]` (password typed at the prompt)
-   to verify against the maintainer's cameras from a computer. _(code written, not yet built)_
+   to verify against the maintainer's cameras from a computer. _(done: 20 tests; `scan` found all 9 cameras on the maintainer's LAN)_
 2. **6b App source** — `IpCameraStore` (+ SecretStore credentials), camera directory merges both
    sources, `TileRunner` branches on `ip:` refs, AVC in `TileDecoder`/`DecoderBudget`,
    still images from the snapshot URL (else one key frame).
@@ -89,6 +89,17 @@ _Status: planned + `:ipcam` module started (2026-10-29). See [roadmap](roadmap.m
 4. **6d No-account mode** — "Use IP cameras only" on sign-in; BitVision optional.
 5. **6e Polish** — brand presets (our own short list of common RTSP paths, written by us),
    README/install/screenshots, devices doc, Help → GitHub issues.
+
+## Testing with real cameras (CLI)
+
+```bash
+./gradlew :bitvision-client-cli:installDist
+CLI=bitvision-client-cli/build/install/bitvision-client-cli/bin/bitvision-client-cli
+$CLI scan                                   # cameras on this computer's network
+$CLI onvif <camera-ip> admin                # password at a hidden prompt → stream + snapshot addresses
+$CLI rtsp rtsp://<camera-ip>:554/<path> admin 10 [--save clip.h264]   # plays 10 s, prints fps/bitrate
+```
+Passwords are typed at a hidden prompt and never saved, printed or put in URLs on the wire.
 
 ## Rules for this phase
 

@@ -9,7 +9,8 @@ _Last updated: 2026-10-29 (Phase 6 planned and started; renamed to AnhourCam TV)
 ## Now
 
 **Phase 6: Any IP camera (RTSP / ONVIF)** — make the app useful without BitVision. Plan: [ipcam.md](ipcam.md)
-- [ ] 6a `:ipcam` module: LAN scan, ONVIF lookup, RTSP over TCP, H.264/H.265 depacketizer, tests, CLI test commands _(code written, not yet built)_
+- [x] 6a `:ipcam` module: LAN scan, ONVIF lookup, RTSP over TCP (Basic/Digest), H.264/H.265 depacketizer, 20 tests, CLI `scan` / `onvif` / `rtsp` (scan finds the maintainer's 9 cameras)
+- [ ] 6a′ Maintainer runs `onvif` / `rtsp` against a real camera → record paths and codecs (open question #22)
 - [ ] 6b App: IP camera store (Keystore-encrypted logins), merged camera list, RTSP tiles, H.264 decoding, still images
 - [ ] 6c Phone/computer dashboard: scan, add by address / brand / RTSP URL, shared or per-camera login, edit, delete, test
 - [ ] 6d "Use IP cameras only" (no BitVision account needed)
