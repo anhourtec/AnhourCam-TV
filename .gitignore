@@ -1,5 +1,6 @@
 # Raw captures and secrets — never commit
 captures/
+.playwright-mcp/
 *.har
 *.pcap
 .env
