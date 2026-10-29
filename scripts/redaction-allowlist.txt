@@ -4,3 +4,8 @@
 # /stream/1 relay ack header: magic 0x12345678 + fixed fields
 785634121101000008000000140240c86f000000
 12884901888
+# devUUID: constant in the portal source (docs/streaming.md), not a device identifier
+1481703573
+# Gradle 9.8.2 distribution SHA-256 (gradle/wrapper/gradle-wrapper.properties) and the stock gradlew script's own hash
+21bd5da2de49b642904077f38c0efdc7778e92b3ed0889392dca61b97e389607
+3d91ce3b8caaf77ad09f381f43615b715b53f72c
