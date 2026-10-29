@@ -44,5 +44,17 @@ Credentials cross the LAN in plaintext during pairing. Accepted because the serv
 short-lived, single-use, IP-bound and LAN-only. A LAN attacker sniffing at that exact moment
 could capture the password. Mitigation later: optional self-signed HTTPS mode.
 
+## Phone layout editor (pairing server, layout mode)
+- Started only from the TV menu ("Edit layout from phone or computer"); the TV shows a corner card
+  with the address and a fresh code. Same rules as sign-in: single-use code, lockout, IP-bound
+  token in an `HttpOnly; SameSite=Strict` cookie, Host-header check, no JavaScript, strict CSP.
+- An unpaired POST to `/layout` is redirected to the code page; sign-in routes (`/captcha`,
+  `/login`) are off in layout mode.
+- Only built-in grid IDs and cameras the account actually has are accepted; everything shown is
+  HTML-escaped (camera and NVR names come from the portal).
+- The token renews on each editor request but the server still stops after 10 minutes, when the
+  card is closed (Back), or when the app leaves the screen.
+- The page shows camera names and NVR names only; never NVR credentials or session cookies.
+
 ## Out of scope / never
 CAPTCHA bypass, rate-limit evasion, accessing accounts or devices the user doesn't own.

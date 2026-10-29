@@ -49,8 +49,9 @@ every NVR on the account, in the grid layouts you know from an NVR monitor.
 
 | | |
 |---|---|
-| **NVR-style grids** | 1, 2, 4, 6, 8, 9, 10, 13, 16, 25 and 36 tiles, plus custom layouts on a 12×12 grid. |
-| **Any camera, any tile** | Mix cameras from several NVRs in one layout. Save layouts and pick a default. |
+| **NVR-style grids** | 1, 2, 4, 6, 8, 9, 10, 13, 16, 25 and 36 tiles. Bigger grids fill themselves with your next cameras. |
+| **Any camera, any tile** | Mix cameras from several NVRs in one grid. On the TV: hold OK on a tile to choose a camera, move it or change the grid size. |
+| **Edit from your phone** | Open the address shown on the TV, enter the code, pick the grid and a camera for every tile, save: the TV updates at once. |
 | **Fullscreen in HD** | Press OK on a tile for the high-quality stream; Back returns to the grid. |
 | **Easy sign-in** | Open the address shown on the TV on any phone or laptop on the same Wi-Fi, enter the 6-digit code, sign in there. No typing with the remote. |
 | **Your language** | English, 中文（简体）, 日本語, Português, Русский on the TV and the phone page. |
@@ -71,9 +72,9 @@ and [docs/roadmap.md](docs/roadmap.md).
 |---|---|---|
 | 0 | Learn how the BitVision web portal streams video | ✅ done |
 | 1 | Kotlin client library | ✅ done |
-| 2 | Native video playback proof of concept | in progress |
-| 3 | TV app + sign-in (TV and phone pairing) | planned |
-| 4 | Grids, layout editor, fullscreen, tour mode | planned |
+| 2 | Native video playback proof of concept | ✅ done |
+| 3 | TV app + sign-in (TV and phone pairing) | ✅ mostly done |
+| 4 | Grids, layout editor (TV + phone), fullscreen, tour mode | in progress |
 | 5 | Performance polish + first release APK | planned |
 
 Watch or star the repo to hear about the first release.
@@ -124,8 +125,11 @@ Android SDK platform-tools (`adb`).
    6-digit code. Open the address on your phone (same Wi-Fi), enter the code, then your BitVision
    email, password and the digits in the picture. The TV signs in and opens your cameras.
    (Or sign in directly on the TV with the remote.)
-7. **Use it:** OK switches grid ↔ fullscreen, ◀ ▶ shows more cameras, Back exits.
-8. When you're done, turn *Wireless debugging* off again (the app doesn't need it).
+7. **Use it:** arrows move between tiles, OK opens a camera fullscreen (Back returns), hold OK on
+   a tile for its menu (choose camera, move, clear, grid size, edit from phone, sign out).
+8. **Edit from your phone:** tile menu → *Edit layout from phone or computer*; open the address on
+   the card, enter its code, choose grid and cameras, *Save to TV*. Back closes the card.
+9. When you're done, turn *Wireless debugging* off again (the app doesn't need it).
 
 Quality checks before every change: `./gradlew ktlintCheck detekt test :app:lintDebug`.
 
@@ -170,6 +174,12 @@ else to install.
 No. Your cameras keep playing even if the website session expires, and the app keeps the session
 alive in the background. You only sign in again if the TV was off for a long time, and even then
 live view keeps working.
+
+**Why does my TV say "Waiting for a free video decoder"?**
+Each live camera needs a video decoder, and TVs have only a few: a budget Google TV may play 4 at
+once (2 in hardware, 2 in software). Tiles beyond that wait and start as soon as one frees up.
+Streamers like the Chromecast with Google TV 4K, Google TV Streamer, NVIDIA Shield or Fire TV 4K
+Max have more decoders and play more tiles live.
 
 **Is it safe? Where does my password go?**
 Only to BitVision's sign-in, once. It is never saved; only the session is kept, encrypted on the

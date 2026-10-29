@@ -12,8 +12,8 @@ Product spec: [`SPEC.md`](SPEC.md) §4–§7. Plan: [`roadmap.md`](roadmap.md).
 │                                                                         │
 │ Domain                                                                  │
 │   SessionManager    tokens (Keystore-encrypted), refresh, logout        │
-│   DeviceRepository  NVRs, channels, status cache (Room)                 │
-│   LayoutRepository  saved grids as JSON on a 12×12 cell grid (Room)     │
+│   DeviceDirectory   NVRs, channels, device pages (per run)              │
+│   LayoutRepository  saved grids, layouts.json (60×60-unit grid)         │
 │   StreamManager     decoder budget, sub/main switching, reconnects      │
 │                                                                         │
 │ Data                                                                    │
@@ -23,7 +23,7 @@ Product spec: [`SPEC.md`](SPEC.md) §4–§7. Plan: [`roadmap.md`](roadmap.md).
 └─────────────────────────────────────────────────────────────────────────┘
           │ HTTPS / WS                         ▲ HTTP (LAN only, short-lived)
           ▼                                    │
-   BitVision cloud (private API)        Phone/laptop pairing page (:pairing-web)
+   BitVision cloud (private API)        Phone/laptop: sign-in + layout editor (:pairing)
 ```
 
 ## 0. Modules
@@ -32,7 +32,8 @@ Product spec: [`SPEC.md`](SPEC.md) §4–§7. Plan: [`roadmap.md`](roadmap.md).
 |---|---|---|---|
 | `:bitvision-client` | Kotlin/JVM lib | OkHttp, kotlinx.serialization, coroutines | Auth, signing, devices, channels, stream negotiation |
 | `:bitvision-client-cli` | Kotlin/JVM app | `:bitvision-client` | Smoke test against the real API |
-| `:app` | Android app | `:bitvision-client`, Compose TV, Room, Ktor | The TV app |
+| `:app` | Android app | `:bitvision-client`, `:pairing`, `:layouts`, coroutines | The TV app (Android Views) |
+| `:layouts` | Kotlin/JVM lib | kotlinx.serialization | Layout model: grid templates, camera per tile, JSON codec |
 | `:pairing` | Kotlin/JVM lib | — (JDK only) | LAN pairing server: strict HTTP parser, pairing rules, no-JS pages in 5 languages |
 
 ### `:bitvision-client` packages (`com.anhourtec.camgrid.client`)
@@ -68,9 +69,9 @@ on `FrameSink` with the payload still in the socket buffer.
 - **SessionManager** — owns the session. Login (password used once, never persisted), refresh per
   `docs/auth.md`, logout (clears tokens + device cache, keeps layouts unless "Reset everything").
   Emits `Flow<SessionState>`; unrecoverable auth failure → LoginChoice.
-- **DeviceRepository** — NVR + channel lists from the client, cached in Room, status refresh.
-- **LayoutRepository** — built-in templates + custom layouts (12×12 cell grid, tiles as rects,
-  each tile `{nvrId, channelId}` or empty), JSON-serialized into Room. Default-layout flag.
+- **DeviceDirectory** — NVR + channel lists and device pages, loaded once per run (encrypted on-disk cache: TODO).
+- **LayoutRepository** — `LayoutState` (layouts, default, last watched) as `layouts.json` in app-private
+  storage, replaced atomically. Model and templates live in `:layouts`.
 - **StreamManager** — the only owner of decoders/streams.
   - Grid tiles → sub-stream; fullscreen → main stream.
   - Decoder budget from `MediaCodecList` (+ user override). Tiles beyond budget show snapshot /
@@ -95,7 +96,8 @@ on `FrameSink` with the payload still in the socket buffer.
 |---|---|
 | Session tokens | EncryptedSharedPreferences / Keystore-wrapped DataStore |
 | Settings | DataStore (Preferences) |
-| Layouts, device cache | Room |
+| Layouts | `layouts.json` (app-private, atomic replace, excluded from backup) |
+| Device cache | in memory per run (encrypted disk cache planned) |
 | Password | **never stored** |
 
 ## 3. Pairing server security (summary — full in `docs/security.md`)
@@ -117,7 +119,6 @@ rate limits + body size limits · no credential/token logging.
 | Compose for TV (`androidx.tv:tv-material`) | app | Official TV focus/D-pad components |
 | ~~Hilt~~ | — | Dropped for startup speed and APK size: manual constructor DI in one `AppGraph` |
 | ~~Media3~~ | — | Not needed: private framing goes straight to `MediaCodec` |
-| Room | app | Layouts + device cache |
 | DataStore | app | Settings |
 | Ktor server (CIO) | app | Embedded LAN pairing server, no Netty |
 | Timber | app | Debug logging only |
@@ -150,7 +151,6 @@ rate limits + body size limits · no credential/token logging.
 | 2026-10-29 | Video path: own depacketizer → MediaCodec → SurfaceView | Phase 0: private framing + Annex-B, no container for Media3 |
 | 2026-10-29 | Drop Hilt and Media3 | Startup time and APK size ("must feel instant") |
 | 2026-10-29 | minSdk 25, no GMS | Fire TV (Fire OS 6/7/8) support |
-| 2026-10-29 | `pairing-web/` in TypeScript, strict, ESLint | Zero lint/type errors rule |
 | 2026-10-29 | Spec moved to `docs/SPEC.md`; public README is user-facing | Discoverability |
 | 2026-10-29 | Gradle 9.8.2 wrapper (SHA-256 pinned), Kotlin 2.4.21, JDK 17 toolchain, `allWarningsAsErrors` | Current stable versions; reproducible build |
 | 2026-10-29 | Package `com.anhourtec.camgrid`, no BitVision name in packages | Legal posture (NOTICE.md) |
@@ -167,3 +167,5 @@ rate limits + body size limits · no credential/token logging.
 | 2026-10-29 | `GatewayPool`: one gateway session per gateway, one device login per NVR, shared by tiles | Mix cameras from several NVRs in one grid |
 | 2026-10-29 | Grid updates reconcile tiles instead of rebuilding | Changing one camera restarts one stream; moves restart none |
 | 2026-10-29 | TV editor in Android Views with a custom `TvDialog`; Compose for TV still deferred | Lean on the 930 MB test TV; consistent custom look |
+| 2026-10-29 | Phone layout editor served by `:pairing` (layout mode), plain HTML form | Same pairing protections as sign-in; works in any browser |
+| 2026-10-29 | Pairing token renews on each editor request (`touch`), still capped by the 10-minute server life | Editing can take longer than 5 minutes |

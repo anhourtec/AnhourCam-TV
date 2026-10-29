@@ -45,3 +45,12 @@ Turn off Wireless/USB debugging when you're done. The app does not need it to ru
 
 
 > Screenshots to be added in Phase 5.
+
+## First start
+
+1. Open **CamGrid TV**. The sign-in screen shows an address like `http://192.168.x.x:8743` and a
+   6-digit code.
+2. On a phone or computer on the same Wi-Fi, open the address, enter the code, then your
+   BitVision email, password and the digits in the picture.
+3. Your cameras open in a 2×2 grid. Hold OK on a tile for options, or use *Edit layout from phone
+   or computer* to set up your grid from the phone.

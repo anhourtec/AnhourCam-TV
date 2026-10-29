@@ -19,3 +19,6 @@ Anything not directly observed. Code that relies on one of these carries `// INF
 | 13 | Can first-frame time be cut below ~4 s per tile? | open | Ideas: keep a warm pool of media sockets with relay acks; ask for a key frame if the protocol allows |
 | 14 | Software HEVC on low-end TVs | open | MT5867 (32-bit) can't sustain 1280×720 in software; prefer snapshots beyond the hardware budget |
 | 15 | Which tiles should get the hardware decoders? | open | Today: first come, first served; retries of dead channels can hold a hardware slot. Prefer the largest streams |
+| 16 | How many tiles can play live on a given TV? | partly answered | Skyworth MT5867: 2 hardware + 2 software decoders = 4 (DecoderBudget.capacity). Tiles beyond wait and take over freed decoders; snapshots for the rest are planned |
+| 17 | Streams left behind when the app is killed (adb install, crash) | open | Without stopVideo the NVR keeps them for a while; normal exits are clean. Consider a startup "stop all for my client" if the protocol has one |
+| 18 | Phone save vs TV edit at the same moment | known | Last save wins (whole layout written back); acceptable for a single household |

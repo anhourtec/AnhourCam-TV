@@ -130,7 +130,7 @@ Stop and report to the human if any of these hold:
 │  Domain                                                              │
 │   ├── SessionManager (token storage, refresh, logout)                │
 │   ├── DeviceRepository (NVRs, channels, status cache)                │
-│   ├── LayoutRepository (saved grids, Room DB)                        │
+│   ├── LayoutRepository (saved grids, layouts.json)                   │
 │   └── StreamManager (decoder budget, sub/main switching, lifecycle)  │
 │                                                                      │
 │  Data                                                                │
@@ -148,7 +148,7 @@ Stop and report to the human if any of these hold:
 - **Networking:** OkHttp (REST + WebSocket), kotlinx.serialization
 - **Video:** Media3/ExoPlayer where the format allows; otherwise a custom `MediaCodec` pipeline rendering to `SurfaceView`
 - **LAN server:** Ktor server (CIO engine), embedded in a foreground service
-- **Storage:** Room (layouts, cached device list), DataStore (settings), Android Keystore + encrypted storage for session tokens
+- **Storage:** `layouts.json` (layouts), SharedPreferences (settings), Android Keystore + encrypted storage for session tokens
 - **Min SDK:** 25 (covers Fire OS 6 Fire TV sticks and Android TV 7.1+; see architecture.md). **Target:** latest stable
 - **Build:** Gradle Kotlin DSL, version catalog
 
@@ -159,7 +159,8 @@ camgrid-tv/
   app/                     # Android TV app
   bitvision-client/        # Pure Kotlin JVM library: auth, devices, stream negotiation
   bitvision-client-cli/    # Small JVM CLI for smoke-testing the client against the real API
-  pairing-web/             # Static HTML/CSS/JS for the LAN pairing page (bundled into app assets)
+  pairing/                 # LAN pairing server: phone sign-in + phone layout editor (pure JVM)
+  layouts/                 # Layout model shared by the TV and the phone editor (pure JVM)
   docs/                    # api.md, streaming.md, auth.md, install.md, architecture.md
   scripts/                 # redaction checker, adb helper scripts
   README.md                # public overview
@@ -309,7 +310,7 @@ Higher counts are allowed but warned about against the decoder budget (snapshots
 
 ### 7.3a The app remembers everything
 
-All of this is saved on the TV (Room for layouts, DataStore for settings) and restored on launch,
+All of this is saved on the TV (`layouts.json` for layouts, preferences for settings) and restored on launch,
 across reboots and app updates. "Log out" keeps it; only "Reset everything" clears it:
 
 - every saved layout: grid size, tile → `{nvrId, channelId}` mapping, name, order;
@@ -409,7 +410,7 @@ Turn off Wireless/USB debugging when you're done. The app does not need it to ru
 - [ ] Phase 1: `bitvision-client` logs in, lists NVRs/channels, negotiates a stream (CLI demo)
 - [ ] Phase 2: one native stream playing on TV; four sub-streams concurrently
 - [ ] Phase 3: on-TV login + LAN pairing login on port 8743 with short-lived tokens
-- [ ] Phase 4: devices browser, built-in grids, custom layout editor, fullscreen, pages, tour mode
+- [ ] Phase 4: built-in grids ✅, on-TV editor ✅, phone editor ✅, fullscreen ✅, several named layouts, pages, tour mode, snapshots
 - [ ] Phase 5: performance pass, decoder budget UX, `docs/install.md`, signed release APK on GitHub Releases
 
 ---

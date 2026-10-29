@@ -96,6 +96,8 @@ Implemented in `bitvision-client` (`GatewaySession`, `MediaSession`).
 **Always stop explicitly.** If a client disappears without stopVideo (8232), the NVR keeps
 pushing that stream into a dead relay session for a long time, and NVRs have few stream slots.
 Observed 2026-10-29: after a few app restarts without stops, other channels stopped starting.
+The app sends stops on every normal exit; only a kill (crash, `adb install` over a running app)
+leaves streams behind until the NVR drops them.
 
 **Stop / switch quality / switch channel:** 8232 (stopVideo, same `req_info`) + 8236 (stopAudio)
 → 8233 + 8448, and the client closes the media socket (code 1006 observed). Then "play" again

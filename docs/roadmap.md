@@ -3,7 +3,7 @@
 Living plan for CamGrid TV. Updated at the end of every working session.
 Product spec: [SPEC.md](SPEC.md) · Phase status detail: [progress.md](progress.md).
 
-_Last updated: 2026-10-29 (Phase 2)_
+_Last updated: 2026-10-29 (Phase 4)_
 
 ## Now
 
@@ -13,7 +13,7 @@ _Last updated: 2026-10-29 (Phase 2)_
 - [x] Live view of saved layouts across several NVRs; only changed tiles restart
 - [x] On-TV editor: hold OK → choose camera (grouped by NVR), move, clear, grid size (visual previews), sign out
 - [x] Tiles beyond the TV's decoders wait and take over a decoder as soon as one frees
-- [ ] Edit layouts from a phone or computer via the pairing page
+- [x] Edit layouts from a phone or computer via the pairing page (grid previews, camera per tile with NVR names, rename, save → TV updates at once)
 - [ ] Several named layouts (switch / new / rename / delete / default)
 - [ ] Snapshots for tiles beyond the decoder budget
 

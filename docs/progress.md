@@ -6,7 +6,7 @@
 | 1 bitvision-client | **done**: live CLI run streamed SD and HD; 25 tests, lint clean | **yes** |
 | 2 Video PoC | **in progress**: 3 live tiles on a real Google TV; stream-limit question open | no |
 | 3 TV shell + login | **partly done early**: on-TV login, LAN phone pairing, 5 languages | — |
-| 4 Grids | not started | — |
+| 4 Grids | **in progress**: TV + phone editors, saved multi-NVR layouts | — |
 | 5 Polish | not started | — |
 
 ## Phase 0 — API discovery
@@ -53,3 +53,6 @@
 - 2026-10-29: `:layouts` module (6 tests), saved layouts, multi-NVR live grid with tile reconciling,
   on-TV editor with modern dialogs (icons, NVR-grouped camera picker, visual grid-size picker),
   scaled tile labels, decoder hand-off queue. Verified on the TV: cameras from two NVRs in one grid.
+- 2026-10-29 (later): phone/laptop layout editor (pairing server in layout mode, token renews
+  while editing), TV corner card with address + code, camera options show "NVR · channel".
+  Maintainer edited the TV layout from a phone. 54 tests, 0 lint issues.

@@ -28,8 +28,11 @@ bitvision-client-cli/build/install/bitvision-client-cli/bin/bitvision-client-cli
 
 ## Code
 - Kotlin, native Android; no Google Play Services (Fire TV has none).
-- Zero lint/type errors: `./gradlew ktlintCheck detekt lint`; for `pairing-web/`:
-  `npx eslint . --max-warnings 0` and `npx tsc --noEmit`; `shellcheck scripts/*`.
+- Zero lint errors: `./gradlew ktlintCheck detekt test :app:lintDebug` (Android Lint treats
+  warnings as errors); `shellcheck scripts/*`. The pairing pages have no JavaScript, so there is no
+  web build.
+- Modules: `:bitvision-client` (portal + streaming client), `:bitvision-client-cli`, `:pairing`
+  (LAN sign-in + layout editor server), `:layouts` (layout model), `:app` (Android TV app).
 - Small, focused commits with conventional subjects (`feat(app): …`, `fix(client): …`, `docs: …`).
 - Performance matters: no per-frame allocations in the video path; justify every new dependency.
 

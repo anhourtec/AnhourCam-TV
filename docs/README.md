@@ -15,4 +15,5 @@
 | [capture-plan.md](capture-plan.md) | Phase 0 Playwright capture checklist | live |
 | [install.md](install.md) | Sideload instructions | draft (from SPEC §9) |
 | [samples/](samples/) | **Redacted** request/response samples | live view |
+| [devices/](devices/) | Tested TVs: chip, decoders, measured results | live |
 | [sessions/](sessions/) | Per-session logs | live |

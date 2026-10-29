@@ -32,3 +32,8 @@ App footprint during the 3-tile grid: ~83 MB RSS / 43 MB PSS, ~37 % of one core.
 
 **Takeaway:** 2 smooth live tiles in hardware. More tiles on this TV need snapshots, or software
 decoding only for small streams. The decoder budget must count hardware instances first.
+
+## Phase 4 grids on this TV
+Live tiles at once: **4** (2 hardware + 2 software decoders). In a 3×3 or larger grid the other
+tiles show "Waiting for a free video decoder · This TV plays 4 cameras at once" and start as soon
+as one frees. A stronger TV/streamer (more hardware decoders) plays more tiles live.
