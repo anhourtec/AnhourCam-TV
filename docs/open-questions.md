@@ -30,3 +30,4 @@ Anything not directly observed. Code that relies on one of these carries `// INF
 | 25 | Basic auth from a device that impersonates a camera | **resolved** | Tiles allow Basic only for cameras that needed it when added (`IpCamera.basicLogin`); ONVIF/snapshot HTTP never use Basic; dashboard warns |
 | 24 | H.264 decoder count on the test TV | open (inferred) | H.264 tiles take a slot from the shared HEVC budget and use the TV's AVC decoder of the same kind; verify with an H.264 camera |
 | 26 | Real bitrate of the RTSP sub-stream | **resolved** | Saved 10 s clip (never viewed, deleted): ffmpeg decoded 250/250 frames, 0 errors, 1280×720 HEVC Main, VPS/SPS/PPS + 1 IDR + 249 P. Low bitrate = still night scene |
+| 27 | Cameras with broken ONVIF clocks | **handled** | One camera sends minute -15; clock read arithmetically, ignored if invalid; crashes guarded at the dashboard and tile level |

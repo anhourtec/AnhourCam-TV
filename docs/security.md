@@ -74,6 +74,10 @@ could capture the password. Mitigation later: optional self-signed HTTPS mode.
   residual risk: a *paired* user (who could read the TV's code) can add a camera at an address they
   control with the shared login and receive a Digest/WS-Security response (a hash, not the
   password); pairing already grants control over the TV's cameras.
+- **Cleartext HTTP**: allowed by `network_security_config.xml` because cameras speak plain HTTP
+  (ONVIF, snapshots); `bitvision.app` and subdomains stay HTTPS-only. RTSP uses raw sockets.
+- **Robustness**: an exception in a dashboard request returns HTTP 500 (logs only the exception
+  type); malformed camera streams become "no video" for that tile, never an app crash.
 - **Scan**: only the TV's own private (RFC 1918) /24, TCP connects to 554/8554 plus one ONVIF
   WS-Discovery multicast probe. Nothing leaves the local network.
 - **Dashboard** (`/cameras*`): same pairing code + token + Host/private-IP guard as the layout

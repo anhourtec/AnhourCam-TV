@@ -55,3 +55,10 @@
 - 6e: `BrandPreset`, `DigestHttp`, README features/FAQ/screenshots (made-up preview data).
 - Found while screenshotting: own-login fields showed for shared login → hidden via CSS `:has()`.
 - Not tested on the TV: IP-only mode (would sign the maintainer out of BitVision).
+
+## Real-device test (maintainer, phone dashboard → TV)
+- Scan from the TV found 10 cameras with ONVIF announcements.
+- "Didn't answer ONVIF": Android blocked cleartext HTTP → network security config (BitVision HTTPS-only).
+- App crash on "Test and save": camera clock `18:-15:36` → `Instant.parse` threw on a server thread.
+  Fixed: arithmetic clock, server catches RuntimeException → 500, tile thread maps them to "no video".
+- Then: camera saved; fullscreen 1920×1080 H.265, hardware decoder, 25 fps, first frame 0.5 s, 0 dropped.

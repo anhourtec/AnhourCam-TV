@@ -4,7 +4,7 @@ Living plan for AnhourCam TV. Updated at the end of every working session.
 Product spec: [SPEC.md](SPEC.md) · Phase status detail: [progress.md](progress.md) ·
 IP cameras: [ipcam.md](ipcam.md).
 
-_Last updated: 2026-10-29 (Phase 6 built: 6a–6e; real-camera tile test next, then release together)_
+_Last updated: 2026-10-29 (Phase 6 done and verified on the TV; next: release together)_
 
 ## Now
 
@@ -15,7 +15,8 @@ _Last updated: 2026-10-29 (Phase 6 built: 6a–6e; real-camera tile test next, t
 - [x] 6c Phone/computer dashboard: scan, add by address / brand / RTSP URL, shared or per-camera login, edit, delete, test
 - [x] 6d "Use IP cameras only" (no BitVision account needed)
 - [x] 6e Brand presets, README + screenshots, Help → GitHub issues
-- [ ] 6f Maintainer adds a real camera from the phone and checks the tile on the TV (+ H.264 decoder count, #24)
+- [x] 6f Real camera added from the phone and playing on the TV (1080p H.265, 25 fps, 0.5 s to first frame)
+- [ ] H.264 camera check (#24), IP-only mode on a spare TV
 - Rule: BitVision keeps working exactly as today after every step.
 - After 6e: release (GitHub APK, Play Store) **together with the maintainer**; checklists in the local `todo.md`.
 

@@ -8,7 +8,7 @@
 | 3 TV shell + login | **done**: on-TV login with CAPTCHA, LAN phone pairing, 5 languages | **yes** |
 | 4 Grids | **mostly done**: TV + phone editors, named layouts, still images; left: device cache, tour mode, settings | — |
 | 5 Polish | not started (README screenshots + install guide done) | — |
-| 6 Any IP camera | **built** (6a–6e): `:ipcam`, RTSP tiles, phone dashboard, IP-only mode, brand presets; real-camera tile test on the TV pending | — |
+| 6 Any IP camera | **done**: verified on the TV (camera added from a phone; 1080p H.265, 25 fps, 0.5 s first frame); left: H.264 camera, IP-only mode on a spare TV | **yes** |
 
 ## Phase 0 — API discovery
 - 2026-10-29: Repo scaffolding, docs, redaction checker created. Capture plan written (`capture-plan.md`).

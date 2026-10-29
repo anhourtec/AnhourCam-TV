@@ -5,7 +5,7 @@ network that speaks RTSP (most do) can be added and mixed into the same grids as
 cameras. **The BitVision path must not change or regress**: IP cameras are a second camera
 source next to it, not a rewrite.
 
-_Status: 6a–6e built (2026-10-29). Remaining: the maintainer adds a real camera from the phone dashboard and checks the tile on the TV. See [roadmap](roadmap.md)._
+_Status: done (2026-10-29). Verified on the test TV: camera added from a phone, fullscreen 1920×1080 H.265 on a hardware decoder, 25 fps, first frame 0.5 s, 0 dropped. See [roadmap](roadmap.md)._
 
 ## What users get
 
@@ -47,6 +47,13 @@ _Status: 6a–6e built (2026-10-29). Remaining: the maintainer adds a real camer
   on **port 80**, but RTSP works on **both 80 and 554**.
 - ONVIF says `H264`, but the RTSP stream is **H.265**: trust the SDP, never the ONVIF encoding.
 - RTSP sub-stream over TCP: **25 fps, first frame ~0.2 s** after connecting (BitVision: ~4 s).
+- **TV scan finds all 10 cameras and their ONVIF announcements** (WS-Discovery works from the TV,
+  not from the maintainer's Mac).
+- **Android blocks plain HTTP** for apps targeting recent versions: ONVIF/snapshots failed until a
+  network security config allowed cleartext (BitVision domains stay HTTPS-only).
+- One camera reports its ONVIF clock as `18:-15:36` (negative minute): parse clock fields
+  arithmetically; a malformed reply must never crash the app.
+- On the TV: first IP frame **0.5 s**, 1080p H.265 hardware decode, 25 fps, 0 dropped.
 - Cameras on one network can have **different passwords** (one camera rejected the login that
   works on others), so per-camera logins are needed, not only a shared one.
 
