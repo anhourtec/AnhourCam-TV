@@ -2,8 +2,7 @@
 <resources>
     <string name="app_name" translatable="false">CamGrid TV</string>
     <string name="pair_code_format" translatable="false">%1$s %2$s</string>
-    <string name="tile_channel" translatable="false">CH%1$d</string>
-    <string name="tile_debug" translatable="false">CH%1$d · %2$s %3$s · %4$s · %5$d fps · first %6$.1f s · dropped %7$d</string>
+    <string name="tile_debug" translatable="false">%1$s · %2$s %3$s · %4$s · %5$d fps · first %6$.1f s · dropped %7$d</string>
     <string name="pair_code_expired" translatable="false">——— ———</string>
     <string name="phone_eyebrow">Recommended</string>
     <string name="phone_title">Sign in from your phone</string>
@@ -31,10 +30,31 @@
     <string name="disclaimer">Unofficial app · not affiliated with BitVision</string>
     <string name="live_no_device">No online NVR on this account. Check that your recorder is online in the BitVision app.</string>
     <string name="live_step_account">Opening your account…</string>
-    <string name="live_step_device">Connecting to %1$s…</string>
     <string name="live_step_cameras">Starting cameras…</string>
     <string name="tile_connecting">Connecting…</string>
     <string name="tile_no_signal">No video from this camera\nTrying again in %1$d s</string>
-    <string name="tile_no_decoder">This TV can\'t play more cameras at once</string>
     <string name="tile_no_signal_manual">No video from this camera\nPress OK to try again</string>
+    <string name="layout_default_name">My cameras</string>
+    <string name="live_hint">Hold OK on a tile for options</string>
+    <string name="move_hint">Moving: use the arrows to pick a place · OK to drop · Back to cancel</string>
+    <string name="tile_empty">Empty tile\nPress OK to choose a camera</string>
+    <string name="tile_empty_title">Empty tile</string>
+    <string name="menu_change_camera">Choose camera</string>
+    <string name="menu_move">Move this tile</string>
+    <string name="menu_clear">Clear this tile</string>
+    <string name="menu_grid">Grid size</string>
+    <string name="menu_manage_phone">Edit layout from phone or computer</string>
+    <string name="menu_sign_out">Sign out</string>
+    <string name="picker_empty">Empty tile</string>
+    <string name="shape_full">full screen</string>
+    <string name="shape_side">side by side</string>
+    <string name="shape_one_large">1 large + %1$d</string>
+    <string name="shape_two_large">2 large + %1$d</string>
+    <string name="shape_center">1 large in the middle + %1$d</string>
+    <string name="shape_uniform">%1$d×%2$d</string>
+    <string name="nvr_offline">%1$s · offline</string>
+    <plurals name="tile_no_decoder">
+        <item quantity="one">Waiting for a free video decoder\nThis TV plays %1$d camera at once</item>
+        <item quantity="other">Waiting for a free video decoder\nThis TV plays %1$d cameras at once</item>
+    </plurals>
 </resources>

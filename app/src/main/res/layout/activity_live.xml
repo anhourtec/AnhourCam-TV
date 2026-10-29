@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:id="@+id/grid"
+    <FrameLayout
+        android:id="@+id/grid_host"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical" />
+        android:layout_height="match_parent" />
 
-    <!-- Full-screen loader shown while signing in and opening the NVR. -->
+    <TextView
+        android:id="@+id/hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_hint"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/text"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <!-- Full-screen loader shown while signing in and opening the NVRs. -->
     <LinearLayout
         android:id="@+id/loading"
         android:layout_width="match_parent"

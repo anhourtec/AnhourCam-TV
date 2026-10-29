@@ -26,10 +26,33 @@
     <string name="disclaimer">Неофициальное приложение · не связано с BitVision</string>
     <string name="live_no_device">В этом аккаунте нет регистраторов в сети. Проверьте в приложении BitVision, что регистратор подключён.</string>
     <string name="live_step_account">Открываем аккаунт…</string>
-    <string name="live_step_device">Подключение к %1$s…</string>
     <string name="live_step_cameras">Запуск камер…</string>
     <string name="tile_connecting">Подключение…</string>
     <string name="tile_no_signal">Нет видео с этой камеры\nПовтор через %1$d с</string>
-    <string name="tile_no_decoder">Этот телевизор не может показывать больше камер одновременно</string>
     <string name="tile_no_signal_manual">Нет видео с этой камеры\nНажмите OK, чтобы повторить</string>
+    <string name="layout_default_name">Мои камеры</string>
+    <string name="live_hint">Удерживайте OK на плитке, чтобы открыть меню</string>
+    <string name="move_hint">Перемещение: стрелками выберите место · OK — поставить · Назад — отмена</string>
+    <string name="tile_empty">Пустая плитка\nНажмите OK, чтобы выбрать камеру</string>
+    <string name="tile_empty_title">Пустая плитка</string>
+    <string name="menu_change_camera">Выбрать камеру</string>
+    <string name="menu_move">Переместить плитку</string>
+    <string name="menu_clear">Очистить плитку</string>
+    <string name="menu_grid">Размер сетки</string>
+    <string name="menu_manage_phone">Изменить раскладку с телефона или компьютера</string>
+    <string name="menu_sign_out">Выйти</string>
+    <string name="picker_empty">Пустая плитка</string>
+    <string name="shape_full">весь экран</string>
+    <string name="shape_side">рядом</string>
+    <string name="shape_one_large">1 большая + %1$d</string>
+    <string name="shape_two_large">2 большие + %1$d</string>
+    <string name="shape_center">1 большая в центре + %1$d</string>
+    <string name="shape_uniform">%1$d×%2$d</string>
+    <string name="nvr_offline">%1$s · не в сети</string>
+    <plurals name="tile_no_decoder">
+        <item quantity="one">Ожидание свободного видеодекодера\nЭтот телевизор показывает до %1$d камеры одновременно</item>
+        <item quantity="few">Ожидание свободного видеодекодера\nЭтот телевизор показывает до %1$d камер одновременно</item>
+        <item quantity="many">Ожидание свободного видеодекодера\nЭтот телевизор показывает до %1$d камер одновременно</item>
+        <item quantity="other">Ожидание свободного видеодекодера\nЭтот телевизор показывает до %1$d камеры одновременно</item>
+    </plurals>
 </resources>

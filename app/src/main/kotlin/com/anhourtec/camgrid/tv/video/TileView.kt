@@ -3,6 +3,7 @@ package com.anhourtec.camgrid.tv.video
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -27,7 +28,9 @@ class TileView(
         TextView(context).apply {
             setTextColor(Color.WHITE)
             setBackgroundColor(context.getColor(R.color.overlay))
-            textSize = LABEL_SP
+            textSize = LABEL_MAX_SP
+            maxLines = 1
+            ellipsize = TextUtils.TruncateAt.END
             setPadding(PAD, PAD / 2, PAD, PAD / 2)
         }
     private val loader = GridLoader(context)
@@ -36,6 +39,7 @@ class TileView(
             setTextColor(context.getColor(R.color.text_dim))
             textSize = MESSAGE_SP
             gravity = Gravity.CENTER
+            maxLines = MESSAGE_LINES
             setPadding(PAD, PAD, PAD, 0)
         }
     private val overlay =
@@ -45,7 +49,7 @@ class TileView(
             setBackgroundColor(context.getColor(R.color.background))
             val size = (LOADER_DP * resources.displayMetrics.density).toInt()
             addView(loader, LinearLayout.LayoutParams(size, size))
-            addView(message, LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT))
+            addView(message, LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT))
         }
 
     init {
@@ -71,6 +75,28 @@ class TileView(
         )
     }
 
+    /** Label, message and loader follow the tile's size: compact in 4×4, roomy fullscreen. */
+    override fun onSizeChanged(
+        w: Int,
+        h: Int,
+        oldw: Int,
+        oldh: Int,
+    ) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        val density = resources.displayMetrics.density
+        val heightDp = h / density
+        label.textSize = (heightDp * LABEL_RATIO).coerceIn(LABEL_MIN_SP, LABEL_MAX_SP)
+        message.textSize = (heightDp * MESSAGE_RATIO).coerceIn(MESSAGE_MIN_SP, MESSAGE_MAX_SP)
+        val pad = (label.textSize * PAD_RATIO).toInt()
+        label.setPadding(pad, pad / 2, pad, pad / 2)
+        val loaderPx = (h * LOADER_RATIO).toInt().coerceIn((LOADER_MIN_DP * density).toInt(), (LOADER_DP * density).toInt())
+        loader.layoutParams =
+            loader.layoutParams.apply {
+                width = loaderPx
+                height = loaderPx
+            }
+    }
+
     fun showConnecting() = showOverlay(loading = true, text = context.getString(R.string.tile_connecting))
 
     fun showLive() {
@@ -82,7 +108,10 @@ class TileView(
     /** Automatic retries are used up: the user decides when to try again (OK on the tile). */
     fun showNoSignalManual() = showOverlay(loading = false, text = context.getString(R.string.tile_no_signal_manual))
 
-    fun showNoDecoder() = showOverlay(loading = false, text = context.getString(R.string.tile_no_decoder))
+    fun showEmpty() = showOverlay(loading = false, text = context.getString(R.string.tile_empty))
+
+    fun showNoDecoder(capacity: Int) =
+        showOverlay(loading = false, text = resources.getQuantityString(R.plurals.tile_no_decoder, capacity, capacity))
 
     private fun showOverlay(
         loading: Boolean,
@@ -94,8 +123,17 @@ class TileView(
     }
 
     private companion object {
-        const val LABEL_SP = 13f
-        const val MESSAGE_SP = 15f
+        const val LABEL_RATIO = 0.04f
+        const val LABEL_MIN_SP = 8f
+        const val LABEL_MAX_SP = 12f
+        const val MESSAGE_RATIO = 0.055f
+        const val MESSAGE_MIN_SP = 9f
+        const val MESSAGE_MAX_SP = 15f
+        const val MESSAGE_SP = MESSAGE_MAX_SP
+        const val PAD_RATIO = 0.6f
+        const val MESSAGE_LINES = 3
+        const val LOADER_RATIO = 0.16f
+        const val LOADER_MIN_DP = 20
         const val LOADER_DP = 40
         const val PAD = 12
     }

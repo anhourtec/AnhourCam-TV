@@ -55,5 +55,6 @@ kotlin {
 dependencies {
     implementation(project(":bitvision-client"))
     implementation(project(":pairing"))
+    implementation(project(":layouts"))
     implementation(libs.kotlinx.coroutines.android)
 }

@@ -29,6 +29,11 @@ If you represent BitVision or a rights holder and have any concern about this pr
 open an issue on the repository or contact the maintainer, and it will be addressed promptly —
 including removing the project if requested.
 
+## Third-party material
+
+Icons in `app/src/main/res/drawable/ic_*.xml` are from Google's Material Symbols, used under the
+Apache License 2.0.
+
 ## No warranty
 
 Provided "as is", without warranty of any kind. The private API may change or stop working at any

@@ -26,10 +26,30 @@
     <string name="disclaimer">非官方应用 · 与 BitVision 无关</string>
     <string name="live_no_device">此账号下没有在线的录像机。请在 BitVision 应用中确认录像机在线。</string>
     <string name="live_step_account">正在打开你的账号…</string>
-    <string name="live_step_device">正在连接 %1$s…</string>
     <string name="live_step_cameras">正在启动摄像头…</string>
     <string name="tile_connecting">正在连接…</string>
     <string name="tile_no_signal">此摄像头没有画面\n%1$d 秒后重试</string>
-    <string name="tile_no_decoder">这台电视无法同时播放更多摄像头</string>
     <string name="tile_no_signal_manual">此摄像头没有画面\n按确定键重试</string>
+    <string name="layout_default_name">我的摄像头</string>
+    <string name="live_hint">在画面上长按确定键查看选项</string>
+    <string name="move_hint">移动中：用方向键选择位置 · 确定放下 · 返回取消</string>
+    <string name="tile_empty">空白画面\n按确定键选择摄像头</string>
+    <string name="tile_empty_title">空白画面</string>
+    <string name="menu_change_camera">选择摄像头</string>
+    <string name="menu_move">移动此画面</string>
+    <string name="menu_clear">清空此画面</string>
+    <string name="menu_grid">宫格数量</string>
+    <string name="menu_manage_phone">用手机或电脑编辑布局</string>
+    <string name="menu_sign_out">退出登录</string>
+    <string name="picker_empty">空白画面</string>
+    <string name="shape_full">全屏</string>
+    <string name="shape_side">左右并排</string>
+    <string name="shape_one_large">1 大 + %1$d</string>
+    <string name="shape_two_large">2 大 + %1$d</string>
+    <string name="shape_center">中间 1 大 + %1$d</string>
+    <string name="shape_uniform">%1$d×%2$d</string>
+    <string name="nvr_offline">%1$s · 离线</string>
+    <plurals name="tile_no_decoder">
+        <item quantity="other">等待空闲的视频解码器\n这台电视最多同时播放 %1$d 个画面</item>
+    </plurals>
 </resources>

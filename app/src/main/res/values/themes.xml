@@ -5,4 +5,15 @@
         <item name="android:colorAccent">@color/accent</item>
         <item name="android:textColor">@color/text</item>
     </style>
+
+    <!-- Floating TV dialog: transparent window, dimmed live view behind. -->
+    <style name="Theme.CamGrid.Dialog" parent="@android:style/Theme.Material.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.7</item>
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
 </resources>

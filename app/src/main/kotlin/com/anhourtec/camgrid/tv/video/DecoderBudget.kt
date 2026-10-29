@@ -26,6 +26,11 @@ class DecoderBudget(
 
     private val inUse = mutableMapOf<String, Int>()
 
+    /** How many tiles this TV can play at once: every hardware instance plus the software cap. */
+    val capacity: Int =
+        decoders.filter { it.hardware }.sumOf { it.maxInstances } +
+            minOf(softwareLimit, decoders.filter { !it.hardware }.sumOf { it.maxInstances })
+
     /** Reserves a decoder, or returns null when the budget is exhausted (show a snapshot instead). */
     @Synchronized
     fun acquire(allowSoftware: Boolean = true): Slot? {

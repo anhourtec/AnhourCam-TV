@@ -26,10 +26,30 @@
     <string name="disclaimer">非公式アプリ · BitVision とは無関係です</string>
     <string name="live_no_device">このアカウントにオンラインのレコーダーがありません。BitVision アプリでレコーダーがオンラインか確認してください。</string>
     <string name="live_step_account">アカウントを開いています…</string>
-    <string name="live_step_device">%1$s に接続しています…</string>
     <string name="live_step_cameras">カメラを起動しています…</string>
     <string name="tile_connecting">接続しています…</string>
     <string name="tile_no_signal">このカメラの映像がありません\n%1$d 秒後に再試行します</string>
-    <string name="tile_no_decoder">このテレビではこれ以上のカメラを同時に再生できません</string>
     <string name="tile_no_signal_manual">このカメラの映像がありません\n決定ボタンで再試行</string>
+    <string name="layout_default_name">マイカメラ</string>
+    <string name="live_hint">タイルで決定ボタンを長押しするとオプション</string>
+    <string name="move_hint">移動中：矢印で場所を選択 · 決定で配置 · 戻るでキャンセル</string>
+    <string name="tile_empty">空のタイル\n決定ボタンでカメラを選択</string>
+    <string name="tile_empty_title">空のタイル</string>
+    <string name="menu_change_camera">カメラを選択</string>
+    <string name="menu_move">このタイルを移動</string>
+    <string name="menu_clear">このタイルを空にする</string>
+    <string name="menu_grid">分割数</string>
+    <string name="menu_manage_phone">スマホやパソコンでレイアウトを編集</string>
+    <string name="menu_sign_out">サインアウト</string>
+    <string name="picker_empty">空のタイル</string>
+    <string name="shape_full">全画面</string>
+    <string name="shape_side">左右に並べる</string>
+    <string name="shape_one_large">大 1 + %1$d</string>
+    <string name="shape_two_large">大 2 + %1$d</string>
+    <string name="shape_center">中央に大 1 + %1$d</string>
+    <string name="shape_uniform">%1$d×%2$d</string>
+    <string name="nvr_offline">%1$s · オフライン</string>
+    <plurals name="tile_no_decoder">
+        <item quantity="other">空きデコーダーを待っています\nこのテレビの同時再生は %1$d 台まで</item>
+    </plurals>
 </resources>

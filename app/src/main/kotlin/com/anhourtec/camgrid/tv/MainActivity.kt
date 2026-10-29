@@ -82,13 +82,26 @@ class MainActivity : Activity() {
 
     override fun onKeyDown(
         keyCode: Int,
-        event: KeyEvent?,
-    ): Boolean = live?.onKey(keyCode) == true || super.onKeyDown(keyCode, event)
+        event: KeyEvent,
+    ): Boolean = live?.onKeyDown(keyCode, event) == true || super.onKeyDown(keyCode, event)
+
+    override fun onKeyLongPress(
+        keyCode: Int,
+        event: KeyEvent,
+    ): Boolean = live?.onKeyLongPress(keyCode) == true || super.onKeyLongPress(keyCode, event)
+
+    override fun onKeyUp(
+        keyCode: Int,
+        event: KeyEvent,
+    ): Boolean = live?.onKeyUp(keyCode) == true || super.onKeyUp(keyCode, event)
 
     private fun showLive() {
         pairing.stop()
-        live = LiveScreen(this, http, portal, scope, ::onSignedOut).also { it.show() }
+        live = LiveScreen(this, http, portal, scope, ::onSignedOut, ::manageFromPhone).also { it.show() }
     }
+
+    /** Phase 4 step 5 wires the phone layout editor here. */
+    private fun manageFromPhone() = Unit
 
     private fun onSignedIn() {
         portal.cookies.sessionId?.let { store.put(SESSION_KEY, it) }

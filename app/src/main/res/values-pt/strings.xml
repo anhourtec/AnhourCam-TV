@@ -26,10 +26,32 @@
     <string name="disclaimer">App não oficial · sem vínculo com a BitVision</string>
     <string name="live_no_device">Nenhum gravador on-line nesta conta. Verifique no app BitVision se o gravador está on-line.</string>
     <string name="live_step_account">Abrindo sua conta…</string>
-    <string name="live_step_device">Conectando a %1$s…</string>
     <string name="live_step_cameras">Iniciando as câmeras…</string>
     <string name="tile_connecting">Conectando…</string>
     <string name="tile_no_signal">Sem vídeo desta câmera\nNova tentativa em %1$d s</string>
-    <string name="tile_no_decoder">Esta TV não consegue reproduzir mais câmeras ao mesmo tempo</string>
     <string name="tile_no_signal_manual">Sem vídeo desta câmera\nPressione OK para tentar de novo</string>
+    <string name="layout_default_name">Minhas câmeras</string>
+    <string name="live_hint">Segure OK em um quadro para ver opções</string>
+    <string name="move_hint">Movendo: use as setas para escolher o lugar · OK para soltar · Voltar para cancelar</string>
+    <string name="tile_empty">Quadro vazio\nPressione OK para escolher uma câmera</string>
+    <string name="tile_empty_title">Quadro vazio</string>
+    <string name="menu_change_camera">Escolher câmera</string>
+    <string name="menu_move">Mover este quadro</string>
+    <string name="menu_clear">Esvaziar este quadro</string>
+    <string name="menu_grid">Tamanho da grade</string>
+    <string name="menu_manage_phone">Editar layout pelo celular ou computador</string>
+    <string name="menu_sign_out">Sair</string>
+    <string name="picker_empty">Quadro vazio</string>
+    <string name="shape_full">tela cheia</string>
+    <string name="shape_side">lado a lado</string>
+    <string name="shape_one_large">1 grande + %1$d</string>
+    <string name="shape_two_large">2 grandes + %1$d</string>
+    <string name="shape_center">1 grande no centro + %1$d</string>
+    <string name="shape_uniform">%1$d×%2$d</string>
+    <string name="nvr_offline">%1$s · off-line</string>
+    <plurals name="tile_no_decoder">
+        <item quantity="one">Aguardando um decodificador livre\nEsta TV reproduz %1$d câmera ao mesmo tempo</item>
+        <item quantity="many">Aguardando um decodificador livre\nEsta TV reproduz %1$d câmeras ao mesmo tempo</item>
+        <item quantity="other">Aguardando um decodificador livre\nEsta TV reproduz %1$d câmeras ao mesmo tempo</item>
+    </plurals>
 </resources>

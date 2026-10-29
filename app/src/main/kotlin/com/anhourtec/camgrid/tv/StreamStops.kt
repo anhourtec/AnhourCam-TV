@@ -20,18 +20,29 @@ internal object StreamStops {
 
     /** What is needed to stop a tile's stream on the NVR after the tile itself is gone. */
     class Request(
+        val name: String,
         val channelNo: Int,
         val streamId: Int,
         val ack: RelayAck,
         val media: MediaSession?,
+        val session: GatewaySession,
+        val link: DeviceLink,
     )
 
     /** Frees the tile's decoder now; returns the stream to stop on the NVR, if one was started. */
     fun detach(tile: Tile): Request? {
         tile.job?.cancel()
         tile.decoder?.close()
-        val request = tile.ack?.let { Request(tile.channelNo, tile.quality.streamId, it, tile.media) }
-        if (request == null) tile.media?.close()
+        val ack = tile.ack
+        val connection = tile.session?.let { session -> tile.link?.let { link -> session to link } }
+        val camera = tile.camera
+        val request =
+            if (ack != null && connection != null && camera != null) {
+                Request(tile.name, camera.channelNo, tile.quality.streamId, ack, tile.media, connection.first, connection.second)
+            } else {
+                tile.media?.close()
+                null
+            }
         tile.decoder = null
         tile.media = null
         tile.ack = null
@@ -39,21 +50,18 @@ internal object StreamStops {
     }
 
     /** Sends stopVideo and waits for the acknowledgement (3 s at most), then closes the media socket. */
-    suspend fun send(
-        session: GatewaySession,
-        link: DeviceLink,
-        request: Request,
-    ) {
-        val name = "CH${request.channelNo + 1}"
+    suspend fun send(request: Request) {
         try {
-            withTimeout(STOP_TIMEOUT_MS) { session.stopVideo(link, request.channelNo, request.streamId, request.ack) }
-            Log.i(TAG, "stopped $name")
+            withTimeout(STOP_TIMEOUT_MS) {
+                request.session.stopVideo(request.link, request.channelNo, request.streamId, request.ack)
+            }
+            Log.i(TAG, "stopped ${request.name}")
         } catch (e: IOException) {
-            Log.w(TAG, "stop $name failed", e)
+            Log.w(TAG, "stop ${request.name} failed", e)
         } catch (e: ClientException) {
-            Log.w(TAG, "stop $name failed", e)
+            Log.w(TAG, "stop ${request.name} failed", e)
         } catch (e: TimeoutCancellationException) {
-            Log.w(TAG, "stop $name timed out", e)
+            Log.w(TAG, "stop ${request.name} timed out", e)
         } finally {
             request.media?.close()
         }
