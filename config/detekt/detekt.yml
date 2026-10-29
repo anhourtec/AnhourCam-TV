@@ -1,0 +1,11 @@
+# Overrides on top of detekt's default config. Keep this short and justify each entry.
+style:
+  MagicNumber:
+    # Binary protocol offsets and command IDs are named in companion objects; tests use literals.
+    excludes: ['**/test/**']
+  MaxLineLength:
+    # Match ktlint's official Kotlin style (140) so the two tools never disagree.
+    maxLineLength: 140
+  ReturnCount:
+    # Parsers validate input with early-return guard clauses.
+    excludeGuardClauses: true
