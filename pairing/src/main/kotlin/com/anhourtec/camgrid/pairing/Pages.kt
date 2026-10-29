@@ -130,7 +130,6 @@ internal object Pages {
         </header>
         $body
         </main>
-        <p class="foot">${esc(s.footer)}</p>
         </body>
         </html>
         """.trimIndent()
@@ -175,7 +174,6 @@ button:hover{filter:brightness(1.05)}button:active{transform:scale(.99)}
 .ghost{color:var(--accent);text-decoration:none;font-weight:600;font-size:15px}
 .alert{margin:0 0 8px;padding:12px 14px;border-radius:12px;background:rgba(255,180,171,.1);border:1px solid rgba(255,180,171,.3);color:var(--danger)}
 .ok{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:rgba(200,251,208,.12);color:var(--accent);margin-bottom:20px}
-.foot{margin-top:20px;color:#5f6873;font-size:13px;text-align:center}
 fieldset{border:0;margin:18px 0 0;padding:0}legend{font-size:14px;color:var(--dim);margin-bottom:8px}
 .grids{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}
 .gridopt{position:relative;min-width:0;display:flex;flex-direction:column;align-items:center;gap:6px;margin:0;padding:8px;border:1px solid var(--line);border-radius:14px;cursor:pointer;color:var(--text)}

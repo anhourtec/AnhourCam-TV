@@ -32,8 +32,10 @@ internal object CameraPages {
             } else {
                 "<ul class=\"rows\">" +
                     snapshot.cameras.joinToString("") { cam ->
-                        val own = if (cam.ownLogin) " · ${Pages.esc(c.ownLoginBadge)}" else ""
-                        "<li><span><b>${Pages.esc(cam.name)}</b><small>${Pages.esc(cam.address)}$own</small></span>" +
+                        // A camera named after its address shows the address once.
+                        val details = listOfNotNull(cam.address.takeIf { it != cam.name }, c.ownLoginBadge.takeIf { cam.ownLogin })
+                        val small = if (details.isEmpty()) "" else "<small>${Pages.esc(details.joinToString(" · "))}</small>"
+                        "<li><span><b>${Pages.esc(cam.name)}</b>$small</span>" +
                             "<a class=\"small\" href=\"/cameras/add?id=${Pages.esc(cam.id)}\">${Pages.esc(c.edit)}</a></li>"
                     } + "</ul>"
             }
