@@ -106,4 +106,45 @@ data class LayoutState(
             defaultId = defaultId.takeIf { it != id },
             lastId = lastId.takeIf { it != id },
         )
+
+    /** Stores [layout] (new or changed) and shows it. */
+    fun saved(layout: Layout): LayoutState = put(layout).copy(lastId = layout.id)
+
+    /** Shows layout [id] (unknown ids are ignored). */
+    fun select(id: String): LayoutState = if (byId(id) != null) copy(lastId = id) else this
+
+    fun withDefault(id: String): LayoutState = if (byId(id) != null) copy(defaultId = id) else this
+
+    /** Deletes [id] unless it is the only layout; then shows the default (or the first) layout. */
+    fun delete(id: String): LayoutState {
+        if (layouts.size <= 1 || byId(id) == null) return this
+        val rest = remove(id)
+        val fallback = rest.layouts.first().id
+        // There is always a default: deleting it hands the role to the first remaining layout.
+        return rest.copy(defaultId = rest.defaultId ?: fallback, lastId = rest.lastId ?: rest.defaultId ?: fallback)
+    }
+
+    /** The next (or previous, for negative [by]) layout after the current one, wrapping around. */
+    fun cycle(by: Int): LayoutState {
+        val current = current ?: return this
+        if (layouts.size < 2) return this
+        val index = layouts.indexOf(current)
+        return copy(lastId = layouts[((index + by) % layouts.size + layouts.size) % layouts.size].id)
+    }
+
+    /** Adds a layout (first cameras on a small grid, see [LayoutCodec.firstLayout]) and shows it. */
+    fun create(
+        id: String,
+        name: String,
+        cameras: List<CameraRef>,
+    ): LayoutState {
+        val layout = LayoutCodec.firstLayout(id, name, cameras)
+        return put(layout).copy(lastId = layout.id, defaultId = defaultId ?: layout.id)
+    }
+
+    /** "Layout 2", "Layout 3"… using [pattern] with `{n}`, skipping names already taken. */
+    fun nextName(pattern: String): String =
+        generateSequence(layouts.size + 1) { it + 1 }
+            .map { pattern.replace("{n}", it.toString()) }
+            .first { name -> layouts.none { it.name == name } }
 }

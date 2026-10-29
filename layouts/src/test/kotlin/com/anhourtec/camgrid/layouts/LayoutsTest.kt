@@ -79,6 +79,33 @@ class LayoutsTest {
     }
 
     @Test
+    fun `several layouts - create, switch, cycle, default, delete`() {
+        val cams = List(6) { CameraRef("NVR", it) }
+        var s = LayoutState().create("a", "Home", cams)
+        assertEquals("a", s.defaultId)
+        s = s.create("b", s.nextName("Layout {n}"), cams.drop(4))
+        assertEquals("Layout 2", s.byId("b")!!.name)
+        assertEquals("b", s.current!!.id)
+        assertEquals("a", s.cycle(1).current!!.id)
+        assertEquals("a", s.cycle(-1).current!!.id)
+        assertEquals(
+            "a",
+            s
+                .select("zzz")
+                .select("a")
+                .current!!
+                .id,
+        )
+        s = s.withDefault("b")
+        assertEquals("b", s.defaultId)
+        s = s.delete("b")
+        assertEquals(listOf("a"), s.layouts.map { it.id })
+        assertEquals("a", s.defaultId, "deleting the default hands the role on")
+        assertEquals("a", s.current!!.id)
+        assertEquals(s, s.delete("a"), "the last layout can't be deleted")
+    }
+
+    @Test
     fun `unknown template falls back to 2x2`() {
         assertEquals("4", Layout("l", "x", "99").template.id)
     }
