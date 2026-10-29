@@ -2,6 +2,7 @@ package com.anhourtec.camgrid.tv.video
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.text.TextUtils
 import android.view.Gravity
@@ -9,6 +10,7 @@ import android.view.SurfaceHolder
 import android.view.SurfaceView
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.anhourtec.camgrid.tv.R
@@ -34,6 +36,18 @@ class TileView(
             setPadding(PAD, PAD / 2, PAD, PAD / 2)
         }
     private val loader = GridLoader(context)
+    private val still =
+        ImageView(context).apply {
+            scaleType = ImageView.ScaleType.FIT_XY
+            visibility = View.GONE
+        }
+    private val badge =
+        TextView(context).apply {
+            setText(R.string.tile_still)
+            setTextColor(Color.WHITE)
+            setBackgroundResource(R.drawable.bg_hint)
+            visibility = View.GONE
+        }
     private val message =
         TextView(context).apply {
             setTextColor(context.getColor(R.color.text_dim))
@@ -57,7 +71,9 @@ class TileView(
         isFocusable = true
         foreground = context.getDrawable(R.drawable.tile_focus)
         addView(surfaceView, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        addView(still, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
         addView(overlay, LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT))
+        addView(badge, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM or Gravity.END))
         addView(label, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.TOP or Gravity.START))
         surfaceView.holder.addCallback(
             object : SurfaceHolder.Callback {
@@ -89,6 +105,9 @@ class TileView(
         message.textSize = (heightDp * MESSAGE_RATIO).coerceIn(MESSAGE_MIN_SP, MESSAGE_MAX_SP)
         val pad = (label.textSize * PAD_RATIO).toInt()
         label.setPadding(pad, pad / 2, pad, pad / 2)
+        badge.textSize = label.textSize / density
+        badge.setPadding(pad, pad / 2, pad, pad / 2)
+        (badge.layoutParams as LayoutParams).setMargins(pad, pad, pad, pad)
         val loaderPx = (h * LOADER_RATIO).toInt().coerceIn((LOADER_MIN_DP * density).toInt(), (LOADER_DP * density).toInt())
         loader.layoutParams =
             loader.layoutParams.apply {
@@ -97,10 +116,31 @@ class TileView(
             }
     }
 
-    fun showConnecting() = showOverlay(loading = true, text = context.getString(R.string.tile_connecting))
+    /** Connecting: the loader, over the camera's last still image when there is one. */
+    fun showConnecting(lastStill: Bitmap? = null) {
+        showImage(lastStill, badge = false)
+        showOverlay(loading = true, text = context.getString(R.string.tile_connecting))
+        overlay.setBackgroundColor(context.getColor(if (lastStill != null) R.color.overlay else R.color.background))
+    }
+
+    /** No decoder free: a still image refreshed every few seconds, with a small badge. */
+    fun showStill(bitmap: Bitmap) {
+        showImage(bitmap, badge = true)
+        overlay.visibility = View.GONE
+    }
+
+    private fun showImage(
+        bitmap: Bitmap?,
+        badge: Boolean,
+    ) {
+        still.setImageBitmap(bitmap)
+        still.visibility = if (bitmap != null) View.VISIBLE else View.GONE
+        this.badge.visibility = if (bitmap != null && badge) View.VISIBLE else View.GONE
+    }
 
     fun showLive() {
         overlay.visibility = View.GONE
+        showImage(null, badge = false)
     }
 
     fun showNoSignal(retryInSeconds: Int) = showOverlay(loading = false, text = context.getString(R.string.tile_no_signal, retryInSeconds))
@@ -117,6 +157,7 @@ class TileView(
         loading: Boolean,
         text: String,
     ) {
+        overlay.setBackgroundColor(context.getColor(R.color.background))
         overlay.visibility = View.VISIBLE
         loader.visibility = if (loading) View.VISIBLE else View.GONE
         message.text = text

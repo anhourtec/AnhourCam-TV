@@ -21,6 +21,7 @@ import com.anhourtec.camgrid.tv.data.DeviceDirectory
 import com.anhourtec.camgrid.tv.data.LayoutRepository
 import com.anhourtec.camgrid.tv.video.CellGridLayout
 import com.anhourtec.camgrid.tv.video.DecoderBudget
+import com.anhourtec.camgrid.tv.video.SnapshotCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -49,6 +50,8 @@ class LiveScreen(
     private val tiles = mutableListOf<Tile>()
     private var pool: GatewayPool? = null
     private var runner: TileRunner? = null
+    private val stills = SnapshotCache()
+    private var snapshots: SnapshotRunner? = null
 
     @Volatile private var state = LayoutState()
     private var manage: ManagePanel? = null
@@ -78,7 +81,8 @@ class LiveScreen(
             loadingText.setText(R.string.live_step_account)
             directory.load()
             pool = GatewayPool(http, scope, directory.accountName)
-            runner = TileRunner(http, scope, directory, pool!!, budget)
+            runner = TileRunner(http, scope, directory, pool!!, budget, stills)
+            snapshots = SnapshotRunner(http, scope, directory, pool!!, budget, stills)
             state = layouts.load()
             if (directory.cameras.isEmpty()) throw NoCamerasException()
             if (state.current == null) {
@@ -100,6 +104,7 @@ class LiveScreen(
             try {
                 prepare()
                 render()
+                snapshots?.start { runner?.waitingTiles.orEmpty() }
                 showHint(activity.getString(R.string.live_hint))
             } catch (_: SessionExpiredException) {
                 onSignedOut()
@@ -216,6 +221,7 @@ class LiveScreen(
     fun stop() {
         activity.window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         manage?.stop()
+        snapshots?.stop()
         ticker?.cancel()
         tiles.forEach { it.retryJob?.cancel() }
         val pending = tiles.mapNotNull { StreamStops.detach(it) }

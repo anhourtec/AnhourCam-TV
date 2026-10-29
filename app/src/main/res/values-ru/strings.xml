@@ -56,4 +56,5 @@
         <item quantity="other">Ожидание свободного видеодекодера\nЭтот телевизор показывает до %1$d камеры одновременно</item>
     </plurals>
     <string name="manage_close">Изменения появятся здесь сразу после сохранения. «Назад» закрывает это окно.</string>
+    <string name="tile_still">Снимок</string>
 </resources>

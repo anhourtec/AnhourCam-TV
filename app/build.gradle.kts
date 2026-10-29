@@ -57,4 +57,12 @@ dependencies {
     implementation(project(":pairing"))
     implementation(project(":layouts"))
     implementation(libs.kotlinx.coroutines.android)
+
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.launcher)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }

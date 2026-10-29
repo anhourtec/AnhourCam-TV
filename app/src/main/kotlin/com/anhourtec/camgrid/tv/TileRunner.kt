@@ -5,6 +5,7 @@ import com.anhourtec.camgrid.client.ClientException
 import com.anhourtec.camgrid.client.media.MediaSession
 import com.anhourtec.camgrid.tv.data.DeviceDirectory
 import com.anhourtec.camgrid.tv.video.DecoderBudget
+import com.anhourtec.camgrid.tv.video.SnapshotCache
 import com.anhourtec.camgrid.tv.video.TileDecoder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -22,9 +23,13 @@ internal class TileRunner(
     private val directory: DeviceDirectory,
     private val pool: GatewayPool,
     private val budget: DecoderBudget,
+    private val stills: SnapshotCache,
 ) {
     /** Tiles waiting for a decoder; the next one starts as soon as another tile frees one. */
     private val waiting = ArrayDeque<Tile>()
+
+    /** Tiles that currently show still images instead of live video. */
+    val waitingTiles: List<Tile> get() = waiting.filter { it.holder != null }
 
     fun start(tile: Tile) {
         val holder = tile.holder ?: return
@@ -32,7 +37,8 @@ internal class TileRunner(
         val slot = budget.acquire()
         if (slot == null) {
             if (tile !in waiting) waiting.addLast(tile)
-            tile.view?.showNoDecoder(budget.capacity)
+            val last = stills.get(tile.camera)
+            if (last != null) tile.view?.showStill(last.bitmap) else tile.view?.showNoDecoder(budget.capacity)
             return
         }
         waiting.remove(tile)
@@ -40,7 +46,7 @@ internal class TileRunner(
         tile.decoder = decoder
         tile.live = false
         tile.startedAt = SystemClock.elapsedRealtime()
-        tile.view?.showConnecting()
+        tile.view?.showConnecting(stills.get(tile.camera)?.bitmap)
         tile.job = scope.launch { stream(tile, decoder) }
     }
 

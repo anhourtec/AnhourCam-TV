@@ -58,4 +58,5 @@
         <item quantity="other">Waiting for a free video decoder\nThis TV plays %1$d cameras at once</item>
     </plurals>
     <string name="manage_close">Changes appear here as soon as you save. Back closes this.</string>
+    <string name="tile_still">Still image</string>
 </resources>
