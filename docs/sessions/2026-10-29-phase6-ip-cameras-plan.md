@@ -62,3 +62,9 @@
 - App crash on "Test and save": camera clock `18:-15:36` → `Instant.parse` threw on a server thread.
   Fixed: arithmetic clock, server catches RuntimeException → 500, tile thread maps them to "no video".
 - Then: camera saved; fullscreen 1920×1080 H.265, hardware decoder, 25 fps, first frame 0.5 s, 0 dropped.
+
+## Disclaimer line removed from the app and web pages
+- Maintainer's call: "Unofficial app · not affiliated with BitVision" no longer shown on the TV
+  sign-in screen or the phone/computer pages; NOTICE.md, README and release pages keep it.
+- Dashboard list shows a camera's address once when its name is the address.
+- README screenshots retaken (web) / cleaned (TV sign-in).

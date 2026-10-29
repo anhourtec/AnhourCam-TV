@@ -25,7 +25,7 @@ _Last updated: 2026-10-29 (Phase 6 done and verified on the TV; next: release to
 **Phase 4 leftovers**
 - [ ] Encrypted on-disk device cache → instant start, live view without the portal
 - [ ] Pages / tour mode
-- [ ] Settings screen (language, sign out, About with the NOTICE disclaimer)
+- [ ] Settings screen (language, sign out, About: version and licenses)
 
 **Phase 2 leftovers**
 - [ ] Hardware decoders to the largest streams first (open question #15)

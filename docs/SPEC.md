@@ -347,7 +347,7 @@ camera that disappears from the account shows "Camera unavailable" instead of br
 - Clear focus indicators. Large text, readable from a couch at 3 m.
 - Launch straight into the default layout if logged in; otherwise to the login choice screen ("Log in on TV" / "Log in from phone").
 - Screens: Login choice → Login / Pairing → Home (layouts) → Grid → Fullscreen; plus Devices, Layout editor, Settings.
-- Settings: pairing port, decoder budget override, tour interval, overlay on/off, stream defaults, log out, about (version, licenses, disclaimer).
+- Settings: pairing port, decoder budget override, tour interval, overlay on/off, stream defaults, log out, about (version, licenses). The disclaimer lives in NOTICE.md, the README and release pages, not in the app UI.
 - Must provide a TV launcher banner (`android:banner`) and `LEANBACK_LAUNCHER` intent, and declare touchscreen as not required.
 
 ---
