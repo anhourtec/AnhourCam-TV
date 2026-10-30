@@ -11,8 +11,8 @@ android {
         // Android 7.1: covers Fire OS 6 Fire TV sticks as well as Google TV / Android TV.
         minSdk = 25
         targetSdk = 37
-        versionCode = 2
-        versionName = "0.2.0-preview"
+        versionCode = 3
+        versionName = "0.2.0"
     }
 
     // Release signing key: set per computer in ~/.gradle/gradle.properties (or as environment
