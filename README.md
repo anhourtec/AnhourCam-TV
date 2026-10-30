@@ -143,8 +143,16 @@ Fire TV has no Google Play: Fire TV users can [install the APK](#install) instea
 
 1. **Join the tester group:** https://groups.google.com/g/anhourcam-tv-testers
 2. **Opt in to the test** (same Google account): https://play.google.com/apps/testing/com.anhourtec.anhourcam
-3. **Install it on your TV** from Google Play: https://play.google.com/store/apps/details?id=com.anhourtec.anhourcam
-   (or search "AnhourCam TV" in the Play Store on the TV, signed in with that account)
+3. **Install it on your TV from a phone or computer browser:** open
+   https://play.google.com/store/apps/details?id=com.anhourtec.anhourcam, sign in with the same
+   Google account (top right), tap **Install**, choose your TV in the device list and confirm.
+   It downloads to the TV by itself within a few minutes; the TV must be on and signed in to
+   Google Play with that same account.
+
+> **Searching on the TV won't find it yet.** Closed-test apps don't show up in the Play Store's
+> search on the TV until the app is public. Always install it from the browser link above.
+> If your TV isn't in the device list, open the Play Store on the TV once, check it uses the
+> same Google account, then reload the page.
 
 Please keep it installed for 14 days and open it every few days. No BitVision account? Choose
 **"Use IP cameras only"** and add any IP camera or RTSP stream from your phone.
