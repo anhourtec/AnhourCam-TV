@@ -7,12 +7,14 @@ android {
     compileSdk = 37
 
     defaultConfig {
-        applicationId = "com.anhourtec.camgrid.tv"
+        // The permanent app ID (Play and Android). Kotlin packages keep the old com.anhourtec.camgrid
+        // names: they are internal and changing them would not affect users.
+        applicationId = "com.anhourtec.anhourcam"
         // Android 7.1: covers Fire OS 6 Fire TV sticks as well as Google TV / Android TV.
         minSdk = 25
         targetSdk = 37
-        versionCode = 3
-        versionName = "0.2.0"
+        versionCode = 4
+        versionName = "0.2.1"
     }
 
     // Release signing key: set per computer in ~/.gradle/gradle.properties (or as environment
