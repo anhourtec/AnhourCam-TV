@@ -125,6 +125,15 @@ Watch or star the repo to hear about the first release.
 How many cameras play live at once depends on your device's video decoder. Tiles beyond that
 show a still image until you select them.
 
+**Tested on** (details and measurements in [docs/devices](docs/devices/)):
+
+| Device | Android | Result |
+|---|---|---|
+| Skyworth Google TV (MediaTek MT5867, 1 GB) | 14 | ✅ BitVision + IP cameras; 4 live tiles (2 hardware + 2 software) |
+| Xiaomi Mi Box 4K (Amlogic, 2 GB) | 9 | ✅ installs, phone sign-in, BitVision live tiles on hardware decoders (multi-tile limits being measured) |
+
+Found a device that works (or doesn't)? Please [open an issue](https://github.com/anhourtec/AnhourCam-TV/issues/new/choose) with the **Device report** form.
+
 ## Install
 
 AnhourCam TV isn't on Google Play or the Amazon Appstore; you install it yourself ("sideload").

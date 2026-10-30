@@ -86,3 +86,9 @@ built or tested.
 (scan, ONVIF / brand / RTSP URL, test-then-save, shared or per-camera login, 5 languages), 6d
 "Use IP cameras only", 6e brand presets + README. BitVision verified unchanged on the TV after each
 install. Pending: the maintainer adds a real camera from the phone and checks its tile.
+
+### Second device: Xiaomi Mi Box 4K (2026-10-30)
+Android 9, Amlogic, 2 GB. Installs and runs; phone sign-in and BitVision tiles work on hardware
+decoders. It exposed crashes from JDK methods newer than Android 7.1/9 in the pure-JVM modules
+(fixed; build-time API check added) and a clipped sign-in button (fixed). Details:
+[docs/devices/xiaomi-mi-box-4k.md](devices/xiaomi-mi-box-4k.md).

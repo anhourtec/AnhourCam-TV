@@ -17,6 +17,8 @@ _Last updated: 2026-10-29 (Phase 6 done and verified on the TV; next: release to
 - [x] 6e Brand presets, README + screenshots, Help → GitHub issues
 - [x] 6f Real camera added from the phone and playing on the TV (1080p H.265, 25 fps, 0.5 s to first frame)
 - [ ] H.264 camera check (#24), IP-only mode on a spare TV
+- [x] Second device: Xiaomi Mi Box 4K (Android 9) — installs, phone sign-in, BitVision tiles; found and fixed Android-version crashes; API check in the build
+- [ ] Mi Box: tile limit (#28), two TVs on one NVR (#29), black tile (#30)
 - Rule: BitVision keeps working exactly as today after every step.
 - After 6e: release (GitHub APK, Play Store) **together with the maintainer**; checklists in the local `todo.md`.
 

@@ -31,3 +31,6 @@ Anything not directly observed. Code that relies on one of these carries `// INF
 | 24 | H.264 decoder count on the test TV | open (inferred) | H.264 tiles take a slot from the shared HEVC budget and use the TV's AVC decoder of the same kind; verify with an H.264 camera |
 | 26 | Real bitrate of the RTSP sub-stream | **resolved** | Saved 10 s clip (never viewed, deleted): ffmpeg decoded 250/250 frames, 0 errors, 1280×720 HEVC Main, VPS/SPS/PPS + 1 IDR + 249 P. Low bitrate = still night scene |
 | 27 | Cameras with broken ONVIF clocks | **handled** | One camera sends minute -15; clock read arithmetically, ignored if invalid; crashes guarded at the dashboard and tile level |
+| 28 | Real live-tile limit on the Mi Box 4K | open | Vendor file declares 9 hardware HEVC/AVC instances; measure smooth tiles in 3×3 / 4×4 |
+| 29 | Two TVs streaming the same NVR channels | checking | On the Mi Box, the two channels the Google TV was also playing showed "No video"; experiment: stop the Google TV and watch them recover |
+| 30 | Black picture on admin CH1 on the Mi Box | checking | 20 fps decoded but black: dark/covered camera, or Amlogic render issue |
