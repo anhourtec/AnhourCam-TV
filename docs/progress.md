@@ -93,3 +93,7 @@ decoders; plays at the same time as the Google TV on one account (an NVR's strea
 both play many cameras from it). It exposed crashes from JDK methods newer than Android 7.1/9 in the pure-JVM modules
 (fixed; build-time API check added) and a clipped sign-in button (fixed). Details:
 [docs/devices/xiaomi-mi-box-4k.md](devices/xiaomi-mi-box-4k.md).
+### First release: 0.2.0 (2026-10-30)
+Signed with the maintainer's release key (SHA-256 `2A:B2:1D:…:F4:52`), R8-shrunk APK 471 KB.
+Release build tested on both TVs: sign-in, BitVision tiles, IP camera (saved and reloaded after a
+restart), dashboard. Published on GitHub Releases as `anhourcam-tv.apk`.

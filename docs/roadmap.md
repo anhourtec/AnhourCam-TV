@@ -37,7 +37,8 @@ _Last updated: 2026-10-29 (Phase 6 done and verified on the TV; next: release to
 
 **Phase 5: Polish and release**
 - [ ] Performance pass against the budgets (docs/performance.md)
-- [ ] Signed release APK on GitHub Releases (enables install without a computer)
+- [x] Signed release APK on GitHub Releases: v0.2.0 (2026-10-30), tested on both TVs
+- [ ] Google Play (Android TV track) — listing material prepared by the maintainer's session
 
 ## Later
 

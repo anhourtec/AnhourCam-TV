@@ -3,9 +3,9 @@
 AnhourCam TV isn't on Google Play or the Amazon Appstore; you install it yourself ("sideload").
 It takes about ten minutes the first time.
 
-> **Status:** there is no downloadable release yet. Until the first release is published on the
-> [Releases page](https://github.com/anhourtec/AnhourCam-TV/releases), install it from a computer
-> (option A). Option B (no computer) works as soon as a release exists.
+> **Latest version:** [download `anhourcam-tv.apk`](https://github.com/anhourtec/AnhourCam-TV/releases/latest/download/anhourcam-tv.apk) ·
+> [all releases](https://github.com/anhourtec/AnhourCam-TV/releases). Option B needs no computer;
+> option A uses a computer.
 
 ## What you need
 
@@ -40,8 +40,8 @@ It takes about ten minutes the first time.
    adb connect <TV_IP>:5555                # then press "Allow" on the TV
    ```
    `adb devices` should now list your TV.
-4. **Get the app.** Download `camgrid-tv.apk` from the
-   [Releases page](https://github.com/anhourtec/AnhourCam-TV/releases) once available, or build it
+4. **Get the app.** Download `anhourcam-tv.apk` from the
+   [Releases page](https://github.com/anhourtec/AnhourCam-TV/releases), or build it
    yourself (needs JDK 17+ and the Android SDK):
    ```bash
    git clone https://github.com/anhourtec/AnhourCam-TV && cd AnhourCam-TV
@@ -49,12 +49,12 @@ It takes about ten minutes the first time.
    ```
 5. **Install it:**
    ```bash
-   adb install -r camgrid-tv.apk           # or app/build/outputs/apk/debug/app-debug.apk
+   adb install -r anhourcam-tv.apk         # or app/build/outputs/apk/debug/app-debug.apk
    ```
 6. **Turn debugging off again** when you're done (Wireless debugging / ADB debugging). The app
    doesn't need it.
 
-## Option B: Install without a computer (once a release exists)
+## Option B: Install without a computer (easiest)
 
 1. On the TV, install **Downloader** by AFTVnews from the Google Play Store or the Amazon Appstore.
 2. Allow it to install apps:
@@ -62,9 +62,11 @@ It takes about ten minutes the first time.
      **Downloader**.
    - *Fire TV:* Settings → My Fire TV → **Developer options** → **Install unknown apps** → turn on
      **Downloader**.
-3. In Downloader, enter the APK link from the
-   [Releases page](https://github.com/anhourtec/AnhourCam-TV/releases), download it and press
-   **Install**.
+3. In Downloader, type this address and press Go, then press **Install**:
+   ```
+   https://github.com/anhourtec/AnhourCam-TV/releases/latest/download/anhourcam-tv.apk
+   ```
+   It always points to the newest version.
 
 ## Step 2: First start
 
