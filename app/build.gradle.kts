@@ -57,6 +57,9 @@ android {
     }
 
     lint {
+        // Also check the pure-JVM modules (:pairing, :ipcam, …) against minSdk: a JDK method newer
+        // than the TV's Android crashes there (NoSuchMethodError) even though it compiles.
+        checkDependencies = true
         warningsAsErrors = true
         lintConfig = file("lint.xml")
     }
