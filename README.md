@@ -42,7 +42,7 @@
 | **Help build it** | [Contributing](CONTRIBUTING.md) and the [roadmap](docs/roadmap.md). |
 
 [Why this exists](#why-this-exists) · [What you get](#what-you-get) · [Screenshots](#screenshots) · [Status](#status) ·
-[Supported devices](#supported-devices) · [Install](#install) · [How it works](#how-it-works) ·
+[Supported devices](#supported-devices) · [Help test](#help-test-it-on-google-play) · [Install](#install) · [How it works](#how-it-works) ·
 [Build and run](#build-and-run-on-your-tv-developers) · [Questions people ask](#questions-people-ask) · [Contributing](#contributing) · [Credits](#credits)
 
 ## Why this exists
@@ -135,9 +135,26 @@ an NVR can only send so many streams: if tiles freeze, show fewer cameras from t
 
 Found a device that works (or doesn't)? Please [open an issue](https://github.com/anhourtec/AnhourCam-TV/issues/new/choose) with the **Device report** form.
 
+## Help test it on Google Play
+
+AnhourCam TV is going through Google Play's **14-day closed test** before it can be listed for
+everyone. If you have an **Android TV or Google TV** device, you can help (it takes a minute).
+Fire TV has no Google Play: Fire TV users can [install the APK](#install) instead.
+
+1. **Join the tester group:** https://groups.google.com/g/anhourcam-tv-testers
+2. **Opt in to the test** (same Google account): https://play.google.com/apps/testing/com.anhourtec.anhourcam
+3. **Install it on your TV** from Google Play: https://play.google.com/store/apps/details?id=com.anhourtec.anhourcam
+   (or search "AnhourCam TV" in the Play Store on the TV, signed in with that account)
+
+Please keep it installed for 14 days and open it every few days. No BitVision account? Choose
+**"Use IP cameras only"** and add any IP camera or RTSP stream from your phone.
+
+Bugs, confusing screens or a camera that won't connect: please
+[open an issue](https://github.com/anhourtec/AnhourCam-TV/issues) or leave feedback in the Play Store.
+
 ## Install
 
-AnhourCam TV isn't on Google Play or the Amazon Appstore; you install it yourself ("sideload").
+AnhourCam TV is in Google Play's closed test ([join above](#help-test-it-on-google-play)) and not on the Amazon Appstore; until it is public, install it yourself ("sideload").
 It takes about ten minutes the first time.
 
 > **Latest version:** [download `anhourcam-tv.apk`](https://github.com/anhourtec/AnhourCam-TV/releases/latest/download/anhourcam-tv.apk) ·
