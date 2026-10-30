@@ -211,6 +211,8 @@ button.danger{background:transparent;color:var(--danger);border:1px solid rgba(2
 a.btn{display:block;text-align:center;margin-top:12px;padding:13px 18px;border-radius:999px;border:1px solid var(--line);color:var(--text);text-decoration:none;font-weight:600}
 a.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
 a.small{flex:none;padding:8px 14px;border-radius:999px;border:1px solid var(--line);color:var(--accent);text-decoration:none;font-weight:600;font-size:14px}
+a.small.danger{color:var(--danger);border-color:rgba(255,180,171,.4)}
+.row-actions{display:flex;gap:6px;flex:none}
 .choice{display:flex;align-items:center;gap:10px;margin:10px 0 0;color:var(--text);font-size:16px}
 .choice input{width:20px;height:20px;accent-color:var(--accent)}
 .help{display:block;margin-top:18px;text-align:center;color:var(--dim);font-size:14px}

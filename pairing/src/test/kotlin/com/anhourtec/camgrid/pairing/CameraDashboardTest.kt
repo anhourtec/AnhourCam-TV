@@ -175,6 +175,11 @@ class CameraDashboardTest {
         assertEquals("pw1", sharedPassword)
         assertFalse("pw1" in request("GET", "/cameras", cookie).body)
 
+        val list = request("GET", "/cameras", cookie).body
+        assertTrue("href=\"/cameras/remove?id=c1\"" in list, "every camera has a Remove button")
+        val confirm = request("GET", "/cameras/remove?id=c1", cookie).body
+        assertTrue("Remove “Gate &lt;script&gt;”?" in confirm && "action=\"/cameras/delete\"" in confirm)
+        assertTrue(entries.isNotEmpty(), "asking is not removing")
         assertTrue("Camera deleted." in request("POST", "/cameras/delete", cookie, form("id" to "c1")).body)
         assertTrue(entries.isEmpty())
     }

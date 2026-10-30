@@ -23,6 +23,7 @@ internal class CameraRoutes(
                 "GET" to PREFIX -> ok(CameraPages.list(s, backend.cameras()))
                 "GET" to "$PREFIX/scan" -> ok(CameraPages.scan(s, backend.scan()))
                 "GET" to "$PREFIX/add" -> ok(addPage(s, request))
+                "GET" to "$PREFIX/remove" -> ok(removePage(s, request))
                 "POST" to "$PREFIX/save" -> ok(save(s, c, request.form()))
                 "POST" to "$PREFIX/delete" -> ok(delete(s, c, request.form()))
                 "POST" to "$PREFIX/shared" -> ok(shared(s, c, request.form()))
@@ -45,6 +46,15 @@ internal class CameraRoutes(
             saved?.let { if (mode != null) it.copy(mode = AddMode.of(mode)) else it }
                 ?: blank(AddMode.of(mode), host, snapshot)
         return CameraPages.form(s, snapshot, form)
+    }
+
+    private fun removePage(
+        s: Strings,
+        request: HttpRequest,
+    ): String {
+        val cameras = backend.cameras()
+        val camera = request.queryParam("id")?.let { id -> cameras.cameras.firstOrNull { it.id == id } }
+        return if (camera == null) CameraPages.list(s, cameras) else CameraPages.confirmRemove(s, camera)
     }
 
     private fun save(

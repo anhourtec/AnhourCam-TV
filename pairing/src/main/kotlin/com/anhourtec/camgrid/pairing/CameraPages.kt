@@ -35,8 +35,11 @@ internal object CameraPages {
                         // A camera named after its address shows the address once.
                         val details = listOfNotNull(cam.address.takeIf { it != cam.name }, c.ownLoginBadge.takeIf { cam.ownLogin })
                         val small = if (details.isEmpty()) "" else "<small>${Pages.esc(details.joinToString(" · "))}</small>"
-                        "<li><span><b>${Pages.esc(cam.name)}</b>$small</span>" +
-                            "<a class=\"small\" href=\"/cameras/add?id=${Pages.esc(cam.id)}\">${Pages.esc(c.edit)}</a></li>"
+                        "<li><span><b>${Pages.esc(cam.name)}</b>$small</span><span class=\"row-actions\">" +
+                            "<a class=\"small\" href=\"/cameras/add?id=${Pages.esc(cam.id)}\">${Pages.esc(c.edit)}</a>" +
+                            "<a class=\"small danger\" href=\"/cameras/remove?id=${Pages.esc(
+                                cam.id,
+                            )}\">${Pages.esc(c.remove)}</a></span></li>"
                     } + "</ul>"
             }
         val passwordHint = if (snapshot.sharedPasswordSet) Pages.esc(c.passwordSaved) else ""
@@ -66,6 +69,29 @@ internal object CameraPages {
                   </fieldset>
                 </form>
                 <a class="help" href="$HELP_URL" target="_blank" rel="noopener noreferrer">${Pages.esc(c.help)}</a>
+                """,
+        )
+    }
+
+    /** "Remove Porch?" — a separate page, since the dashboard has no script for a pop-up. */
+    fun confirmRemove(
+        s: Strings,
+        camera: CameraEntry,
+    ): String {
+        val c = CameraStrings.forCode(s.code)
+        return Pages.page(
+            s,
+            title = c.removeTitle(camera.name),
+            body =
+                """
+                ${tabs(s, camerasActive = true)}
+                <h1>${Pages.esc(c.removeTitle(camera.name))}</h1>
+                <p class="lead">${Pages.esc(c.removeLead)}</p>
+                <form method="post" action="/cameras/delete">
+                  <input type="hidden" name="id" value="${Pages.esc(camera.id)}">
+                  <button type="submit" class="danger">${Pages.esc(c.remove)}</button>
+                </form>
+                <a class="btn" href="/cameras">${Pages.esc(c.cancel)}</a>
                 """,
         )
     }
