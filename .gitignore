@@ -33,3 +33,6 @@ todo.md
 # Release signing keys never enter the repo
 *.jks
 *.keystore
+
+# Google Play listing drafts, console guide and store graphics (maintainer only)
+docs/play/
