@@ -136,6 +136,15 @@
                     android:nextFocusUp="@id/language"
                     android:text="@string/phone_new_code"
                     android:visibility="gone" />
+
+                <!-- No BitVision account: the app also works with IP cameras alone (Phase 6). -->
+                <Button
+                    android:id="@+id/ip_only"
+                    style="@style/GhostButton"
+                    android:layout_marginTop="28dp"
+                    android:nextFocusRight="@id/sign_in"
+                    android:nextFocusUp="@id/new_code"
+                    android:text="@string/login_ip_only" />
             </LinearLayout>
 
             <!-- On-TV form -->
@@ -218,17 +227,9 @@
                     android:id="@+id/sign_in"
                     style="@style/PrimaryButton"
                     android:layout_marginTop="18dp"
-                    android:nextFocusDown="@id/ip_only"
                     android:nextFocusUp="@id/code"
+                    android:nextFocusLeft="@id/ip_only"
                     android:text="@string/login_sign_in" />
-
-                <Button
-                    android:id="@+id/ip_only"
-                    style="@style/GhostButton"
-                    android:layout_width="match_parent"
-                    android:layout_marginTop="12dp"
-                    android:nextFocusUp="@id/sign_in"
-                    android:text="@string/login_ip_only" />
 
                 <TextView
                     android:id="@+id/status"

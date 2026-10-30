@@ -323,6 +323,12 @@ class LiveScreen(
     ) {
         directory.ipCameras = list.cameras
         if (runner == null) return
+        // A removed camera leaves empty tiles instead of "no video" forever.
+        val removed = changedId?.takeIf { id -> list.find(id) == null }
+        if (removed != null) {
+            state = state.withoutCamera(DeviceDirectory.ref(IpCamera(removed, "", "", "")))
+            layouts.save(state)
+        }
         if (state.current == null) {
             val cameras = directory.cameras.filter { it.deviceOnline }.map { it.ref }
             if (cameras.isEmpty()) return
