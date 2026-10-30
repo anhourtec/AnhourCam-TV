@@ -209,7 +209,8 @@ object HttpParser {
 
                 LF -> {
                     if (line.size() == 0) return lines
-                    lines += line.toString(StandardCharsets.ISO_8859_1)
+                    // Not toString(Charset): that needs Android 13; TVs run Android 7.1+.
+                    lines += String(line.toByteArray(), StandardCharsets.ISO_8859_1)
                     line.reset()
                 }
 

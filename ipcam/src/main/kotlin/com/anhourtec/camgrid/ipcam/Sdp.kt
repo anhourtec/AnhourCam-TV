@@ -1,6 +1,6 @@
 package com.anhourtec.camgrid.ipcam
 
-import java.util.Base64
+import okio.ByteString.Companion.decodeBase64
 
 /** The video track of an RTSP session description (RFC 4566), as far as we need it. */
 data class VideoTrack(
@@ -84,7 +84,7 @@ object Sdp {
     private fun decode(value: String?): List<ByteArray> =
         value
             ?.split(',')
-            ?.mapNotNull { runCatching { Base64.getDecoder().decode(it.trim()) }.getOrNull() }
+            ?.mapNotNull { it.trim().decodeBase64()?.toByteArray() }
             ?.filter { it.isNotEmpty() }
             .orEmpty()
 

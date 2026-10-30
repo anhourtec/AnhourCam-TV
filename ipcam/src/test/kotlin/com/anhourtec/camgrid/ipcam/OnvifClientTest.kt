@@ -81,6 +81,8 @@ class OnvifClientTest {
             t,
         )
         assertEquals(null, OnvifClient.cameraEpochSeconds(listOf(2026, 13, 40), listOf(0, 0, 0)))
+        assertEquals(null, OnvifClient.cameraEpochSeconds(listOf(2026, 2, 30), listOf(0, 0, 0)))
+        assertEquals("2026-10-29T17:45:36Z", OnvifClient.utcTimestamp(t * 1000))
     }
 
     @Test

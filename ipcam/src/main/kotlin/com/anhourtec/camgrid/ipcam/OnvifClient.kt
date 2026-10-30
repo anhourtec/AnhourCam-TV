@@ -4,14 +4,15 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
+import okio.ByteString.Companion.toByteString
 import java.io.IOException
 import java.security.MessageDigest
 import java.security.SecureRandom
-import java.time.Instant
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
-import java.util.Base64
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.GregorianCalendar
+import java.util.Locale
+import java.util.TimeZone
 
 /** One stream a camera offers (main stream, sub-stream, …). */
 data class OnvifProfile(
@@ -113,16 +114,12 @@ class OnvifClient(
 
     private fun security(): String {
         val nonce = ByteArray(NONCE_BYTES).also { SecureRandom().nextBytes(it) }
-        val created =
-            DateTimeFormatter.ISO_INSTANT.format(
-                Instant.ofEpochMilli(System.currentTimeMillis() + clockOffsetMs).truncatedTo(ChronoUnit.SECONDS),
-            )
+        val created = utcTimestamp(System.currentTimeMillis() + clockOffsetMs)
         val digest = passwordDigest(nonce, created, password)
-        val b64 = Base64.getEncoder()
         return """<Security s:mustUnderstand="1" xmlns="$WSSE">""" +
             "<UsernameToken><Username>${escape(user)}</Username>" +
             """<Password Type="$PASSWORD_DIGEST">$digest</Password>""" +
-            """<Nonce EncodingType="$BASE64_BINARY">${b64.encodeToString(nonce)}</Nonce>""" +
+            """<Nonce EncodingType="$BASE64_BINARY">${nonce.toByteString().base64()}</Nonce>""" +
             """<Created xmlns="$WSU">$created</Created>""" +
             "</UsernameToken></Security>"
     }
@@ -160,11 +157,21 @@ class OnvifClient(
             time: List<Int>,
         ): Long? =
             runCatching {
-                LocalDate.of(date[0], date[1], date[2]).toEpochDay() * SECONDS_PER_DAY +
-                    time[0] * SECONDS_PER_HOUR + time[1] * SECONDS_PER_MINUTE + time[2]
+                // java.util calendar, not java.time: java.time needs Android 8; TVs run Android 7.1+.
+                val day =
+                    GregorianCalendar(UTC).apply {
+                        isLenient = false
+                        clear()
+                        set(date[0], date[1] - 1, date[2])
+                    }
+                day.timeInMillis / MS_PER_S + time[0] * SECONDS_PER_HOUR + time[1] * SECONDS_PER_MINUTE + time[2]
             }.getOrNull()
 
-        private const val SECONDS_PER_DAY = 86_400L
+        private val UTC: TimeZone = TimeZone.getTimeZone("UTC")
+
+        /** WS-Security `Created`: ISO-8601 UTC to the second, e.g. 2026-10-29T12:00:00Z. */
+        fun utcTimestamp(epochMs: Long): String =
+            SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US).apply { timeZone = UTC }.format(Date(epochMs))
 
         /** WS-Security: Base64(SHA-1(nonce + created + password)). */
         fun passwordDigest(
@@ -176,7 +183,7 @@ class OnvifClient(
             sha.update(nonce)
             sha.update(created.toByteArray())
             sha.update(password.toByteArray())
-            return Base64.getEncoder().encodeToString(sha.digest())
+            return sha.digest().toByteString().base64()
         }
 
         private fun getStreamUri(token: String) =

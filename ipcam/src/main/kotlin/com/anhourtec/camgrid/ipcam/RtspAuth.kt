@@ -1,8 +1,8 @@
 package com.anhourtec.camgrid.ipcam
 
+import okio.ByteString.Companion.encodeUtf8
 import java.security.MessageDigest
 import java.security.SecureRandom
-import java.util.Base64
 
 /** Builds the Authorization header for an RTSP 401 challenge (Basic or Digest, RFC 2617). */
 class RtspAuth(
@@ -48,7 +48,7 @@ class RtspAuth(
         method: String,
         uri: String,
     ): String? {
-        if (basic) return "Basic " + Base64.getEncoder().encodeToString("$user:$password".toByteArray())
+        if (basic) return "Basic " + "$user:$password".encodeUtf8().base64()
         val c = challenge ?: return null
         val realm = c["realm"].orEmpty()
         val nonce = c["nonce"].orEmpty()

@@ -282,7 +282,7 @@ data class RtspUrl(
         ): RtspUrl {
             val uri = runCatching { URI(url.trim()) }.getOrElse { throw RtspException("not a valid address") }
             if (!uri.scheme.equals("rtsp", ignoreCase = true) || uri.host == null) throw RtspException("address must start with rtsp://")
-            val info = uri.rawUserInfo?.let { java.net.URLDecoder.decode(it, Charsets.UTF_8) }
+            val info = uri.rawUserInfo?.let { java.net.URLDecoder.decode(it, "UTF-8") } // String overload: Android 7.1+
             val port = if (uri.port > 0) uri.port else DEFAULT_PORT
             val clean = URI("rtsp", null, uri.host, port, uri.path?.ifEmpty { "/" } ?: "/", uri.query, null).toString()
             return RtspUrl(
