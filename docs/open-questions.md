@@ -32,5 +32,7 @@ Anything not directly observed. Code that relies on one of these carries `// INF
 | 26 | Real bitrate of the RTSP sub-stream | **resolved** | Saved 10 s clip (never viewed, deleted): ffmpeg decoded 250/250 frames, 0 errors, 1280×720 HEVC Main, VPS/SPS/PPS + 1 IDR + 249 P. Low bitrate = still night scene |
 | 27 | Cameras with broken ONVIF clocks | **handled** | One camera sends minute -15; clock read arithmetically, ignored if invalid; crashes guarded at the dashboard and tile level |
 | 28 | Real live-tile limit on the Mi Box 4K | open | Vendor file declares 9 hardware HEVC/AVC instances; measure smooth tiles in 3×3 / 4×4 |
-| 29 | Two TVs streaming the same NVR channels | checking | On the Mi Box, the two channels the Google TV was also playing showed "No video"; experiment: stop the Google TV and watch them recover |
-| 30 | Black picture on admin CH1 on the Mi Box | checking | 20 fps decoded but black: dark/covered camera, or Amlogic render issue |
+| 29 | Two TVs streaming the same NVR channels | **answered** | Both TVs signed in and playing at once (one account, two TVs: fine). With the Google TV on 4 tiles, the Mi Box's tiles from the **HOME** NVR froze (0 fps) or failed while its **admin** NVR tiles played at 10–21 fps: the HOME NVR's stream/upload limit, not the app |
+| 30 | Black picture on admin CH1 on the Mi Box | **resolved** | Same camera later showed a normal picture at 21 fps on the Mi Box (and on the Google TV): the black was before its first key frame |
+| 31 | Google TV found signed out on 2026-10-30 | open | Not caused by the second TV signing in (both stayed signed in afterwards). Possibly portal session expiry while the app was closed overnight; watch for it |
+| 32 | Show the NVR's stream limit to the user | idea | When an NVR stops serving a stream because another TV uses it, say so on the tile instead of "No video" |

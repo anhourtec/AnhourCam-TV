@@ -36,9 +36,15 @@ still to be measured (open question #28).
 |---|---|---|---|
 | HOME CH1 | 720×480 SD | hardware | 26 fps, first picture after 19 s |
 | HOME CH3 | SD | hardware | live in 5 s |
-| admin CH1 | 720×576 SD | hardware | 20 fps, 1 drop, **picture black** (camera or decoder: checking) |
-| HOME CH2, admin CH2 | SD | — | "No video": both were also playing on the Google TV (suspected NVR stream limit, #19/#29) |
+| admin CH1 | 720×576 SD | hardware | 20 fps, 1 drop; picture black until the first key frame, later normal at 21 fps |
+| HOME CH2, admin CH2 | SD | — | "No video" at first: both were also playing on the Google TV (NVR stream limit, #29) |
 | HOME CH4 | — | — | no camera on that input (as on every device, #9) |
+
+### Both TVs at once (same account, 2026-10-30)
+Both stayed signed in. With the Google TV playing 4 tiles (2 HOME, 2 admin), the Mi Box's 6-tile
+grid played its **admin** NVR tiles at 10–21 fps on hardware decoders, while its **HOME** NVR tiles
+froze at 0 fps: the HOME NVR cannot feed every stream to two TVs at once (#29). With one TV the same
+tiles play normally.
 
 ## Bugs this device found (fixed)
 

@@ -89,6 +89,7 @@ install. Pending: the maintainer adds a real camera from the phone and checks it
 
 ### Second device: Xiaomi Mi Box 4K (2026-10-30)
 Android 9, Amlogic, 2 GB. Installs and runs; phone sign-in and BitVision tiles work on hardware
-decoders. It exposed crashes from JDK methods newer than Android 7.1/9 in the pure-JVM modules
+decoders; plays at the same time as the Google TV on one account (an NVR's stream limit shows when
+both play many cameras from it). It exposed crashes from JDK methods newer than Android 7.1/9 in the pure-JVM modules
 (fixed; build-time API check added) and a clipped sign-in button (fixed). Details:
 [docs/devices/xiaomi-mi-box-4k.md](devices/xiaomi-mi-box-4k.md).

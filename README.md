@@ -117,20 +117,21 @@ Watch or star the repo to hear about the first release.
 
 | Platform | Support |
 |---|---|
-| **Google TV** (Chromecast with Google TV, Google TV Streamer, Sony, TCL, Hisense Google TVs…) | Target |
-| **Android TV** 7.1+ (NVIDIA Shield, Xiaomi Mi Box, Philips, Sharp…) | Target |
-| **Amazon Fire TV** (Fire TV Stick, Stick 4K, Cube, Fire TV smart TVs) | Target (sideload) |
+| **Google TV** (Chromecast with Google TV, Google TV Streamer, Sony, TCL, Hisense, Skyworth…) | ✅ Tested (Skyworth Google TV, Android 14) |
+| **Android TV** 7.1+ (Xiaomi Mi Box, NVIDIA Shield, Philips, Sharp…) | ✅ Tested (Xiaomi Mi Box 4K, Android 9) |
+| **Amazon Fire TV** (Fire TV Stick, Stick 4K, Cube, Fire TV smart TVs) | Should work (sideload); not tested yet |
 | Samsung Tizen, LG webOS, Roku, Apple TV | Not supported (not Android) |
 
 How many cameras play live at once depends on your device's video decoder. Tiles beyond that
-show a still image until you select them.
+show a still image until you select them. Watching the same NVR on **two TVs at once** works, but
+an NVR can only send so many streams: if tiles freeze, show fewer cameras from that NVR on one TV.
 
 **Tested on** (details and measurements in [docs/devices](docs/devices/)):
 
 | Device | Android | Result |
 |---|---|---|
 | Skyworth Google TV (MediaTek MT5867, 1 GB) | 14 | ✅ BitVision + IP cameras; 4 live tiles (2 hardware + 2 software) |
-| Xiaomi Mi Box 4K (Amlogic, 2 GB) | 9 | ✅ installs, phone sign-in, BitVision live tiles on hardware decoders (multi-tile limits being measured) |
+| Xiaomi Mi Box 4K (Amlogic, 2 GB) | 9 | ✅ BitVision on hardware decoders; 6-tile grid; plays alongside the Google TV on the same account |
 
 Found a device that works (or doesn't)? Please [open an issue](https://github.com/anhourtec/AnhourCam-TV/issues/new/choose) with the **Device report** form.
 

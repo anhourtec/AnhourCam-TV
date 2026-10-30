@@ -1,5 +1,7 @@
 # Skyworth Google TV (MediaTek MT5867 / T56), Android 14
 
+Also the reference "Google TV" in the docs (address `.50` on the maintainer's network).
+
 The project's first real test device (model string `SWTV_24AE_FHD`). A typical low-end Google TV:
 if AnhourCam TV runs well here, it runs well on most TVs.
 
@@ -40,3 +42,7 @@ as one frees. A stronger TV/streamer (more hardware decoders) plays more tiles l
 
 Still images (3×3 test): tiles beyond the 4 live ones show still pictures refreshed round-robin;
 software live tiles stall more while stills decode (open question #19).
+
+## IP cameras (Phase 6, 2026-10-29)
+An RTSP camera added from the phone dashboard plays fullscreen at 1920×1080 H.265 on the hardware
+decoder, 25 fps, 0 dropped, first frame 0.5–1.1 s (BitVision tiles: ~12 s on this TV).
