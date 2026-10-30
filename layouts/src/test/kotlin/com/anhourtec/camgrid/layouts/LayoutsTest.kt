@@ -12,6 +12,17 @@ class LayoutsTest {
     private val c = CameraRef("NVR_A", 5)
 
     @Test
+    fun `a removed camera leaves empty tiles in every layout`() {
+        val state =
+            LayoutState()
+                .put(Layout("1", "Home", "4", listOf(a, b, c)))
+                .put(Layout("2", "Shop", "4", listOf(b, null, c, b)))
+        val after = state.withoutCamera(b)
+        assertEquals(listOf(a, null, c), after.byId("1")!!.cameras)
+        assertEquals(listOf(null, null, c), after.byId("2")!!.cameras)
+    }
+
+    @Test
     fun `every template tiles inside the grid without overlaps`() {
         Templates.ALL.forEach { t ->
             val covered = Array(Grid.UNITS) { BooleanArray(Grid.UNITS) }

@@ -110,6 +110,10 @@ data class LayoutState(
     /** Stores [layout] (new or changed) and shows it. */
     fun saved(layout: Layout): LayoutState = put(layout).copy(lastId = layout.id)
 
+    /** A camera that no longer exists: its tiles become empty in every layout. */
+    fun withoutCamera(ref: CameraRef): LayoutState =
+        copy(layouts = layouts.map { l -> l.copy(cameras = l.cameras.map { it.takeIf { c -> c != ref } }.dropLastWhile { it == null }) })
+
     /** Shows layout [id] (unknown ids are ignored). */
     fun select(id: String): LayoutState = if (byId(id) != null) copy(lastId = id) else this
 
