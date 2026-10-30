@@ -38,7 +38,8 @@ _Last updated: 2026-10-29 (Phase 6 done and verified on the TV; next: release to
 **Phase 5: Polish and release**
 - [ ] Performance pass against the budgets (docs/performance.md)
 - [x] Signed release APK on GitHub Releases: v0.2.0, then v0.2.1 with the final app ID `com.anhourtec.anhourcam` (2026-10-30), tested on both TVs
-- [ ] Google Play (Android TV track) — listing material prepared by the maintainer's session
+- [x] Google Play: app set up and sent for review (2026-10-30): closed test "Alpha" with 0.2.1, listing in 5 languages, Android TV form factor, tester Google Group
+- [ ] Google Play: 12 testers opted in for 14 days → apply for production
 
 ## Later
 

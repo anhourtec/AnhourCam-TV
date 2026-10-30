@@ -102,3 +102,10 @@ restart), dashboard. Published on GitHub Releases as `anhourcam-tv.apk`.
 App ID changed from `com.anhourtec.camgrid.tv` (left over from the CamGrid name) to
 `com.anhourtec.anhourcam` before Google Play locks it. Same signing key; Kotlin packages unchanged.
 0.2.0 installs are a separate app: uninstall, install 0.2.1. Release build tested on both TVs.
+
+### Google Play submission (2026-10-30)
+App `com.anhourtec.anhourcam` set up in Play Console (personal account) and sent for review:
+closed testing track "Alpha" with 0.2.1 (Google-managed app signing, release key as upload key),
+store listing in en/zh/ja/pt-BR/ru with icon, feature graphic, phone + TV screenshots and TV banner,
+all App content declarations, Android TV form factor (same track as mobile), testers via a Google
+Group. Next: 12 opted-in testers for 14 days, then apply for production.
