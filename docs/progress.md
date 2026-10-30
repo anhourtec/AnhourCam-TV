@@ -97,3 +97,8 @@ both play many cameras from it). It exposed crashes from JDK methods newer than 
 Signed with the maintainer's release key (SHA-256 `2A:B2:1D:…:F4:52`), R8-shrunk APK 471 KB.
 Release build tested on both TVs: sign-in, BitVision tiles, IP camera (saved and reloaded after a
 restart), dashboard. Published on GitHub Releases as `anhourcam-tv.apk`.
+
+### 0.2.1: final app ID (2026-10-30)
+App ID changed from `com.anhourtec.camgrid.tv` (left over from the CamGrid name) to
+`com.anhourtec.anhourcam` before Google Play locks it. Same signing key; Kotlin packages unchanged.
+0.2.0 installs are a separate app: uninstall, install 0.2.1. Release build tested on both TVs.

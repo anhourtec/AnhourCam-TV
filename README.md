@@ -20,7 +20,7 @@
     <img src="https://img.shields.io/github/contributors/anhourtec/AnhourCam-TV.svg" alt="Contributors">
   </a>
   <img src="https://img.shields.io/badge/platform-Google%20TV%20%C2%B7%20Android%20TV%20%C2%B7%20Fire%20TV-cfffcf?style=flat&labelColor=15181e" alt="Platforms: Google TV, Android TV, Fire TV">
-  <img src="https://img.shields.io/badge/status-0.2.0-cfffcf?style=flat&labelColor=15181e" alt="Status: 0.2.0">
+  <img src="https://img.shields.io/badge/status-0.2.1-cfffcf?style=flat&labelColor=15181e" alt="Status: 0.2.1">
 </p>
 
 <p align="center">
@@ -35,7 +35,7 @@
 
 | You want to | Go to |
 |---|---|
-| **Know if it works yet** | [Status](#status): version 0.2.0 is out; [install it](#install). |
+| **Know if it works yet** | [Status](#status): version 0.2.1 is out; [install it](#install). |
 | **Watch BitVision cameras on a TV** | [What you get](#what-you-get) and [Supported devices](#supported-devices). |
 | **Install it (when released)** | [Install](#install): sideload over Wi-Fi, no Play Store needed. |
 | **Use BitVision on a phone instead** | The official apps: [Android (Google Play)](https://play.google.com/store/apps/details?id=com.gzch.lsplat.lsbtvapp&hl=en) · [iPhone/iPad (App Store)](https://apps.apple.com/in/app/bitvision/id1419463554) · [Web portal](https://bitvision.app/) |
@@ -97,7 +97,7 @@ address is hidden. Phone and computer screenshots use made-up camera names.
 
 ## Status
 
-**Version 0.2.0** is out: [download the APK](https://github.com/anhourtec/AnhourCam-TV/releases/latest/download/anhourcam-tv.apk)
+**Version 0.2.1** is out: [download the APK](https://github.com/anhourtec/AnhourCam-TV/releases/latest/download/anhourcam-tv.apk)
 and [install it](#install) with or without a computer. Progress: [docs/progress.md](docs/progress.md) ·
 [docs/roadmap.md](docs/roadmap.md).
 
@@ -108,7 +108,7 @@ and [install it](#install) with or without a computer. Progress: [docs/progress.
 | 2 | Native video playback (hardware decoding, several tiles at once) | ✅ done |
 | 3 | TV app + sign-in (on the TV or from your phone) | ✅ done |
 | 4 | Grids, layout editor (TV + phone), several layouts, still images | ✅ mostly done (tour mode next) |
-| 5 | Performance polish + release APK | ✅ first release 0.2.0; Google Play next |
+| 5 | Performance polish + release APK | ✅ 0.2.1 on GitHub; Google Play next |
 | 6 | **Any IP camera** (RTSP / ONVIF): scan your network, add cameras from your phone, no BitVision account needed | ✅ built ([details](docs/ipcam.md)) |
 
 Watch or star the repo to hear about the first release.
@@ -226,6 +226,10 @@ To set everything up from your phone: hold OK → **Edit layout from phone or co
 address on the card, enter its code, choose grids and cameras, and **Save to TV**.
 
 ### Updating and removing
+
+> **Installed 0.2.0?** Version 0.2.1 has the app's final ID, so it installs as a separate app.
+> Uninstall the old one (Settings → Apps → AnhourCam TV → Uninstall), then install 0.2.1. You'll
+> sign in and set up your layouts once more; future updates keep everything.
 
 - **Update:** install the new APK the same way (`adb install -r …`, or download it again in
   Downloader). Your sign-in and layouts are kept.

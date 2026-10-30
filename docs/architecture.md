@@ -184,3 +184,4 @@ rate limits + body size limits · no credential/token logging.
 | 2026-10-29 | H.264 IP cameras share the HEVC decoder budget (one slot each) | INFERRED: TVs share decoder hardware between codecs; keeps one simple budget (open question #24) |
 | 2026-10-29 | "Use IP cameras only": `DeviceDirectory` portal is optional; mode remembered in app prefs | The app is useful without BitVision; BitVision code paths unchanged |
 | 2026-10-30 | `scripts/check-android-api.py` runs in `./gradlew check` for every pure-JVM module the app uses | Android Lint doesn't check them; a JDK method newer than minSdk crashed the Mi Box (Android 9) |
+| 2026-10-30 | App ID `com.anhourtec.anhourcam` (was `com.anhourtec.camgrid.tv` in 0.2.0); Kotlin packages unchanged | Brand-matching ID before Google Play makes it permanent; v0.2.0 was hours old |

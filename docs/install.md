@@ -93,3 +93,6 @@ address on the card, enter its code, choose grids and cameras, and **Save to TV*
 - **Update:** install the new APK the same way (`adb install -r …`, or download it again in
   Downloader). Your sign-in and layouts are kept.
 - **Remove:** Settings → Apps → AnhourCam TV → **Uninstall**.
+
+> **Installed 0.2.0?** Version 0.2.1 has the app's final ID, so it installs as a separate app.
+> Uninstall the old one (Settings → Apps → AnhourCam TV → Uninstall), then install 0.2.1.
